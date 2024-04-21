@@ -56,12 +56,11 @@ def match_with_database(img, database):
         print("Can't detect face")
 
 
-# Information to database
+# Information to database               
 ref = db.reference("Students")
 bucket = storage.bucket()
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import cv2
 import sys
 
 class Ui_FaceRecognition(object):
@@ -372,6 +371,34 @@ class MainWindow(QtWidgets.QMainWindow):
         # Set the QImage to the QLabel for display
         self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
 
+    def update_student_card_image(self, student_id):
+        # Reference to the images in Firebase
+        image_ref = storage.bucket().get_blob(f"images/{student_id}.jpg")
+
+        # Download image from Firebase
+         # Download image from Firebase
+        if image_ref:
+                image_data = image_ref.download_as_bytes()
+
+                # Convert bytes data to OpenCV image format
+                nparr = np.frombuffer(image_data, np.uint8)
+                image_cv2 = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+                image_rgb = cv2.cvtColor(image_cv2, cv2.COLOR_BGR2RGB)
+                # Resize image to fit BorderAvatar
+                resized_image = cv2.resize(image_rgb, (self.ui.BorderAvatar.width(), self.ui.BorderAvatar.height()))
+
+                # Convert OpenCV image to QImage
+                height, width, channel = resized_image.shape
+                bytes_per_line = 3 * width
+                q_img = QtGui.QImage(resized_image.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
+
+                # Display image on BorderAvatar
+                self.ui.BorderAvatar.setPixmap(QtGui.QPixmap.fromImage(q_img))
+        else:
+                # If image not found, display a default image or clear the QLabel
+                self.ui.BorderAvatar.clear()  # Clear the QLabel
+
 
     def keyPressEvent(self, event):
         # Check if the Enter key is pressed
@@ -389,6 +416,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                 self.ui.Name.setText(_translate("FaceRecognition", studentName))
                                 self.ui.Role.setText(_translate("FaceRecognition", studentInfo["Faculty"]))
                                 self.ui.Class.setText(_translate("FaceRecognition", "CLASS"))   
+                                self.update_student_card_image(key)
                                 break    
 
 
