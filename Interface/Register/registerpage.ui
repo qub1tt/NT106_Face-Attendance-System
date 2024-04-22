@@ -39,7 +39,7 @@
       <string notr="true">background-color: rgb(255, 255, 255);
 border-radius: 20px;</string>
      </property>
-     <widget class="QLineEdit" name="txtEmail_2">
+     <widget class="QLineEdit" name="txtEmail">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -72,7 +72,7 @@ font-size: 18px;
        <string>Enter your Email</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="txtFaculty_2">
+     <widget class="QLineEdit" name="txtFaculty">
       <property name="geometry">
        <rect>
         <x>470</x>
@@ -105,7 +105,7 @@ font-size: 18px;
        <string>Enter your Faculty</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="txtName_2">
+     <widget class="QLineEdit" name="txtName">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -138,7 +138,7 @@ font-size: 18px;
        <string>Enter your Name</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="txtMajor_2">
+     <widget class="QLineEdit" name="txtMajor">
       <property name="geometry">
        <rect>
         <x>470</x>
@@ -171,7 +171,7 @@ font-size: 18px;
        <string>Enter your Major</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="txtStuID_2">
+     <widget class="QLineEdit" name="txtStuID">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -207,7 +207,7 @@ font-size: 18px;
        <string>Enter your Student ID</string>
       </property>
      </widget>
-     <widget class="QLabel" name="lblUpAvatar_3">
+     <widget class="QLabel" name="lblUpAvatar">
       <property name="geometry">
        <rect>
         <x>110</x>
@@ -237,7 +237,7 @@ background-color: transparent;</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnUpAvatar_2">
+     <widget class="QPushButton" name="btnUpAvatar">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -255,7 +255,7 @@ background-color: transparent;</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../Png/Icon/UploadAvatar.png</normaloff>../Png/Icon/UploadAvatar.png</iconset>
+        <normaloff>UploadAvatar.png</normaloff>UploadAvatar.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -264,7 +264,7 @@ background-color: transparent;</string>
        </size>
       </property>
      </widget>
-     <widget class="QLineEdit" name="txtYear_2">
+     <widget class="QLineEdit" name="txtYear">
       <property name="geometry">
        <rect>
         <x>470</x>
@@ -297,7 +297,7 @@ font-size: 18px;
        <string>Enter your Year</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnResgister_2">
+     <widget class="QPushButton" name="btnRegister">
       <property name="geometry">
        <rect>
         <x>690</x>
@@ -342,13 +342,13 @@ font-weight:bold;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../Png/Image/register.png</pixmap>
+       <pixmap>register.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="labelStuID">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -367,7 +367,7 @@ background-color: transparent;</string>
        <string>Student ID:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="labelName">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -386,7 +386,7 @@ background-color: transparent;</string>
        <string>Name:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="labelEmail">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -405,7 +405,7 @@ background-color: transparent;</string>
        <string>Email:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="labelFaculity">
       <property name="geometry">
        <rect>
         <x>470</x>
@@ -424,7 +424,7 @@ background-color: transparent;</string>
        <string>Faculity:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_5">
+     <widget class="QLabel" name="labelMajor">
       <property name="geometry">
        <rect>
         <x>470</x>
@@ -443,7 +443,7 @@ background-color: transparent;</string>
        <string>Major:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="labelYear">
       <property name="geometry">
        <rect>
         <x>470</x>
