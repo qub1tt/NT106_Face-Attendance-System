@@ -420,9 +420,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                 break    
 
 
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow()       
     window.show()
     sys.exit(app.exec())
