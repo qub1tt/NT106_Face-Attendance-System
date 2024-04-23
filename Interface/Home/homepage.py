@@ -242,7 +242,7 @@ class Ui_FaceRecognition(object):
         self.label.setGeometry(QtCore.QRect(50, 10, 51, 51))
         self.label.setStyleSheet("background-color: transparent;")
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("Interface\Png\Image\logo.png"))
+        self.label.setPixmap(QtGui.QPixmap(r"Interface\Png\Icon\logo.png"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.HeaderBackground.raise_()
@@ -402,7 +402,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def keyPressEvent(self, event):
         # Check if the Enter key is pressed
-        if event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter:    
+        if event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter: 
+
                 ref = db.reference("Students").get()
                 for key, value in ref.items():
                         database = {}
@@ -418,7 +419,6 @@ class MainWindow(QtWidgets.QMainWindow):
                                 self.ui.Class.setText(_translate("FaceRecognition", "CLASS"))   
                                 self.update_student_card_image(key)
                                 break    
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
