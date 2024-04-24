@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'login-ui.ui'
+# Form implementation generated from reading ui file 'changePass.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -12,31 +12,19 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(853, 600)
+        MainWindow.resize(429, 547)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(30, 49, 800, 500))
+        self.widget.setGeometry(QtCore.QRect(20, 10, 401, 500))
         self.widget.setObjectName("widget")
         self.label = QtWidgets.QLabel(parent=self.widget)
         self.label.setGeometry(QtCore.QRect(0, -80, 400, 581))
         self.label.setStyleSheet("background-color:rgb(165,213,255);")
         self.label.setText("")
         self.label.setObjectName("label")
-        self.lbl_backimg = QtWidgets.QLabel(parent=self.widget)
-        self.lbl_backimg.setGeometry(QtCore.QRect(400, 0, 400, 500))
-        self.lbl_backimg.setStyleSheet("background-color:rgba(255,255,255,255);")
-        self.lbl_backimg.setText("")
-        self.lbl_backimg.setObjectName("lbl_backimg")
-        self.lbl_image = QtWidgets.QLabel(parent=self.widget)
-        self.lbl_image.setGeometry(QtCore.QRect(400, 75, 400, 350))
-        self.lbl_image.setStyleSheet("")
-        self.lbl_image.setText("")
-        self.lbl_image.setPixmap(QtGui.QPixmap("Interface/Png/Icon/login-ui.png"))
-        self.lbl_image.setScaledContents(True)
-        self.lbl_image.setObjectName("lbl_image")
         self.label_2 = QtWidgets.QLabel(parent=self.widget)
-        self.label_2.setGeometry(QtCore.QRect(105, 20, 190, 41))
+        self.label_2.setGeometry(QtCore.QRect(30, 20, 340, 39))
         font = QtGui.QFont()
         font.setFamily("Imprint MT Shadow")
         font.setPointSize(20)
@@ -47,16 +35,8 @@ class Ui_MainWindow(object):
 "")
         self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(parent=self.widget)
-        self.label_3.setGeometry(QtCore.QRect(75, 70, 250, 41))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_3.setObjectName("label_3")
         self.leUser = QtWidgets.QLineEdit(parent=self.widget)
-        self.leUser.setGeometry(QtCore.QRect(70, 130, 310, 50))
+        self.leUser.setGeometry(QtCore.QRect(70, 100, 310, 50))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -69,7 +49,7 @@ class Ui_MainWindow(object):
         self.leUser.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.leUser.setObjectName("leUser")
         self.btnLogin = QtWidgets.QPushButton(parent=self.widget)
-        self.btnLogin.setGeometry(QtCore.QRect(20, 320, 360, 60))
+        self.btnLogin.setGeometry(QtCore.QRect(20, 380, 360, 60))
         font = QtGui.QFont()
         font.setFamily("MS Serif")
         font.setPointSize(14)
@@ -96,22 +76,22 @@ class Ui_MainWindow(object):
 "")
         self.btnLogin.setObjectName("btnLogin")
         self.label_4 = QtWidgets.QLabel(parent=self.widget)
-        self.label_4.setGeometry(QtCore.QRect(20, 130, 50, 50))
+        self.label_4.setGeometry(QtCore.QRect(20, 100, 50, 50))
         self.label_4.setStyleSheet("background-color:rgb(76,198,198)")
         self.label_4.setLineWidth(1)
         self.label_4.setText("")
         self.label_4.setTextFormat(QtCore.Qt.TextFormat.PlainText)
-        self.label_4.setPixmap(QtGui.QPixmap("Interface/Png/Icon/user.png"))
+        self.label_4.setPixmap(QtGui.QPixmap("../Png/Icon/user.png"))
         self.label_4.setScaledContents(True)
         self.label_4.setObjectName("label_4")
         self.label_6 = QtWidgets.QLabel(parent=self.widget)
-        self.label_6.setGeometry(QtCore.QRect(20, 130, 360, 50))
+        self.label_6.setGeometry(QtCore.QRect(20, 100, 360, 50))
         self.label_6.setStyleSheet("background-color:white;\n"
 "")
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
         self.lePassword = QtWidgets.QLineEdit(parent=self.widget)
-        self.lePassword.setGeometry(QtCore.QRect(70, 220, 310, 50))
+        self.lePassword.setGeometry(QtCore.QRect(70, 190, 310, 50))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -126,18 +106,18 @@ class Ui_MainWindow(object):
         self.lePassword.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.lePassword.setObjectName("lePassword")
         self.label_7 = QtWidgets.QLabel(parent=self.widget)
-        self.label_7.setGeometry(QtCore.QRect(20, 220, 360, 50))
+        self.label_7.setGeometry(QtCore.QRect(20, 190, 360, 50))
         self.label_7.setStyleSheet("background-color:white;\n"
 "")
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
         self.label_5 = QtWidgets.QLabel(parent=self.widget)
-        self.label_5.setGeometry(QtCore.QRect(20, 220, 50, 50))
+        self.label_5.setGeometry(QtCore.QRect(20, 190, 50, 50))
         self.label_5.setStyleSheet("background-color:rgb(76,198,198)")
         self.label_5.setLineWidth(1)
         self.label_5.setText("")
         self.label_5.setTextFormat(QtCore.Qt.TextFormat.PlainText)
-        self.label_5.setPixmap(QtGui.QPixmap("Interface/Png/Icon/password.png"))
+        self.label_5.setPixmap(QtGui.QPixmap("../Png/Icon/password.png"))
         self.label_5.setScaledContents(True)
         self.label_5.setObjectName("label_5")
         self.label_8 = QtWidgets.QLabel(parent=self.widget)
@@ -145,65 +125,40 @@ class Ui_MainWindow(object):
         self.label_8.setStyleSheet("background-color:white;")
         self.label_8.setText("")
         self.label_8.setObjectName("label_8")
-        self.btnForgotPassword = QtWidgets.QPushButton(parent=self.widget)
-        self.btnForgotPassword.setGeometry(QtCore.QRect(20, 280, 130, 22))
-        font = QtGui.QFont()
-        font.setFamily("Segoe Print")
-        font.setPointSize(8)
-        font.setBold(True)
-        font.setItalic(False)
-        font.setWeight(75)
-        self.btnForgotPassword.setFont(font)
-        self.btnForgotPassword.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
-        self.btnForgotPassword.setStyleSheet("background-color:rgb(165,213,255);\n"
-"color: black;\n"
-"\n"
-"\n"
-"\n"
-"")
-        self.btnForgotPassword.setFlat(True)
-        self.btnForgotPassword.setObjectName("btnForgotPassword")
-        self.pushButton = QtWidgets.QPushButton(parent=self.widget)
-        self.pushButton.setGeometry(QtCore.QRect(269, 400, 111, 28))
-        font = QtGui.QFont()
-        font.setFamily("Segoe Print")
-        font.setPointSize(7)
-        font.setBold(True)
-        font.setWeight(75)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("QPushButton#pushButton{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(11,131,120,219), stop:1 rgba(85,98,112,226));\n"
-"   color:rgba(255,255,255,210);\n"
-"border-radius:10px;\n"
-"}    \n"
-"QPushButton#pushButton:hover{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));\n"
-"  \n"
-"}    \n"
-"\n"
-"QPushButton#pushButton:pressed{\n"
-"    padding-left:5px;\n"
-"padding-top:5px;\n"
-"background-color:rgba(150,123,111,255);\n"
-"\n"
-"}    ")
-        self.pushButton.setObjectName("pushButton")
-        self.label_9 = QtWidgets.QLabel(parent=self.widget)
-        self.label_9.setGeometry(QtCore.QRect(20, 405, 241, 16))
+        self.label_10 = QtWidgets.QLabel(parent=self.widget)
+        self.label_10.setGeometry(QtCore.QRect(20, 280, 50, 50))
+        self.label_10.setStyleSheet("background-color:rgb(76,198,198)")
+        self.label_10.setLineWidth(1)
+        self.label_10.setText("")
+        self.label_10.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        self.label_10.setPixmap(QtGui.QPixmap("../Png/Icon/changepassword2.png"))
+        self.label_10.setScaledContents(True)
+        self.label_10.setWordWrap(False)
+        self.label_10.setOpenExternalLinks(False)
+        self.label_10.setObjectName("label_10")
+        self.leUser_2 = QtWidgets.QLineEdit(parent=self.widget)
+        self.leUser_2.setGeometry(QtCore.QRect(70, 280, 310, 50))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(9)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_9.setFont(font)
-        self.label_9.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        font.setPointSize(12)
+        self.leUser_2.setFont(font)
+        self.leUser_2.setStyleSheet("background-color:rgba(255,255,255,255);\n"
+"border:none;\n"
+"border-bottom:2px solid rgba(46,82,101,200);\n"
+"color:rgba(0,0,0,240);\n"
+"padding-bottom:7px;")
+        self.leUser_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.leUser_2.setObjectName("leUser_2")
+        self.label_9 = QtWidgets.QLabel(parent=self.widget)
+        self.label_9.setGeometry(QtCore.QRect(20, 280, 360, 50))
+        self.label_9.setStyleSheet("background-color:white;\n"
+"")
+        self.label_9.setText("")
         self.label_9.setObjectName("label_9")
+        self.label_9.raise_()
         self.label_8.raise_()
         self.label.raise_()
-        self.lbl_backimg.raise_()
-        self.lbl_image.raise_()
         self.label_2.raise_()
-        self.label_3.raise_()
         self.btnLogin.raise_()
         self.label_6.raise_()
         self.label_4.raise_()
@@ -211,9 +166,8 @@ class Ui_MainWindow(object):
         self.label_7.raise_()
         self.lePassword.raise_()
         self.label_5.raise_()
-        self.btnForgotPassword.raise_()
-        self.pushButton.raise_()
-        self.label_9.raise_()
+        self.label_10.raise_()
+        self.leUser_2.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -225,14 +179,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "Please log in"))
-        self.label_3.setText(_translate("MainWindow", "Welcome to our Application"))
+        self.label_2.setText(_translate("MainWindow", "Change Your Password"))
         self.leUser.setPlaceholderText(_translate("MainWindow", "Username or Email"))
-        self.btnLogin.setText(_translate("MainWindow", "Log in"))
-        self.lePassword.setPlaceholderText(_translate("MainWindow", "Enter your Password"))
-        self.btnForgotPassword.setText(_translate("MainWindow", "Forgot password?"))
-        self.pushButton.setText(_translate("MainWindow", "Change Password"))
-        self.label_9.setText(_translate("MainWindow", "Do you want to change your password?"))
+        self.btnLogin.setText(_translate("MainWindow", "Change Password"))
+        self.lePassword.setPlaceholderText(_translate("MainWindow", "Enter your Old-Password"))
+        self.leUser_2.setPlaceholderText(_translate("MainWindow", "Enter your New-Password"))
 
 
 if __name__ == "__main__":

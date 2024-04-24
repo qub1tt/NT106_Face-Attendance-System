@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>875</width>
-    <height>600</height>
+    <width>429</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>40</y>
+      <x>20</x>
+      <y>10</y>
       <width>401</width>
       <height>500</height>
      </rect>
@@ -146,6 +146,9 @@ background-color:rgba(150,123,111,255);
        <height>50</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(76,198,198)</string>
+     </property>
      <property name="lineWidth">
       <number>1</number>
      </property>
@@ -156,7 +159,7 @@ background-color:rgba(150,123,111,255);
       <enum>Qt::PlainText</enum>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Giaodien/login2/image/icon.png</pixmap>
+      <pixmap>../Png/Icon/user.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -253,7 +256,7 @@ padding-bottom:7px;</string>
       <enum>Qt::PlainText</enum>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Giaodien/login2/image/icon2.png</pixmap>
+      <pixmap>../Png/Icon/password.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -284,6 +287,9 @@ padding-bottom:7px;</string>
        <height>50</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(76,198,198)</string>
+     </property>
      <property name="lineWidth">
       <number>1</number>
      </property>
@@ -294,10 +300,16 @@ padding-bottom:7px;</string>
       <enum>Qt::PlainText</enum>
      </property>
      <property name="pixmap">
-      <pixmap>../../../Giaodien/login2/image/icon.png</pixmap>
+      <pixmap>../Png/Icon/changepassword2.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+     <property name="openExternalLinks">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QLineEdit" name="leUser_2">
