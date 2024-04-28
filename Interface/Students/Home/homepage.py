@@ -481,7 +481,8 @@ class MainWindow(QtWidgets.QMainWindow):
                                 studentEmbedding = studentInfo["embeddings"]
                                 database[studentName] = studentEmbedding
                                 faces = match_with_database(frame, database)
-                                if faces:
+                                print(faces)
+                                if faces == 1:
                                         date = str(datetime.now().replace(microsecond=0))
                                         # Lấy dữ liệu từ Firebase
                                         class_data = studentInfo["Classes"]
@@ -502,8 +503,17 @@ class MainWindow(QtWidgets.QMainWindow):
                                                         count = res.child("AttendanceCount").get()
                                                         res.update({"AttendanceCount": count+1,
                                                                 "Datetime": date})
+                                        break
                 else:
-                     print("hey you are a spoofer!")
+                        # Tạo một QMessageBox cảnh báo
+                        msg = QMessageBox()
+                        msg.setIcon(QMessageBox.Icon.Warning)
+                        msg.setText("Vui lòng không sử dụng hình ảnh để gian lận trong việc điểm danh!!")
+                        msg.setWindowTitle("Cảnh báo")
+                        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                        
+                        # Hiển thị dialog box cảnh báo
+                        msg.exec()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
