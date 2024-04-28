@@ -9,6 +9,23 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+from firebase_admin import storage
+from firebase_admin import auth
+
+cred = credentials.Certificate("ServiceAccountKey.json")
+
+firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
+                                     
+                                     "storageBucket":"faceregconition-80c55.appspot.com"})
+
+
+
+
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -69,7 +86,7 @@ class Ui_MainWindow(object):
         self.leUser.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.leUser.setObjectName("leUser")
         self.btnLogin = QtWidgets.QPushButton(parent=self.widget)
-        self.btnLogin.setGeometry(QtCore.QRect(20, 320, 360, 60))
+        self.btnLogin.setGeometry(QtCore.QRect(20, 350, 360, 60))
         font = QtGui.QFont()
         font.setFamily("MS Serif")
         font.setPointSize(14)
@@ -111,7 +128,7 @@ class Ui_MainWindow(object):
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
         self.lePassword = QtWidgets.QLineEdit(parent=self.widget)
-        self.lePassword.setGeometry(QtCore.QRect(70, 220, 310, 50))
+        self.lePassword.setGeometry(QtCore.QRect(70, 230, 310, 50))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -126,13 +143,13 @@ class Ui_MainWindow(object):
         self.lePassword.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.lePassword.setObjectName("lePassword")
         self.label_7 = QtWidgets.QLabel(parent=self.widget)
-        self.label_7.setGeometry(QtCore.QRect(20, 220, 360, 50))
+        self.label_7.setGeometry(QtCore.QRect(20, 230, 360, 50))
         self.label_7.setStyleSheet("background-color:white;\n"
 "")
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
         self.label_5 = QtWidgets.QLabel(parent=self.widget)
-        self.label_5.setGeometry(QtCore.QRect(20, 220, 50, 50))
+        self.label_5.setGeometry(QtCore.QRect(20, 230, 50, 50))
         self.label_5.setStyleSheet("background-color:rgb(76,198,198)")
         self.label_5.setLineWidth(1)
         self.label_5.setText("")
@@ -146,7 +163,7 @@ class Ui_MainWindow(object):
         self.label_8.setText("")
         self.label_8.setObjectName("label_8")
         self.btnForgotPassword = QtWidgets.QPushButton(parent=self.widget)
-        self.btnForgotPassword.setGeometry(QtCore.QRect(20, 280, 130, 22))
+        self.btnForgotPassword.setGeometry(QtCore.QRect(20, 320, 121, 22))
         font = QtGui.QFont()
         font.setFamily("Segoe Print")
         font.setPointSize(8)
@@ -155,6 +172,7 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.btnForgotPassword.setFont(font)
         self.btnForgotPassword.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
+        self.btnForgotPassword.setAutoFillBackground(False)
         self.btnForgotPassword.setStyleSheet("background-color:rgb(165,213,255);\n"
 "color: black;\n"
 "\n"
@@ -164,7 +182,7 @@ class Ui_MainWindow(object):
         self.btnForgotPassword.setFlat(True)
         self.btnForgotPassword.setObjectName("btnForgotPassword")
         self.pushButton = QtWidgets.QPushButton(parent=self.widget)
-        self.pushButton.setGeometry(QtCore.QRect(269, 400, 111, 28))
+        self.pushButton.setGeometry(QtCore.QRect(269, 420, 111, 28))
         font = QtGui.QFont()
         font.setFamily("Segoe Print")
         font.setPointSize(7)
@@ -189,7 +207,7 @@ class Ui_MainWindow(object):
 "}    ")
         self.pushButton.setObjectName("pushButton")
         self.label_9 = QtWidgets.QLabel(parent=self.widget)
-        self.label_9.setGeometry(QtCore.QRect(20, 405, 241, 16))
+        self.label_9.setGeometry(QtCore.QRect(20, 425, 241, 16))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(9)
@@ -198,6 +216,19 @@ class Ui_MainWindow(object):
         self.label_9.setFont(font)
         self.label_9.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_9.setObjectName("label_9")
+        self.lbleror = QtWidgets.QLabel(parent=self.widget)
+        self.lbleror.setGeometry(QtCore.QRect(20, 299, 360, 21))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.lbleror.setFont(font)
+        self.lbleror.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+        self.lbleror.setAutoFillBackground(False)
+        self.lbleror.setStyleSheet("color:red;")
+        
+        self.lbleror.setObjectName("lbleror")
         self.label_8.raise_()
         self.label.raise_()
         self.lbl_backimg.raise_()
@@ -214,6 +245,7 @@ class Ui_MainWindow(object):
         self.btnForgotPassword.raise_()
         self.pushButton.raise_()
         self.label_9.raise_()
+        self.lbleror.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -233,6 +265,28 @@ class Ui_MainWindow(object):
         self.btnForgotPassword.setText(_translate("MainWindow", "Forgot password?"))
         self.pushButton.setText(_translate("MainWindow", "Change Password"))
         self.label_9.setText(_translate("MainWindow", "Do you want to change your password?"))
+
+
+
+# kết nối tới hàm loginFuntion
+        self.btnLogin.clicked.connect(self.loginFunction)
+    def loginFunction(self):
+        
+        user = self.leUser.text()
+        password = self.lePassword.text()
+        if len(user) == 0 or len(password) == 0:
+                self.lbleror.setText("Please input all fields")
+        else :
+                self.lbleror.setText("")
+        
+        
+
+
+
+        
+
+                
+
 
 
 if __name__ == "__main__":

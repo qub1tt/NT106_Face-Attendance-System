@@ -160,7 +160,7 @@ padding-bottom:7px;</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>320</y>
+       <y>350</y>
        <width>360</width>
        <height>60</height>
       </rect>
@@ -246,7 +246,7 @@ background-color:rgba(150,123,111,255);
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>220</y>
+       <y>230</y>
        <width>310</width>
        <height>50</height>
       </rect>
@@ -281,7 +281,7 @@ padding-bottom:7px;</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>220</y>
+       <y>230</y>
        <width>360</width>
        <height>50</height>
       </rect>
@@ -298,7 +298,7 @@ padding-bottom:7px;</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>220</y>
+       <y>230</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -342,8 +342,8 @@ padding-bottom:7px;</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>280</y>
-       <width>130</width>
+       <y>320</y>
+       <width>121</width>
        <height>22</height>
       </rect>
      </property>
@@ -358,6 +358,9 @@ padding-bottom:7px;</string>
      </property>
      <property name="focusPolicy">
       <enum>Qt::ClickFocus</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color:rgb(165,213,255);
@@ -378,7 +381,7 @@ color: black;
      <property name="geometry">
       <rect>
        <x>269</x>
-       <y>400</y>
+       <y>420</y>
        <width>111</width>
        <height>28</height>
       </rect>
@@ -417,7 +420,7 @@ background-color:rgba(150,123,111,255);
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>405</y>
+       <y>425</y>
        <width>241</width>
        <height>16</height>
       </rect>
@@ -437,6 +440,36 @@ background-color:rgba(150,123,111,255);
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="QLabel" name="lbleror">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>299</y>
+       <width>360</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>11</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:red;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
     <zorder>label_8</zorder>
     <zorder>label</zorder>
     <zorder>lbl_backimg</zorder>
@@ -453,6 +486,7 @@ background-color:rgba(150,123,111,255);
     <zorder>btnForgotPassword</zorder>
     <zorder>pushButton</zorder>
     <zorder>label_9</zorder>
+    <zorder>lbleror</zorder>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
