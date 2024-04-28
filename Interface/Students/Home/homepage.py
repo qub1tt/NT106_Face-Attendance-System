@@ -10,6 +10,7 @@ import cv2
 from datetime import datetime
 from face_matching import *
 import sys
+import socket, pickle,struct
 
 # caution: path[0] is reserved for script path (or '' in REPL)
 sys.path.insert(1, 'Interface\Students\Home\Silent-Face-Anti-Spoofing-master')
@@ -373,6 +374,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_FaceRecognition()
         self.ui.setupUi(self)
         self.start_camera()
+        
+        # Setup socket connection
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.host_ip = '192.168.139.1'  # Change this to your server IP
+        self.port = 9999
+        self.client_socket.connect((self.host_ip, self.port))
 
     def start_camera(self):
         # Start the camera
@@ -398,12 +405,31 @@ class MainWindow(QtWidgets.QMainWindow):
         # Set the QImage to the QLabel for display
         self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
 
+        # Send frame over socket
+        if self.client_socket.fileno() != -1:
+                try:
+                        a = pickle.dumps(frame)
+                        message = struct.pack("Q", len(a)) + a
+                        self.client_socket.sendall(message)
+
+                except Exception as e:
+                        print("Error sending frame:", e)
+                        QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
+                        self.client_socket.close()
+                        QtCore.QCoreApplication.instance().quit()
+
+    def closeEvent(self, event):
+        # Close the socket when closing the application
+        self.client_socket.close()
+        event.accept()
+
+
     def update_student_card_image(self, student_id):
         # Reference to the images in Firebase
         image_ref = storage.bucket().get_blob(f"images/{student_id}.jpg")
 
         # Download image from Firebase
-         # Download image from Firebase
+
         if image_ref:
                 image_data = image_ref.download_as_bytes()
 
