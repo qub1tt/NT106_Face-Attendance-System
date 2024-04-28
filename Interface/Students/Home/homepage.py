@@ -16,11 +16,13 @@ import socket, pickle,struct
 sys.path.insert(1, 'Interface\Students\Home\Silent-Face-Anti-Spoofing-master')
 from test import test
 
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import storage
 
+import subprocess
 
 # Get the form data
 cred = credentials.Certificate("ServiceAccountKey.json")
@@ -381,6 +383,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
+        # Kết nối sự kiện click của nút "New" với hàm open_register_file
+        self.ui.NewButton.clicked.connect(self.open_register_file)
+
+    def open_register_file(self):
+        try:
+                # Chạy file register.py bằng subprocess
+                subprocess.Popen(["python", r"Interface\Students\Register\registerpage.py"])
+        except Exception as e:
+                print("Error opening register file:", e)
+
     def start_camera(self):
         # Start the camera
         self.vid = cv2.VideoCapture(0)
@@ -461,7 +473,6 @@ class MainWindow(QtWidgets.QMainWindow):
                         ,device_id = 0)
                 
                 if label == 1:
-
                         ref = db.reference("Students").get()
                         for key, value in ref.items():
                                 database = {}
@@ -474,6 +485,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                         date = str(datetime.now().replace(microsecond=0))
                                         # Lấy dữ liệu từ Firebase
                                         class_data = studentInfo["Classes"]
+
                                         dialog = ClassSelectionDialog(class_data)
                                         date_check = DateCheckDialog()
                                         if dialog.exec() == QDialog.DialogCode.Accepted:
@@ -490,7 +502,6 @@ class MainWindow(QtWidgets.QMainWindow):
                                                         count = res.child("AttendanceCount").get()
                                                         res.update({"AttendanceCount": count+1,
                                                                 "Datetime": date})
-                                        break    
                 else:
                      print("hey you are a spoofer!")
 
