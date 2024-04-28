@@ -5,7 +5,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from openpyxl import Workbook
 import datetime
 
-from Attendance import Ui_StudentManagement
+from Attendance import Ui_Attendance
 
 
 # Khởi tạo Firebase với tệp JSON chứa khóa xác thực
@@ -111,7 +111,7 @@ class SearchDialog(QtWidgets.QDialog):
         self.completer.setModel(model)
 
 
-class Ui_StudentManagementFunctionality(Ui_StudentManagement):
+class Ui_AttendanceFunctionality(Ui_Attendance):
     def __init__(self, StudentManagement):
         super().__init__()
         self.setupUi(StudentManagement)
@@ -289,6 +289,6 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     StudentManagement = QtWidgets.QMainWindow()
-    ui = Ui_StudentManagementFunctionality(StudentManagement)
+    ui = Ui_AttendanceFunctionality(StudentManagement)
     StudentManagement.show()
     sys.exit(app.exec())

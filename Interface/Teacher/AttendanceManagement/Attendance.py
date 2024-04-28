@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-class Ui_StudentManagement(object):
+class Ui_Attendance(object):
     def setupUi(self, StudentManagement):
         StudentManagement.setObjectName("StudentManagement")
         StudentManagement.resize(1272, 680)
