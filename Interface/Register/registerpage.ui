@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>930</width>
-    <height>701</height>
+    <height>758</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>930</width>
-      <height>701</height>
+      <height>761</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -32,7 +32,7 @@
        <x>20</x>
        <y>20</y>
        <width>891</width>
-       <height>661</height>
+       <height>721</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -63,7 +63,7 @@ color:rgba(0,0,0,240);
 background-color: rgb(255, 255, 255);
 font-family: &quot;Tahoma&quot;, sans-serif;
 font-size: 18px;
-</string>
+padding: 10px; </string>
       </property>
       <property name="text">
        <string/>
@@ -96,7 +96,7 @@ color:rgba(0,0,0,240);
 background-color: rgb(255, 255, 255);
 font-family: &quot;Tahoma&quot;, sans-serif;
 font-size: 18px;
-</string>
+padding: 10px; </string>
       </property>
       <property name="text">
        <string/>
@@ -129,7 +129,7 @@ color:rgba(0,0,0,240);
 background-color: rgb(255, 255, 255);
 font-family: &quot;Tahoma&quot;, sans-serif;
 font-size: 18px;
-</string>
+padding: 10px; </string>
       </property>
       <property name="text">
        <string/>
@@ -162,7 +162,7 @@ color:rgba(0,0,0,240);
 background-color: rgb(255, 255, 255);
 font-family: &quot;Tahoma&quot;, sans-serif;
 font-size: 18px;
-</string>
+padding: 10px; </string>
       </property>
       <property name="text">
        <string/>
@@ -195,7 +195,7 @@ color:rgba(0,0,0,240);
 background-color: rgb(255, 255, 255);
 font-family: &quot;Tahoma&quot;, sans-serif;
 font-size: 18px;
-</string>
+padding: 10px; </string>
       </property>
       <property name="text">
        <string/>
@@ -255,7 +255,7 @@ background-color: transparent;</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>UploadAvatar.png</normaloff>UploadAvatar.png</iconset>
+        <normaloff>../../Png/Icon/UploadAvatar.png</normaloff>../../Png/Icon/UploadAvatar.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -288,7 +288,7 @@ color:rgba(0,0,0,240);
 background-color: rgb(255, 255, 255);
 font-family: &quot;Tahoma&quot;, sans-serif;
 font-size: 18px;
-</string>
+padding: 10px; </string>
       </property>
       <property name="text">
        <string/>
@@ -301,7 +301,7 @@ font-size: 18px;
       <property name="geometry">
        <rect>
         <x>690</x>
-        <y>590</y>
+        <y>650</y>
         <width>171</width>
         <height>51</height>
        </rect>
@@ -333,7 +333,7 @@ font-weight:bold;</string>
       <property name="geometry">
        <rect>
         <x>460</x>
-        <y>40</y>
+        <y>30</y>
         <width>401</width>
         <height>201</height>
        </rect>
@@ -342,7 +342,7 @@ font-weight:bold;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>register.png</pixmap>
+       <pixmap>../../Png/Image/register.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -460,6 +460,77 @@ background-color: transparent;</string>
       </property>
       <property name="text">
        <string>Year:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelClass">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>570</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 18px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Class:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtClass">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>600</y>
+        <width>391</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+padding: 10px; </string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Enter your Class</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelError">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>580</y>
+        <width>371</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:rgb(255, 0, 0);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;</string>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>
