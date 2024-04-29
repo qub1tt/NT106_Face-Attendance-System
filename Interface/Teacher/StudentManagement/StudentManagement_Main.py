@@ -418,6 +418,18 @@ class Ui_StudentManagementFunctionality(Ui_StudentManagement):
             # Lấy tên lớp đang được chọn
             selected_class_name = self.label_class.text().split(": ")[1]
 
+            # Lấy thông tin về lớp được chọn từ dữ liệu lớp
+            selected_class_info = class_data.get(selected_class_name)
+            if not selected_class_info:
+                qmb_custom('Calculate', 'Selected class information not found.')
+                return
+
+            # Lấy tổng số phiên học của lớp
+            total_sessions = selected_class_info.get("TotalSessions", 0)
+            if total_sessions == 0:
+                qmb_custom('Calculate', 'Total sessions for the selected class is 0.')
+                return
+
             # Tạo một danh sách các sinh viên thuộc lớp đã chọn
             selected_class_students = [student_id for student_id, student_info in student_data.items() if selected_class_name in student_info.get("Classes", [])]
 
@@ -467,13 +479,13 @@ class Ui_StudentManagementFunctionality(Ui_StudentManagement):
                     # Lấy giá trị AttendanceCount từ dữ liệu của sinh viên
                     attendance_count = student_info.get("Classes", {}).get(selected_class_name, {}).get("AttendanceCount", 0)
 
-                    # Tính điểm dựa trên AttendanceCount (ví dụ: 1 điểm cho mỗi lần điểm danh)
-                    # Bạn có thể điều chỉnh công thức tính điểm theo nhu cầu của bạn
-                    points = attendance_count
+                    # Tính điểm dựa trên AttendanceCount chia cho TotalSessions
+                    if total_sessions != 0:
+                        points = attendance_count / total_sessions * 10
+                    else:
+                        points = 0
                     
-                    # Tạo một QTableWidgetItem để hiển thị điểm
-                    points_item = QtWidgets.QTableWidgetItem(str(points))
-                    # Đặt điểm vào cột "Điểm" của hàng hiện tại
+                    points_item = QtWidgets.QTableWidgetItem(str(round(points, 2)))  # làm tròn điểm đến 2 chữ số thập phân
                     self.tableWidget.setItem(row, 6, points_item)
                     set_read_only_flags(self.tableWidget)
 
