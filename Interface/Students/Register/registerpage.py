@@ -325,56 +325,63 @@ class Ui_MainWindow(object):
                 # If all fields are valid, proceed with Firebase Realtime Database update
                 try:
                         # Image processing logic (assuming appropriate libraries are imported)
-                        data = cv2.imread(image_path[0])
-                        # Detect faces in the image
-                        faces = detect_faces(data)  
-
-                        for face in faces:
-                                # Align the face
-                                aligned_face = align_face(data, face)
-
-                                # Extract features from the face
-                                embedding = extract_features(aligned_face)
-                                break
-                        
-                        # Firebase Realtime Database update logic
-                        ref = db.reference('Students/')
-                        user_ref = ref.child(self.txtStuID.text())
-                        user_ref.update({
-                        'Email': self.txtEmail.text(),
-                        'Faculty': self.txtFaculty.text(),
-                        'Major': self.txtMajor.text(),
-                        'Name': self.txtName.text(),
-                        'Year': self.txtYear.text(),
-                        # 'embeddings': embedding[0]['embedding'],  # Assuming embedding extraction is successful
-                        'Classes': {}
-                        })
-                        Classes_ref=user_ref.child('Classes/')
-                        # Assuming 'class' is a list of class names
-                        for c in Class:
-                                now = datetime.datetime.now()
-                                # Định dạng chuỗi ngày và giờ
-                                Date = now.strftime("%Y-%m-%d %H:%M:%S")
-                                class_ref = Classes_ref.child(c)
-                                class_ref.update({
-                                        'AttendanceCount': '0',
-                                        'Datetime': Date
-                                })
-                        
-                        # Firebase Storage upload logic
                         # Đường dẫn tới tệp trên máy tính
-                        local_file_path = image_path[0]
+                    local_file_path = image_path[0]
 
-                        # Lấy đuôi tệp từ đường dẫn tệp hình ảnh
-                        file_name, file_extension = os.path.splitext(local_file_path) 
-                        # Kết nối tới Firebase Storage
-                        bucket = storage.bucket()
-                        blob = bucket.blob(f'images/{self.txtStuID.text()}{file_extension}')  # Đường dẫn tới tệp trên Firebase Storage
+                    # Lấy đuôi tệp từ đường dẫn tệp hình ảnh
+                    file_name, file_extension = os.path.splitext(local_file_path)
+                
+                    data = cv2.imread(local_file_path)
+
+                    # Detect faces in the image
+                    faces = detect_faces(data)
+
+                    for face in faces:
+                        # Align the face
+                        aligned_face = align_face(data, face)
+
+                        # Extract features from the face
+                        embedding = extract_features(aligned_face)
+                        break
                         
-                        # Upload tệp từ máy tính lên Firebase Storage
-                        blob.upload_from_filename(local_file_path)
-                        # ... Success message or logic ...
-                        self.RegisterSuccess()
+                    # Firebase Realtime Database update logic
+                    ref = db.reference('Students/')
+                    user_ref = ref.child(self.txtStuID.text())
+                    user_ref.update({
+                    'Email': self.txtEmail.text(),
+                    'Faculty': self.txtFaculty.text(),
+                    'Major': self.txtMajor.text(),
+                    'Name': self.txtName.text(),
+                    'Year': self.txtYear.text(),
+                    'embeddings':embedding[0]['embedding'],  # Assuming embedding extraction is successful
+                    'Classes': {}
+                    })
+                    Classes_ref=user_ref.child('Classes/')
+                    # Assuming 'class' is a list of class names
+                    for c in Class:
+                            now = datetime.datetime.now()
+                            # Định dạng chuỗi ngày và giờ
+                            Date = now.strftime("%Y-%m-%d %H:%M:%S")
+                            class_ref = Classes_ref.child(c)
+                            class_ref.update({
+                                    'AttendanceCount': '0',
+                                    'Datetime': Date
+                            })
+                    
+                    # Firebase Storage upload logic
+                    # Đường dẫn tới tệp trên máy tính
+                    local_file_path = image_path[0]
+
+                    # Lấy đuôi tệp từ đường dẫn tệp hình ảnh
+                    file_name, file_extension = os.path.splitext(local_file_path) 
+                    # Kết nối tới Firebase Storage
+                    bucket = storage.bucket()
+                    blob = bucket.blob(f'images/{self.txtStuID.text()}{file_extension}')  # Đường dẫn tới tệp trên Firebase Storage
+                    
+                    # Upload tệp từ máy tính lên Firebase Storage
+                    blob.upload_from_filename(local_file_path)
+                    # ... Success message or logic ...
+                    self.RegisterSuccess()
 
                 except Exception as e:
                         print("Error adding student to database:", e)
