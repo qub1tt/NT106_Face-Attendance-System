@@ -72,6 +72,8 @@ bucket = storage.bucket()
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QComboBox, QPushButton,QMessageBox
 
+found = None
+
 class ClassSelectionDialog(QDialog):
     def __init__(self, class_data):
         super().__init__()
@@ -376,8 +378,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_FaceRecognition()
         self.ui.setupUi(self)
         self.start_camera()
-        
-        # Setup socket connection
+
+        # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.host_ip = '192.168.139.1'  # Change this to your server IP
         self.port = 9999
@@ -386,6 +388,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Kết nối sự kiện click của nút "New" với hàm open_register_file
         self.ui.NewButton.clicked.connect(self.open_register_file)
 
+        
     def open_register_file(self):
         try:
                 # Chạy file register.py bằng subprocess
@@ -417,29 +420,31 @@ class MainWindow(QtWidgets.QMainWindow):
         # Set the QImage to the QLabel for display
         self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
 
-        # Send frame over socket
-        if self.client_socket.fileno() != -1:
-                try:
-                        a = pickle.dumps(frame)
-                        message = struct.pack("Q", len(a)) + a
-                        self.client_socket.sendall(message)
+        global found
+        if found:
+                # Send frame over socket
+                if self.client_socket.fileno() != -1:
+                        try:
+                                a = pickle.dumps((found,frame))
+                                message = struct.pack("Q", len(a)) + a
+                                self.client_socket.sendall(message)
 
-                except Exception as e:
-                        print("Error sending frame:", e)
-                        QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
-                        self.client_socket.close()
-                        QtCore.QCoreApplication.instance().quit()
+                        except Exception as e:
+                                print("Error sending frame:", e)
+                                QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
+                                self.client_socket.close()
+                                QtCore.QCoreApplication.instance().quit()
 
     def closeEvent(self, event):
         # Close the socket when closing the application
         self.client_socket.close()
         event.accept()
-
+        
 
     def update_student_card_image(self, student_id):
         # Reference to the images in Firebase
         image_ref = storage.bucket().get_blob(f"images/{student_id}.jpg")
-
+        
         # Download image from Firebase
 
         if image_ref:
@@ -466,13 +471,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     def keyPressEvent(self, event):
+        
         # Check if the Enter key is pressed
         if event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter: 
                 label = test(image = frame
                         ,model_dir =r"Interface\Students\Home\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models"
                         ,device_id = 0)
-                
-                if label == 1:
+
+                if label == 1:                
                         ref = db.reference("Students").get()
                         for key, value in ref.items():
                                 database = {}
@@ -481,8 +487,10 @@ class MainWindow(QtWidgets.QMainWindow):
                                 studentEmbedding = studentInfo["embeddings"]
                                 database[studentName] = studentEmbedding
                                 faces = match_with_database(frame, database)
-                                print(faces)
                                 if faces == 1:
+                                        global found
+                                        found = key
+
                                         date = str(datetime.now().replace(microsecond=0))
                                         # Lấy dữ liệu từ Firebase
                                         class_data = studentInfo["Classes"]
