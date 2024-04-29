@@ -7,7 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import hashlib
+import bcrypt
 
 import subprocess
 import firebase_admin
@@ -23,12 +23,12 @@ firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c5
                                      "storageBucket":"faceregconition-80c55.appspot.com"})
 
 ref = db.reference("Admin")
-passw = ref.child("Password").get()
+passw = ref.child("Password").get().encode("utf-8")
 
 def update_password(new_password):
         try:
-                hashed_new = hashlib.sha256(new_password.encode()).hexdigest()
-                ref.update({"Password": hashed_new})
+                hashed_new = bcrypt.hashpw(new_password.encode('utf-8'),bcrypt.gensalt())
+                ref.update({"Password": hashed_new.decode()})
                 print("Password updated successfully!")
 
         except Exception as e:
@@ -217,9 +217,11 @@ class Ui_MainWindow(object):
         old_password = self.lePassword.text()
         new_password = self.leUser_2.text()
 
-        hashed_old = hashlib.sha256(old_password.encode()).hexdigest()
+        old_pass = old_password.encode("utf-8")
+        
+        result = bcrypt.checkpw(old_pass, passw) 
 
-        if hashed_old == passw:
+        if result:
                 # Gọi hàm update_password để cập nhật mật khẩu trong cơ sở dữ liệu Firebase
                 update_password(new_password)
         else:
