@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>930</width>
+    <height>701</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>930</width>
+      <height>701</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(165,213,255);</string>
+    </property>
+    <widget class="QWidget" name="widget_3" native="true">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>891</width>
+       <height>661</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 20px;</string>
+     </property>
+     <widget class="QLineEdit" name="txtEmail">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>500</y>
+        <width>391</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Enter your Email</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtFaculty">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>300</y>
+        <width>391</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Enter your Faculty</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtName">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>400</y>
+        <width>391</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Enter your Name</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtMajor">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>400</y>
+        <width>391</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Enter your Major</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtStuID">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>300</y>
+        <width>391</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+      <property name="placeholderText">
+       <string>Enter your Student ID</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblUpAvatar">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>190</y>
+        <width>241</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <pointsize>-1</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 25px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Upload your avatar</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnUpAvatar">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>40</y>
+        <width>151</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: none;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>UploadAvatar.png</normaloff>UploadAvatar.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>150</width>
+        <height>150</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtYear">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>500</y>
+        <width>391</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="placeholderText">
+       <string>Enter your Year</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnRegister">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>590</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 119, 182);
+border-radius: 20px;
+font-family:Ms Sans Serif Regular;
+font-size:22px;
+color:rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 22px;
+font-weight:bold;</string>
+      </property>
+      <property name="text">
+       <string>Register</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>40</y>
+        <width>401</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>register.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelStuID">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>270</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 18px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Student ID:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelName">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>370</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 18px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Name:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelEmail">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>470</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 18px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Email:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelFaculity">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>270</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 18px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Faculity:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelMajor">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>370</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 18px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Major:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelYear">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>470</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 18px;
+font-weight: bold;
+background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string>Year:</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
