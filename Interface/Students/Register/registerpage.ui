@@ -37,7 +37,33 @@
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 20px;</string>
+border-radius: 20px;
+QPushButton#pushButton{
+	background-color: rgb(0, 119, 182);
+border-radius: 20px;
+font-size:22px;
+color:rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 22px;
+font-weight:bold;
+}	
+QPushButton#pushButton:hover{
+	background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));
+  
+}	
+
+QPushButton#pushButton:pressed{
+	padding-left:5px;
+padding-top:5px;
+background-color:rgba(150,123,111,255);
+
+}	
+QPushButton#pushButton_3:pressed{	
+	padding-left:5px;
+	padding-top:5px;
+	color:rgba(115, 128, 142, 255);
+}
+</string>
      </property>
      <widget class="QLineEdit" name="txtEmail">
       <property name="geometry">
@@ -237,33 +263,6 @@ background-color: transparent;</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnUpAvatar">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>40</y>
-        <width>151</width>
-        <height>151</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border: none;
-background-color: transparent;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../../Png/Icon/UploadAvatar.png</normaloff>../../Png/Icon/UploadAvatar.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>150</width>
-        <height>150</height>
-       </size>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="txtYear">
       <property name="geometry">
        <rect>
@@ -295,38 +294,6 @@ padding: 10px; </string>
       </property>
       <property name="placeholderText">
        <string>Enter your Year</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnRegister">
-      <property name="geometry">
-       <rect>
-        <x>690</x>
-        <y>650</y>
-        <width>171</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Tahoma</family>
-        <pointsize>-1</pointsize>
-        <weight>75</weight>
-        <italic>false</italic>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(0, 119, 182);
-border-radius: 20px;
-font-family:Ms Sans Serif Regular;
-font-size:22px;
-color:rgb(255, 255, 255);
-font-family: &quot;Tahoma&quot;, sans-serif;
-font-size: 22px;
-font-weight:bold;</string>
-      </property>
-      <property name="text">
-       <string>Register</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_14">
@@ -517,10 +484,10 @@ padding: 10px; </string>
      <widget class="QLabel" name="labelError">
       <property name="geometry">
        <rect>
-        <x>480</x>
-        <y>580</y>
-        <width>371</width>
-        <height>51</height>
+        <x>460</x>
+        <y>570</y>
+        <width>411</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -532,6 +499,99 @@ font-size: 18px;</string>
       <property name="text">
        <string/>
       </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>679</x>
+        <y>640</y>
+        <width>171</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Tahoma</family>
+        <pointsize>-1</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton#pushButton{
+		background-color: rgb(0, 119, 182);
+border-radius: 20px;
+font-size:22px;
+color:rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 22px;
+font-weight:bold;
+}	
+QPushButton#pushButton:hover{
+	background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));
+  
+}	
+
+QPushButton#pushButton:pressed{
+	padding-left:5px;
+padding-top:5px;
+background-color:rgba(150,123,111,255);
+
+}	
+
+</string>
+      </property>
+      <property name="text">
+       <string>Register</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>171</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+QPushButton#btnUpAvatar:pressed{	
+	padding-left:5px;
+	padding-top:5px;
+	color:rgba(115, 128, 142, 255);
+}
+background-color: transparent;</string>
+      </property>
+      <widget class="QPushButton" name="btnUpAvatar">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>171</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Social Media Circled</family>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../Png/Icon/UploadAvatar.png</normaloff>../../Png/Icon/UploadAvatar.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>150</width>
+         <height>150</height>
+        </size>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>

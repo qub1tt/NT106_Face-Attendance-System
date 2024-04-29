@@ -17,7 +17,6 @@ sys.path.insert(1, 'Interface\Students\Home')
 from face_matching import *
 import os
 import datetime
-import re
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QMessageBox, QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QFileDialog
@@ -136,10 +135,22 @@ class Ui_MainWindow(object):
 "background-color: transparent;")
         self.lblUpAvatar.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lblUpAvatar.setObjectName("lblUpAvatar")
-        self.btnUpAvatar = QtWidgets.QPushButton(parent=self.widget_3)
-        self.btnUpAvatar.setGeometry(QtCore.QRect(150, 40, 151, 151))
-        self.btnUpAvatar.setStyleSheet("border: none;\n"
+        self.widget_2 = QtWidgets.QWidget(parent=self.widget_3)
+        self.widget_2.setGeometry(QtCore.QRect(150, 30, 171, 161))
+        self.widget_2.setStyleSheet("\n"
+"QPushButton#btnUpAvatar:pressed{    \n"
+"    padding-left:5px;\n"
+"    padding-top:5px;\n"
+"    color:rgba(115, 128, 142, 255);\n"
+"}\n"
 "background-color: transparent;")
+        self.widget_2.setObjectName("widget_2")
+        self.btnUpAvatar = QtWidgets.QPushButton(parent=self.widget_2)
+        self.btnUpAvatar.setGeometry(QtCore.QRect(0, 0, 171, 161))
+        font = QtGui.QFont()
+        font.setFamily("Social Media Circled")
+        font.setPointSize(15)
+        self.btnUpAvatar.setFont(font)
         self.btnUpAvatar.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Interface/Png/Icon/UploadAvatar.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -163,21 +174,34 @@ class Ui_MainWindow(object):
         self.txtYear.setText("")
         self.txtYear.setObjectName("txtYear")
         self.btnRegister = QtWidgets.QPushButton(parent=self.widget_3)
-        self.btnRegister.setGeometry(QtCore.QRect(690, 650, 171, 51))
+        self.btnRegister.setGeometry(QtCore.QRect(679, 640, 171, 60))
         font = QtGui.QFont()
         font.setFamily("Tahoma")
         font.setBold(True)
-        font.setItalic(False)
         font.setWeight(75)
         self.btnRegister.setFont(font)
-        self.btnRegister.setStyleSheet("background-color: rgb(0, 119, 182);\n"
+        self.btnRegister.setStyleSheet("QPushButton#btnRegister{\n"
+"        background-color: rgb(0, 119, 182);\n"
 "border-radius: 20px;\n"
-"font-family:Ms Sans Serif Regular;\n"
 "font-size:22px;\n"
 "color:rgb(255, 255, 255);\n"
 "font-family: \"Tahoma\", sans-serif;\n"
 "font-size: 22px;\n"
-"font-weight:bold;")
+"font-weight:bold;\n"
+"}    \n"
+"QPushButton#btnRegister:hover{\n"
+"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));\n"
+"  \n"
+"}    \n"
+"\n"
+"QPushButton#btnRegister:pressed{\n"
+"    padding-left:5px;\n"
+"padding-top:5px;\n"
+"background-color:rgba(150,123,111,255);\n"
+"\n"
+"}    \n"
+"\n"
+"")
         self.btnRegister.setObjectName("btnRegister")
         self.label_14 = QtWidgets.QLabel(parent=self.widget_3)
         self.label_14.setGeometry(QtCore.QRect(460, 30, 401, 201))
@@ -251,7 +275,11 @@ class Ui_MainWindow(object):
         self.txtClass.setText("")
         self.txtClass.setObjectName("txtClass")
         self.labelError = QtWidgets.QLabel(parent=self.widget_3)
-        self.labelError.setGeometry(QtCore.QRect(480, 580, 371, 51))
+        self.labelError.setGeometry(QtCore.QRect(460, 570, 411, 61))
+        self.labelError.setStyleSheet("color:rgb(255, 0, 0);\n"
+"background-color: rgb(255, 255, 255);\n"
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 18px;")
         self.labelError.setText("")
         self.labelError.setObjectName("labelError")   
         MainWindow.setCentralWidget(self.centralwidget)
@@ -263,7 +291,6 @@ class Ui_MainWindow(object):
         self.btnRegister.clicked.connect(self.AddStudent)
         # Hàm bắt sự kiện click btnAvatar
         self.btnUpAvatar.clicked.connect(self.AddAvatar)
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -305,10 +332,13 @@ class Ui_MainWindow(object):
                 StrClass = self.txtClass.text()
                 # Chuyển toàn bộ chuỗi lớp thành chữ in hoa
                 StrClass = StrClass.upper()
-
+                
+                # Loại bỏ khoảng trắng
+                StrClass= StrClass.replace(" ", "")
+                
                 # Tách Class
-                Class = re.findall(r"[A-Z0-9]+", StrClass)
-
+                Class = StrClass.split(",")
+                
                 # Loại bỏ các lớp bị trùng lặp
                 Class = list(set(Class))
 
@@ -384,8 +414,8 @@ class Ui_MainWindow(object):
                     self.RegisterSuccess()
 
                 except Exception as e:
-                        print("Error adding student to database:", e)
-
+                        self.UploadFail(e)
+                        print("Không thể thêm student vào database:", e)
      
     def AddAvatar(self):
         # Tạo dialog chọn ảnh
@@ -424,12 +454,19 @@ class Ui_MainWindow(object):
         # Set the error message with formatted missing fields
         self.labelError.setStyleSheet("color:rgb(255, 0, 0);\n"
                                     "background-color: rgb(255, 255, 255);\n"
-                                    "font-size: 15px;\n"
+                                    "font-size: 14px;\n"
                                     "font-family: \"Tahoma\", sans-serif;\n"
                                     "font-weight: bold;\n")
         self.labelError.setText("Bạn chưa nhập đủ thông tin:\n" + missing_fields_str)
         
-        
+    def UploadFail(self, e):
+        dialog = QMessageBox()
+        dialog.setText(f"Không thể thêm student vào database:{e}")
+        dialog.setWindowTitle("Lỗi")
+        dialog.setIcon(QMessageBox.Icon.Critical)
+        dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
+        dialog.exec()
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
