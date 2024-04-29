@@ -1,2 +1,1 @@
-
-                        msg.setText("Bạn đang thử làm giả dữ liệu!")
+msg.setText("Bạn đang thử làm giả dữ liệu!")
