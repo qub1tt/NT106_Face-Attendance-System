@@ -362,11 +362,14 @@ class Ui_StudentManagementFunctionality(Ui_StudentManagement):
                     if update_dialog.exec():
                         selected_field, new_value = update_dialog.get_selected_field_and_value()
 
-                        # Cập nhật giá trị mới vào dữ liệu và cơ sở dữ liệu
-                        student_info[selected_field] = new_value
-                        students_ref.child(selected_student).set(student_info)
-                        qmb_custom('Update Student', 'Student updated successfully.')
-                        self.display_search_result(selected_student, student_info)
+                        if selected_field != "Select Field":
+                            # Cập nhật giá trị mới vào dữ liệu và cơ sở dữ liệu
+                            student_info[selected_field] = new_value
+                            students_ref.child(selected_student).set(student_info)
+                            qmb_custom('Update Student', 'Student updated successfully.')
+                            self.display_search_result(selected_student, student_info)
+                        else:
+                            qmb_custom('Update Student', 'Please select a valid field to update.')
                 else:
                     qmb_custom('Update Student', 'Student ID not found.')
         else:
