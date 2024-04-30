@@ -291,12 +291,23 @@ class Ui_MainWindow(object):
         # kết nối tới hàm loginFuntion
         self.pushButton.clicked.connect(self.open_changepass_file)
         self.btnLogin.clicked.connect(self.loginFunction)
+        self.btnForgotPassword.clicked.connect(self.open_forgotpass_file)
+
     def open_changepass_file(self):
         try:
                 # Chạy file register.py bằng subprocess
                 subprocess.Popen(["python", r"Interface\Login\changePass.py"])
         except Exception as e:
                 print("Error opening register file:", e)    
+
+    def open_forgotpass_file(self):
+        try:
+                # Chạy file forgotpass.py bằng subprocess
+                subprocess.Popen(["python", r"Interface\Login\forgotPass.py"])
+        except Exception as e:
+                print("Error opening forgot password file:", e)
+
+
     def loginFunction(self):
         
         user = self.leUser.text()
