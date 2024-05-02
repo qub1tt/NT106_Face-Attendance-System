@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
 "\n"
 "")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:/Users/Lenovo/Downloads/camera.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("Interface/Png/Icon/camera.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnCamera.setIcon(icon)
         self.btnCamera.setIconSize(QtCore.QSize(50, 50))
         self.btnCamera.setObjectName("btnCamera")
@@ -84,7 +84,7 @@ class Ui_MainWindow(object):
 "\n"
 "")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("C:/Users/Lenovo/Downloads/folder.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon1.addPixmap(QtGui.QPixmap("Interface/Png/Icon/folder.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnFile.setIcon(icon1)
         self.btnFile.setIconSize(QtCore.QSize(50, 50))
         self.btnFile.setObjectName("btnFile")

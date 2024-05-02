@@ -72,7 +72,7 @@ background-color:rgba(150,123,111,255);
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>C:/Users/Lenovo/Downloads/camera.png</normaloff>C:/Users/Lenovo/Downloads/camera.png</iconset>
+       <normaloff>../../Png/Icon/camera.png</normaloff>../../Png/Icon/camera.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -127,7 +127,7 @@ background-color:rgba(150,123,111,255);
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>C:/Users/Lenovo/Downloads/folder.png</normaloff>C:/Users/Lenovo/Downloads/folder.png</iconset>
+       <normaloff>../../Png/Icon/folder.png</normaloff>../../Png/Icon/folder.png</iconset>
      </property>
      <property name="iconSize">
       <size>
