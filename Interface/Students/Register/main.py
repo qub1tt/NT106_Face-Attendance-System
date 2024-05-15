@@ -8,8 +8,10 @@ import sys
 sys.path.insert(1, 'Interface\Students\Home')
 from face_matching import *
 import os
+import io
 import datetime
 import threading
+import numpy as np
 from chooseupload import Ui_MainWindow as ChooseUploadWindow
 from registerpage import Ui_MainWindow as RegisterPageWindow
 from PyQt6 import QtCore, QtGui, QtWidgets
@@ -20,7 +22,8 @@ cred = credentials.Certificate(r"ServiceAccountKey.json")
 
 firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
                                         "storageBucket":"faceregconition-80c55.appspot.com"})
-image_path=None
+global_image_data = None
+global_image_extension = '.png'
 
 class ChooseUpload(QMainWindow, ChooseUploadWindow):
     def __init__(self, register_page):
@@ -30,19 +33,14 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
         self.btnCamera.clicked.connect(self.CaptureImage)
         self.btnFile.clicked.connect(self.LoadImage)
         
-    def closeEvent(self, event):
-        global image_path
-        print("Image path when closing ChooseUpload:", image_path)
-        event.accept()  # Chấp nhận sự kiện đóng cửa sổ
-        
     def CaptureImage(self):
         # Khởi tạo luồng mới để chụp ảnh từ camera
         self.thread = threading.Thread(target=self.CaptureImageThread)
         self.thread.start()
     
     def CaptureImageThread(self):
+        global global_image_data, global_image_extension
         cam = cv2.VideoCapture(0)
-        global image_path
         while True:
             ret, frame = cam.read()
 
@@ -58,21 +56,17 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
                 print("Escape hit, closing app")
                 break
             elif k == 13 or k == 32:
-                img_name = "Interface\\Students\\Register\\Capture\\Capture.png"
-                cv2.imwrite(img_name, frame)
+                _, buffer = cv2.imencode(global_image_extension, frame)
+                global_image_data = io.BytesIO(buffer)
                 print("screenshot taken")
-                image_path = img_name  # Lưu đường dẫn của ảnh
-                cv2.destroyAllWindows()  # Đóng tất cả các cửa sổ
+                cv2.destroyAllWindows()
                 break
 
         cam.release()
-        print(image_path)
         self.register_page.UpdateAvatar()
 
-        
     def LoadImage(self):
-        global image_path
-        
+        global global_image_data, global_image_extension
         # Tạo dialog chọn ảnh
         dialog = QFileDialog()
         dialog.setNameFilter("Hình ảnh (*.png *.jpg)")
@@ -80,12 +74,14 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
         
         # Mở dialog và kiểm tra kết quả trả về
         if dialog.exec():
-                # Lấy đường dẫn của ảnh được chọn
-                selected_files = dialog.selectedFiles()
-                if selected_files:
-                        image_path = selected_files[0]  # Lấy đường dẫn của ảnh đầu tiên
-        print(image_path)
-        self.register_page.UpdateAvatar()
+            # Lấy đường dẫn của ảnh được chọn
+            selected_files = dialog.selectedFiles()
+            if selected_files:
+                image_path = selected_files[0]  # Lấy đường dẫn của ảnh đầu tiên
+                global_image_data = open(image_path, 'rb')  # Mở file ảnh và đọc dữ liệu
+                global_image_extension = os.path.splitext(image_path)[1]  # Lấy đuôi tệp
+                print(image_path)
+                self.register_page.UpdateAvatar()
 
 class RegisterPage(QMainWindow, RegisterPageWindow):
     def __init__(self):
@@ -99,120 +95,115 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
         self.choose_upload_window.show()
         
     def AddStudent(self):
-        global image_path
+        global global_image_data, global_image_extension
         missing_fields = []  # List to store missing fields
         # Check for missing text fields
         if self.txtEmail.text() == '':
-                missing_fields.append("Email")
+            missing_fields.append("Email")
         if self.txtFaculty.text() == '':
-                missing_fields.append("Faculty")
+            missing_fields.append("Faculty")
         if self.txtMajor.text() == '':
-                missing_fields.append("Major")
+            missing_fields.append("Major")
         if self.txtName.text() == '':
-                missing_fields.append("Name")
+            missing_fields.append("Name")
         if self.txtYear.text() == '':
-                missing_fields.append("Year")
+            missing_fields.append("Year")
         if self.txtStuID.text() == '':
-                missing_fields.append("Student ID")
+            missing_fields.append("Student ID")
         if self.txtClass.text() == '':
-                missing_fields.append("Class")
+            missing_fields.append("Class")
         else:
-                StrClass = self.txtClass.text()
-                # Chuyển toàn bộ chuỗi lớp thành chữ in hoa
-                StrClass = StrClass.upper()
+            StrClass = self.txtClass.text()
+            # Chuyển toàn bộ chuỗi lớp thành chữ in hoa
+            StrClass = StrClass.upper()
 
-                # Loại bỏ khoảng trắng
-                StrClass = StrClass.replace(" ", "")
+            # Loại bỏ khoảng trắng
+            StrClass = StrClass.replace(" ", "")
 
-                # Tách Class
-                Class = StrClass.split(",")
+            # Tách Class
+            Class = StrClass.split(",")
 
-                # Loại bỏ các lớp bị trùng lặp
-                Class = list(set(Class))
+            # Loại bỏ các lớp bị trùng lặp
+            Class = list(set(Class))
 
         # Check for missing image and handle potential errors
-        if image_path is None:
-                missing_fields.append("Image")
+        if global_image_data is None:
+            missing_fields.append("Image")
 
         # Handle missing fields and display error message if any
         if missing_fields:
-                self.RegisterFail(missing_fields)
-                return
+            self.RegisterFail(missing_fields)
+            return
         else:
-                # If all fields are valid, proceed with Firebase Realtime Database update
-                try:
-                        # Image processing logic (assuming appropriate libraries are imported)
-                        # Đường dẫn tới tệp trên máy tính
-                        local_file_path = image_path
+            # If all fields are valid, proceed with Firebase Realtime Database update
+            try:
+                # Image processing logic (assuming appropriate libraries are imported)
+                # Chuyển đổi dữ liệu ảnh từ io.BytesIO sang định dạng có thể xử lý bởi OpenCV
+                global_image_data.seek(0)
+                file_bytes = np.asarray(bytearray(global_image_data.read()), dtype=np.uint8)
+                data = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
-                        # Lấy đuôi tệp từ đường dẫn tệp hình ảnh
-                        file_name, file_extension = os.path.splitext(local_file_path)
+                # Detect faces in the image
+                faces = detect_faces(data)
 
-                        data = cv2.imread(local_file_path)
+                for face in faces:
+                    # Align the face
+                    aligned_face = align_face(data, face)
 
-                        # Detect faces in the image
-                        faces = detect_faces(data)
+                    # Extract features from the face
+                    embedding = extract_features(aligned_face)
+                    break
 
-                        for face in faces:
-                                # Align the face
-                                aligned_face = align_face(data, face)
+                # Firebase Realtime Database update logic
+                ref = db.reference('Students/')
+                user_ref = ref.child(self.txtStuID.text())
+                user_ref.update({
+                    'Email': self.txtEmail.text(),
+                    'Faculty': self.txtFaculty.text(),
+                    'Major': self.txtMajor.text(),
+                    'Name': self.txtName.text(),
+                    'Year': self.txtYear.text(),
+                    'embeddings': embedding[0]['embedding'],  # Assuming embedding extraction is successful
+                    'Classes': {}
+                })
+                Classes_ref = user_ref.child('Classes/')
+                # Assuming 'class' is a list of class names
+                for c in Class:
+                    now = datetime.datetime.now()
+                    # Định dạng chuỗi ngày và giờ
+                    Date = now.strftime("%Y-%m-%d %H:%M:%S")
+                    class_ref = Classes_ref.child(c)
+                    class_ref.update({
+                        'AttendanceCount': '0',
+                        'Datetime': Date
+                    })
 
-                                # Extract features from the face
-                                embedding = extract_features(aligned_face)
-                                break
+                # Firebase Storage upload logic
+                # Kết nối tới Firebase Storage
+                bucket = storage.bucket()
+                blob = bucket.blob(f'images/{self.txtStuID.text()}{global_image_extension}')  # Đường dẫn tới tệp trên Firebase Storage
 
-                        # Firebase Realtime Database update logic
-                        ref = db.reference('Students/')
-                        user_ref = ref.child(self.txtStuID.text())
-                        user_ref.update({
-                                'Email': self.txtEmail.text(),
-                                'Faculty': self.txtFaculty.text(),
-                                'Major': self.txtMajor.text(),
-                                'Name': self.txtName.text(),
-                                'Year': self.txtYear.text(),
-                                'embeddings': embedding[0]['embedding'],  # Assuming embedding extraction is successful
-                                'Classes': {}
-                        })
-                        Classes_ref = user_ref.child('Classes/')
-                        # Assuming 'class' is a list of class names
-                        for c in Class:
-                                now = datetime.datetime.now()
-                                # Định dạng chuỗi ngày và giờ
-                                Date = now.strftime("%Y-%m-%d %H:%M:%S")
-                                class_ref = Classes_ref.child(c)
-                                class_ref.update({
-                                'AttendanceCount': '0',
-                                'Datetime': Date
-                                })
+                # Upload tệp từ bộ nhớ lên Firebase Storage
+                global_image_data.seek(0)
+                blob.upload_from_file(global_image_data, content_type=f'image/{global_image_extension.strip(".")}')
+                # ... Success message or logic ...
+                self.RegisterSuccess()
 
-                        # Firebase Storage upload logic
-                        # Đường dẫn tới tệp trên máy tính
-                        local_file_path = image_path
+            except Exception as e:
+                self.UploadFail(e)
+                print("Không thể thêm student vào database:", e)
 
-                        # Lấy đuôi tệp từ đường dẫn tệp hình ảnh
-                        file_name, file_extension = os.path.splitext(local_file_path)
-                        # Kết nối tới Firebase Storage
-                        bucket = storage.bucket()
-                        blob = bucket.blob(f'images/{self.txtStuID.text()}{file_extension}')  # Đường dẫn tới tệp trên Firebase Storage
-
-                        # Upload tệp từ máy tính lên Firebase Storage
-                        blob.upload_from_filename(local_file_path)
-                        # ... Success message or logic ...
-                        self.RegisterSuccess()
-
-                except Exception as e:
-                        self.UploadFail(e)
-                        print("Không thể thêm student vào database:", e)
-     
     def UpdateAvatar(self):
-        global image_path
-        if image_path:
-                # Đọc ảnh từ đường dẫn
-                pixmap = QPixmap(image_path)
+        global global_image_data
+        if global_image_data:
+            # Đọc ảnh từ image_data
+            global_image_data.seek(0)
+            pixmap = QPixmap()
+            pixmap.loadFromData(global_image_data.read())
 
-                # Thay thế ảnh cho btnUpAvatar
-                self.btnUpAvatar.setIcon(QIcon(pixmap))
-                self.btnUpAvatar.setIconSize(QtCore.QSize(150, 150))
+            # Thay thế ảnh cho btnUpAvatar
+            self.btnUpAvatar.setIcon(QIcon(pixmap))
+            self.btnUpAvatar.setIconSize(QtCore.QSize(150, 150))
     
     def RegisterSuccess(self):
         self.labelError.setStyleSheet("color:rgb(0, 255, 0);\n"
