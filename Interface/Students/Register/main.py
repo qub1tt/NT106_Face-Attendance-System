@@ -15,13 +15,14 @@ import numpy as np
 from chooseupload import Ui_MainWindow as ChooseUploadWindow
 from registerpage import Ui_MainWindow as RegisterPageWindow
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QMessageBox, QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QFileDialog,QMainWindow
+from PyQt6.QtWidgets import QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QMessageBox, QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QFileDialog, QMainWindow
 from PyQt6.QtGui import QIcon, QPixmap
 
+# Khởi tạo kết nối tới Firebase
 cred = credentials.Certificate(r"ServiceAccountKey.json")
 
-firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
-                                        "storageBucket":"faceregconition-80c55.appspot.com"})
+firebase_admin.initialize_app(cred, {"databaseURL": "https://faceregconition-80c55-default-rtdb.firebaseio.com/",
+                                     "storageBucket": "faceregconition-80c55.appspot.com"})
 global_image_data = None
 global_image_extension = '.png'
 
@@ -45,7 +46,7 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
             ret, frame = cam.read()
 
             if not ret:
-                print("failed to grab frame")
+                print("Không thể lấy khung hình")
                 break
 
             cv2.imshow("VideoCapture", frame)
@@ -53,12 +54,12 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
             k = cv2.waitKey(1)
 
             if k == 27:
-                print("Escape hit, closing app")
+                print("Nhấn phím Escape, đóng ứng dụng")
                 break
             elif k == 13 or k == 32:
                 _, buffer = cv2.imencode(global_image_extension, frame)
                 global_image_data = io.BytesIO(buffer)
-                print("screenshot taken")
+                print("Chụp màn hình thành công")
                 cv2.destroyAllWindows()
                 break
 
@@ -67,12 +68,12 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
 
     def LoadImage(self):
         global global_image_data, global_image_extension
-        # Tạo dialog chọn ảnh
+        # Tạo hộp thoại chọn ảnh
         dialog = QFileDialog()
         dialog.setNameFilter("Hình ảnh (*.png *.jpg)")
         dialog.setFileMode(QFileDialog.FileMode.AnyFile)
         
-        # Mở dialog và kiểm tra kết quả trả về
+        # Mở hộp thoại và kiểm tra kết quả trả về
         if dialog.exec():
             # Lấy đường dẫn của ảnh được chọn
             selected_files = dialog.selectedFiles()
@@ -96,8 +97,8 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
         
     def AddStudent(self):
         global global_image_data, global_image_extension
-        missing_fields = []  # List to store missing fields
-        # Check for missing text fields
+        missing_fields = []  # Danh sách lưu các trường còn thiếu
+        # Kiểm tra các trường văn bản còn thiếu
         if self.txtEmail.text() == '':
             missing_fields.append("Email")
         if self.txtFaculty.text() == '':
@@ -126,35 +127,35 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
             # Loại bỏ các lớp bị trùng lặp
             Class = list(set(Class))
 
-        # Check for missing image and handle potential errors
+        # Kiểm tra ảnh còn thiếu và xử lý lỗi có thể xảy ra
         if global_image_data is None:
             missing_fields.append("Image")
 
-        # Handle missing fields and display error message if any
+        # Xử lý các trường còn thiếu và hiển thị thông báo lỗi nếu có
         if missing_fields:
             self.RegisterFail(missing_fields)
             return
         else:
-            # If all fields are valid, proceed with Firebase Realtime Database update
+            # Nếu tất cả các trường hợp hợp lệ, tiến hành cập nhật Firebase Realtime Database
             try:
-                # Image processing logic (assuming appropriate libraries are imported)
+                # Xử lý hình ảnh (giả định các thư viện cần thiết đã được nhập)
                 # Chuyển đổi dữ liệu ảnh từ io.BytesIO sang định dạng có thể xử lý bởi OpenCV
                 global_image_data.seek(0)
                 file_bytes = np.asarray(bytearray(global_image_data.read()), dtype=np.uint8)
                 data = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
-                # Detect faces in the image
+                # Phát hiện khuôn mặt trong ảnh
                 faces = detect_faces(data)
 
                 for face in faces:
-                    # Align the face
+                    # Căn chỉnh khuôn mặt
                     aligned_face = align_face(data, face)
 
-                    # Extract features from the face
+                    # Trích xuất đặc trưng từ khuôn mặt
                     embedding = extract_features(aligned_face)
                     break
 
-                # Firebase Realtime Database update logic
+                # Cập nhật Firebase Realtime Database
                 ref = db.reference('Students/')
                 user_ref = ref.child(self.txtStuID.text())
                 user_ref.update({
@@ -163,11 +164,11 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                     'Major': self.txtMajor.text(),
                     'Name': self.txtName.text(),
                     'Year': self.txtYear.text(),
-                    'embeddings': embedding[0]['embedding'],  # Assuming embedding extraction is successful
+                    'embeddings': embedding[0]['embedding'],  # Giả định trích xuất đặc trưng thành công
                     'Classes': {}
                 })
                 Classes_ref = user_ref.child('Classes/')
-                # Assuming 'class' is a list of class names
+                # Giả định 'class' là danh sách các tên lớp học
                 for c in Class:
                     now = datetime.datetime.now()
                     # Định dạng chuỗi ngày và giờ
@@ -178,20 +179,21 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                         'Datetime': Date
                     })
 
-                # Firebase Storage upload logic
+                # Tải lên Firebase Storage
                 # Kết nối tới Firebase Storage
                 bucket = storage.bucket()
                 blob = bucket.blob(f'images/{self.txtStuID.text()}{global_image_extension}')  # Đường dẫn tới tệp trên Firebase Storage
 
-                # Upload tệp từ bộ nhớ lên Firebase Storage
+                # Tải tệp từ bộ nhớ lên Firebase Storage
                 global_image_data.seek(0)
                 blob.upload_from_file(global_image_data, content_type=f'image/{global_image_extension.strip(".")}')
-                # ... Success message or logic ...
+                # Hiển thị thông báo thành công
                 self.RegisterSuccess()
 
             except Exception as e:
+                # Hiển thị thông báo thất bại
                 self.UploadFail(e)
-                print("Không thể thêm student vào database:", e)
+                print("Không thể thêm sinh viên vào cơ sở dữ liệu:", e)
 
     def UpdateAvatar(self):
         global global_image_data
@@ -207,28 +209,28 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
     
     def RegisterSuccess(self):
         self.labelError.setStyleSheet("color:rgb(0, 255, 0);\n"
-                                "background-color: rgb(255, 255, 255);\n"
-                                "font-size: 20px;\n"
-                                "font-family: \"Tahoma\", sans-serif;\n"
-                                "qproperty-alignment: \'AlignVCenter | AlignHCenter\';\n"
-                                "font-weight: bold;\n")
+                                      "background-color: rgb(255, 255, 255);\n"
+                                      "font-size: 20px;\n"
+                                      "font-family: \"Tahoma\", sans-serif;\n"
+                                      "qproperty-alignment: \'AlignVCenter | AlignHCenter\';\n"
+                                      "font-weight: bold;\n")
         self.labelError.setText("Đã đăng kí thành công")
         
     def RegisterFail(self, missing_fields):
-        # Format missing fields into a string with line breaks
+        # Định dạng các trường còn thiếu thành một chuỗi với dấu gạch nối và dòng mới
         missing_fields_str = "- " + ", ".join(missing_fields)
 
-        # Set the error message with formatted missing fields
+        # Đặt thông báo lỗi với các trường còn thiếu được định dạng
         self.labelError.setStyleSheet("color:rgb(255, 0, 0);\n"
-                                    "background-color: rgb(255, 255, 255);\n"
-                                    "font-size: 14px;\n"
-                                    "font-family: \"Tahoma\", sans-serif;\n"
-                                    "font-weight: bold;\n")
+                                      "background-color: rgb(255, 255, 255);\n"
+                                      "font-size: 14px;\n"
+                                      "font-family: \"Tahoma\", sans-serif;\n"
+                                      "font-weight: bold;\n")
         self.labelError.setText("Bạn chưa nhập đủ thông tin:\n" + missing_fields_str)
         
     def UploadFail(self, e):
         dialog = QMessageBox()
-        dialog.setText(f"Không thể thêm student vào database:{e}")
+        dialog.setText(f"Không thể thêm sinh viên vào cơ sở dữ liệu: {e}")
         dialog.setWindowTitle("Lỗi")
         dialog.setIcon(QMessageBox.Icon.Critical)
         dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
@@ -237,7 +239,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
 
 def main():
     app = QApplication(sys.argv)
-    # Create an instance of the RegisterPage window
+    # Tạo một instance của cửa sổ RegisterPage
     register_page_window = RegisterPage()
     register_page_window.show()
     sys.exit(app.exec())
