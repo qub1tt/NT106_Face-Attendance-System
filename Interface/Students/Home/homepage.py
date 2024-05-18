@@ -381,7 +381,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '192.168.139.1'  # Change this to your server IP
+        self.host_ip = '10.0.21.26'  # Change this to your server IP
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
