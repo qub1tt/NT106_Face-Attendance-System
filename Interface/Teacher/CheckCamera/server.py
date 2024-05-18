@@ -38,9 +38,16 @@ def show_client(addr, client_socket):
                 data = data[msg_size:]
                 student_id, frame = pickle.loads(frame_data)
                 text = f"CLIENT: {student_id}"
-                frame = ps.putBText(frame, text, 10, 10, vspace=10, hspace=1, font_scale=0.7, background_RGB=(255,0,0), text_RGB=(255,250,250))            
-                cv2.imshow(f"FROM {addr}", frame)
+                frame = ps.putBText(frame, text, 10, 10, vspace=10, hspace=1, font_scale=0.7, background_RGB=(255,0,0), text_RGB=(255,250,250))
+
+
+                # cv2.imshow(f"FROM {addr}", frame)
+                window_name = f"FROM {addr}"
+                cv2.namedWindow(window_name, cv2.WINDOW_NORMAL) 
+                cv2.resizeWindow(window_name, 640, 480) # Đặt kích thước cửa sổ là 640x480
+                cv2.imshow(window_name, frame)  
                 # Check if window is closed by the user
+                    
                 cv2.waitKey(1)
                 if cv2.getWindowProperty(f"FROM {addr}", cv2.WND_PROP_VISIBLE) < 1:
                     break

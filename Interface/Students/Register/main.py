@@ -26,6 +26,7 @@ firebase_admin.initialize_app(cred, {"databaseURL": "https://faceregconition-80c
 global_image_data = None
 global_image_extension = '.png'
 
+
 class ChooseUpload(QMainWindow, ChooseUploadWindow):
     def __init__(self, register_page):
         super().__init__()
@@ -46,7 +47,6 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
             ret, frame = cam.read()
 
             if not ret:
-                print("Không thể lấy khung hình")
                 break
 
             cv2.imshow("VideoCapture", frame)
@@ -72,7 +72,7 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
         dialog = QFileDialog()
         dialog.setNameFilter("Hình ảnh (*.png *.jpg)")
         dialog.setFileMode(QFileDialog.FileMode.AnyFile)
-        
+
         # Mở hộp thoại và kiểm tra kết quả trả về
         if dialog.exec():
             # Lấy đường dẫn của ảnh được chọn
@@ -83,6 +83,7 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
                 global_image_extension = os.path.splitext(image_path)[1]  # Lấy đuôi tệp
                 print(image_path)
                 self.register_page.UpdateAvatar()
+
 
 class RegisterPage(QMainWindow, RegisterPageWindow):
     def __init__(self):
@@ -96,6 +97,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
         self.choose_upload_window.show()
         
     def AddStudent(self):
+
         global global_image_data, global_image_extension
         missing_fields = []  # Danh sách lưu các trường còn thiếu
         # Kiểm tra các trường văn bản còn thiếu
@@ -226,6 +228,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                                       "font-size: 14px;\n"
                                       "font-family: \"Tahoma\", sans-serif;\n"
                                       "font-weight: bold;\n")
+
         self.labelError.setText("Bạn chưa nhập đủ thông tin:\n" + missing_fields_str)
         
     def UploadFail(self, e):

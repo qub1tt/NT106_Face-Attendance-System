@@ -479,6 +479,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         ,device_id = 0)
 
                 if label == 1:                
+                        checked = False
                         ref = db.reference("Students").get()
                         for key, value in ref.items():
                                 database = {}
@@ -511,7 +512,19 @@ class MainWindow(QtWidgets.QMainWindow):
                                                         count = res.child("AttendanceCount").get()
                                                         res.update({"AttendanceCount": count+1,
                                                                 "Datetime": date})
+                                        checked = True
                                         break
+
+                        if not checked:
+                                msg = QMessageBox()
+                                msg.setIcon(QMessageBox.Icon.Critical)
+                                msg.setText("Điểm danh không thành công. Vui lòng thử lại.")
+                                msg.setWindowTitle("Thông báo")
+                                msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                                
+                                # Hiển thị dialog box cảnh báo
+                                msg.exec()
+
                 else:
                         # Tạo một QMessageBox cảnh báo
                         msg = QMessageBox()
