@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
 
         self.title_icon = self.ui.title_icon
         self.title_icon.setText("")
-        self.title_icon.setPixmap(QPixmap("..//..//Png//DashboardIcon//teacher.png"))
+        self.title_icon.setPixmap(QPixmap("Interface/Png/DashboardIcon/teacher.png"))
         self.title_icon.setScaledContents(True)
 
         self.side_menu = self.ui.listWidget
@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
 
         self.menu_btn = self.ui.menu_btn
         self.menu_btn.setText("")
-        self.menu_btn.setIcon(QIcon("..//..//Png//DashboardIcon//close.svg"))
+        self.menu_btn.setIcon(QIcon("Interface/Png/DashboardIcon/close.svg"))
         self.menu_btn.setIconSize(QSize(30, 30))
         self.menu_btn.setCheckable(True)
         self.menu_btn.setChecked(False)
@@ -49,19 +49,19 @@ class MainWindow(QMainWindow):
         self.menu_list = [
             {
                 "name": "Menu",
-                "icon": "..//..//Png//DashboardIcon//dashboard.svg"
+                "icon": "Interface/Png/DashboardIcon/dashboard.svg"
             },
             {
                 "name": "Student Management",
-                "icon": "..//..//Png//DashboardIcon//customers.svg"
+                "icon": "Interface/Png/DashboardIcon/customers.svg"
             },
             {
                 "name": "Attendance Management",
-                "icon": "..//..//Png//DashboardIcon//orders.svg"
+                "icon": "Interface/Png/DashboardIcon/orders.svg"
             },
             {
                 "name": "Check Camera",
-                "icon": "..//..//Png//DashboardIcon//camera.svg"
+                "icon": "Interface/Png/DashboardIcon/camera.svg"
             },
         ]
 
@@ -125,16 +125,16 @@ class MainWindow(QMainWindow):
     def button_icon_change(self, status):
         # Change the menu button icon based on its status
         if status:
-            self.menu_btn.setIcon(QIcon("..//..//Png//DashboardIcon//open.svg"))
+            self.menu_btn.setIcon(QIcon("Interface/Png/DashboardIcon/open.svg"))
         else:
-            self.menu_btn.setIcon(QIcon("..//..//Png//DashboardIcon//close.svg"))
+            self.menu_btn.setIcon(QIcon("Interface/Png/DashboardIcon/close.svg"))
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # Load style file
-    with open("Dashboard.qss") as f:
+    with open("Interface\Teacher\Dashboard\Dashboard.qss") as f:
         style_str = f.read()
 
     app.setStyleSheet(style_str)
