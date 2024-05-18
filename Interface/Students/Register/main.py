@@ -177,7 +177,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                     Date = now.strftime("%Y-%m-%d %H:%M:%S")
                     class_ref = Classes_ref.child(c)
                     class_ref.update({
-                        'AttendanceCount': '0',
+                        'AttendanceCount': 0,
                         'Datetime': Date
                     })
 
