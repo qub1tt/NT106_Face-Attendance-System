@@ -5,7 +5,7 @@ import struct
 import threading
 import pyshine as ps
 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 host_name = socket.gethostname()
 host_ip = socket.gethostbyname(host_name)
 

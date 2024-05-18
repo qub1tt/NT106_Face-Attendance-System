@@ -106,10 +106,11 @@ class DateCheckDialog(QDialog):
     # Hàm mới để kiểm tra xem ngày hôm nay đã được điểm danh chưa
     def check_attendance_today(self, student_key, selected_class):
         today = datetime.now().date()
-
         # Kiểm tra xem ngày hôm nay đã được điểm danh chưa
         attendance_ref = db.reference(f"Students/{student_key}/Classes/{selected_class}/Datetime")
         res = attendance_ref.get()
+        if res == "":
+              return False
         last_attendance_date = datetime.strptime(res, "%Y-%m-%d %H:%M:%S").date()
         if last_attendance_date == today:
             # Nếu ngày hôm nay đã được điểm danh, hiển thị thông báo
@@ -381,7 +382,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '10.0.21.26'  # Change this to your server IP
+        self.host_ip = '10.0.21.99'  # Change this to your server IP
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
@@ -510,7 +511,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                                         ## Ghi chú điểm danh
                                                         res = db.reference(f"Students/{key}/Classes/{selected_class}")
                                                         count = res.child("AttendanceCount").get()
-                                                        res.update({"AttendanceCount": count+1,
+                                                        res.update({"AttendanceCount": count + 1,
                                                                 "Datetime": date})
                                         checked = True
                                         break
