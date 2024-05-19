@@ -175,6 +175,13 @@ class Ui_MainWindow(object):
 
     def sendOTP(self):
         # Tạo một đối tượng mới từ class Ui_OTP
+        email_address = self.leUser.text().strip()  # Lấy địa chỉ email từ QLineEdit và loại bỏ khoảng trắng thừa
+    
+        # Kiểm tra email có đúng không
+        if email_address != "dotayto08062004@gmail.com": #thay email nhận otp của gv vao day
+            QtWidgets.QMessageBox.warning(MainWindow, "Warning", "Hãy nhập đúng email của bạn")
+            return
+        # Tạo một đối tượng mới từ class Ui_OTP
         self.otp_window = Ui_OTP()
         self.otp_window.setupUi(MainWindow)
         MainWindow.show()
