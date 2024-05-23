@@ -469,9 +469,9 @@ class Ui_StudentManagementFunctionality(Ui_StudentManagement):
                 )
                 reply1 = msgBox1.exec()
                 if reply1 == QtWidgets.QMessageBox.StandardButton.Yes:
-                    selected_class_students.sort(key=lambda student_id: student_data[student_id]['Classes'][selected_class_name].get('AttendanceCount', 0), reverse=False)
+                    selected_class_students.sort(key=lambda student_id: int(student_data[student_id]['Classes'][selected_class_name].get('AttendanceCount', 0)), reverse=False)
                 else:
-                    selected_class_students.sort(key=lambda student_id: student_data[student_id]['Classes'][selected_class_name].get('AttendanceCount', 0), reverse=True)
+                    selected_class_students.sort(key=lambda student_id: int(student_data[student_id]['Classes'][selected_class_name].get('AttendanceCount', 0)), reverse=True)
                 
             else:
                 reply = None
@@ -480,7 +480,8 @@ class Ui_StudentManagementFunctionality(Ui_StudentManagement):
                 student_info = student_data.get(student_id)
                 if student_info:
                     # Lấy giá trị AttendanceCount từ dữ liệu của sinh viên
-                    attendance_count = student_info.get("Classes", {}).get(selected_class_name, {}).get("AttendanceCount", 0)
+                    attendance_count = int(student_info.get("Classes", {}).get(selected_class_name, {}).get("AttendanceCount", 0))
+
 
                     # Tính điểm dựa trên AttendanceCount chia cho TotalSessions
                     if total_sessions != 0:
