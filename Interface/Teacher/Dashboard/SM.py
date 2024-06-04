@@ -5,39 +5,12 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from openpyxl import Workbook
 import requests
 
-# # Khởi tạo Firebase với tệp JSON chứa khóa xác thực
-# cred = credentials.Certificate(r"C:\Users\ASUS\Desktop\StudySpace\HK4\MangCanBan\NT106_Face-Attendance-System\ServiceAccountKey.json")
+from firebaseconfig import class_ref, students_ref
 
-# firebase_admin.initialize_app(cred, {
-#     "databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
-#     "storageBucket":"faceregconition-80c55.appspot.com"
-# })
-
-# # Lấy reference đến nút "Students" trong Firebase Realtime Database
-# class_ref = db.reference('Classes')
-
-# # Lấy dữ liệu từ Firebase
-# class_data = class_ref.get()
-
-# # Lấy reference đến nút "Students" trong Firebase Realtime Database
-# students_ref = db.reference('Students')
-
-# # Lấy dữ liệu từ Firebase
-# s1 = students_ref.get()
-# student_data = {}
-
-s1 = {}
-class_data = {}
-
-response = requests.get(f"http://127.0.0.1:5000/students")
-if response.status_code == 200:
-    s1 = response.json()
-        
-response = requests.get(f"http://127.0.0.1:5000/classes")
-if response.status_code == 200:
-    class_data = response.json()
-    
+class_data = class_ref.get()
+s1 = students_ref.get()
 student_data = {}
+
 
 class SearchDialog(QtWidgets.QDialog):
     def __init__(self, class_names):
@@ -613,18 +586,14 @@ class Ui_StudentManagement(object):
                     if update_dialog.exec():
                         selected_field, new_value = update_dialog.get_selected_field_and_value()
 
-                        # Tạo dữ liệu cập nhật chỉ chứa trường cần cập nhật
-                        update_data = {selected_field: new_value}
-
-                        # Gửi yêu cầu cập nhật thông tin sinh viên đến API
-                        response = requests.put(f"http://127.0.0.1:5000/students/{selected_student}", json=update_data)
-                        if response.status_code == 200:
-                            # Cập nhật thông tin mới vào dữ liệu sinh viên
+                        if selected_field != "Select Field":
+                            # Cập nhật giá trị mới vào dữ liệu và cơ sở dữ liệu
                             student_info[selected_field] = new_value
+                            students_ref.child(selected_student).set(student_info)
                             qmb_custom('Update Student', 'Student updated successfully.')
                             self.display_search_result(selected_student, student_info)
                         else:
-                            qmb_custom('Update Student', 'Failed to update student.')
+                            qmb_custom('Update Student', 'Please select a valid field to update.')
                 else:
                     qmb_custom('Update Student', 'Student ID not found.')
         else:
@@ -653,22 +622,20 @@ class Ui_StudentManagement(object):
                         confirm = msgBox.exec()
 
                         if confirm == QtWidgets.QMessageBox.StandardButton.Yes:
-                            # Gửi yêu cầu xóa sinh viên đến API
-                            response = requests.delete(f"http://127.0.0.1:5000/students/{student_id}")
-                            if response.status_code == 200:
-                                qmb_custom('Delete Student', 'Student deleted successfully.')
+                            # Xóa dữ liệu từ Firebase
+                            students_ref.child(student_id).delete()
+                            qmb_custom('Delete Student', 'Student deleted successfully.')
 
-                                # Xóa dữ liệu từ student_data
-                                del student_data[student_id]
+                            # Xóa dữ liệu từ student_data
+                            del student_data[student_id]
 
-                                # Cập nhật lại dữ liệu trên Table Widget
-                                self.load_data()
-                            else:
-                                qmb_custom('Delete Student', 'Failed to delete student.')
+                            # Cập nhật lại dữ liệu trên Table Widget
+                            self.load_data()
                     else:
                         qmb_custom('Delete Student', 'Student ID not found.')
         else:
             qmb_custom("Warning", "Please select a class.")
+
 
     def calculate_data(self):
         if student_data:
@@ -756,7 +723,7 @@ class Ui_StudentManagement(object):
         else:
             qmb_custom("Warning", "Please select a class.")
 
-
+    
 
     def export_data(self):
         if student_data:

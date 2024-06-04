@@ -8,11 +8,17 @@ from Dashboard_UI import Ui_MainWindow
 
 from SM import Ui_StudentManagement
 from AM import Ui_Attendance
+from CK import MyMainWindow
+from CK import Ui_CheckCamera
 
 # Define a custom MainWindow class
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        
+        self.my_main_window = MyMainWindow()
+        self.ui = Ui_CheckCamera()
+        self.ui.setupUi(self.my_main_window)
 
         # Initialize the UI from the generated 'main_ui' class
         self.ui = Ui_MainWindow()
@@ -110,16 +116,19 @@ class MainWindow(QMainWindow):
         # Create an instance of Ui_TestMainWindow
         test_ui = Ui_StudentManagement()
         test_ui2 = Ui_Attendance()
+        test_ui3 = MyMainWindow()
         # Create a QMainWindow to hold the UI
         test_window = QMainWindow()
         test_window2 = QMainWindow()
+        test_window3 = QMainWindow()
         # Setup the UI inside the QMainWindow
         test_ui.setupUi(test_window)
         test_ui2.setupUi(test_window2)
+        test_ui3.setupUi(test_window3)
         # Add the QMainWindow to the QStackWidget
         self.main_content.insertWidget(1, test_window)
         self.main_content.insertWidget(2, test_window2)                
-            
+        self.main_content.insertWidget(3, test_window3)     
     
 
     def button_icon_change(self, status):

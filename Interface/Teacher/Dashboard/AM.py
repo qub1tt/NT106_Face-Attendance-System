@@ -6,37 +6,11 @@ from openpyxl import Workbook
 import datetime
 import requests
 
-
-# Khởi tạo Firebase với tệp JSON chứa khóa xác thực
-# cred = credentials.Certificate("ServiceAccountKey.json")
-
-# firebase_admin.initialize_app(cred, {
-#     "databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
-#     "storageBucket":"faceregconition-80c55.appspot.com"
-# })
-
-s1 = {}
-class_data = {}
-
-response = requests.get(f"http://127.0.0.1:5000/students")
-if response.status_code == 200:
-    s1 = response.json()
-        
-response = requests.get(f"http://127.0.0.1:5000/classes")
-if response.status_code == 200:
-    class_data = response.json()
-
-# # Lấy reference đến nút "Students" trong Firebase Realtime Database
-# class_ref = db.reference('Classes')
-
-# # Lấy dữ liệu từ Firebase
-# class_data = class_ref.get()
-
-# # Lấy reference đến nút "Students" trong Firebase Realtime Database
-# students_ref = db.reference('Students')
+from firebaseconfig import class_ref, students_ref
 
 # Lấy dữ liệu từ Firebase
-# s1 = students_ref.get()
+class_data = class_ref.get()
+s1 = students_ref.get()
 student_data = {}
 
 class SearchDialog(QtWidgets.QDialog):
