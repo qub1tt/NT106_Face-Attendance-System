@@ -1,10 +1,12 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-class Ui_StudentManagement(object):
-    def setupUi(self, StudentManagement):
-        StudentManagement.setObjectName("StudentManagement")
-        StudentManagement.resize(1272, 680)
-        StudentManagement.setStyleSheet("#StudentManagement{\n"
+
+
+class Ui_CheckCamera(object):
+    def setupUi(self, CheckCamera):
+        CheckCamera.setObjectName("CheckCamera")
+        CheckCamera.resize(1272, 680)
+        CheckCamera.setStyleSheet("#CheckCamera{\n"
 "    background-color: rgb(255,255,255);\n"
 "}\n"
 "\n"
@@ -55,7 +57,7 @@ class Ui_StudentManagement(object):
 "}\n"
 "\n"
 "")
-        self.centralwidget = QtWidgets.QWidget(parent=StudentManagement)
+        self.centralwidget = QtWidgets.QWidget(parent=CheckCamera)
         self.centralwidget.setObjectName("centralwidget")
         self.Header = QtWidgets.QFrame(parent=self.centralwidget)
         self.Header.setGeometry(QtCore.QRect(0, 0, 1281, 71))
@@ -93,35 +95,38 @@ class Ui_StudentManagement(object):
         self.btn_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.btn_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.btn_frame.setObjectName("btn_frame")
-        self.class_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.class_btn.setGeometry(QtCore.QRect(40, 20, 111, 41))
-        self.class_btn.setStyleSheet("")
-        self.class_btn.setObjectName("class_btn")
+        self.showcam_btn = QtWidgets.QPushButton(parent=self.btn_frame)
+        self.showcam_btn.setGeometry(QtCore.QRect(40, 20, 111, 41))
+        self.showcam_btn.setStyleSheet("")
+        self.showcam_btn.setObjectName("showcam_btn")
         self.line = QtWidgets.QLabel(parent=self.btn_frame)
         self.line.setGeometry(QtCore.QRect(0, 80, 1211, 1))  # Đặt vị trí và kích thước của đường thẳng
         self.line.setStyleSheet("background-color: black;")  # Đặt màu nền của đường thẳng
 
-        StudentManagement.setCentralWidget(self.centralwidget)
+        CheckCamera.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(StudentManagement)
-        QtCore.QMetaObject.connectSlotsByName(StudentManagement)
+        self.retranslateUi(CheckCamera)
+        QtCore.QMetaObject.connectSlotsByName(CheckCamera)
         # StudentManagement.resizeEvent = self.on_window_resized
 
-    def retranslateUi(self, StudentManagement):
+    def retranslateUi(self, CheckCamera):
         _translate = QtCore.QCoreApplication.translate
-        StudentManagement.setWindowTitle(_translate("StudentManagement", "MainWindow"))
-        self.NameSW.setText(_translate("StudentManagement", "STUDENT CAMERA"))
-        self.class_btn.setText(_translate("StudentManagement", "Select Class"))
+        CheckCamera.setWindowTitle(_translate("CheckCamera", "MainWindow"))
+        self.NameSW.setText(_translate("CheckCamera", "STUDENT CAMERA"))
+        self.showcam_btn.setText(_translate("CheckCamera", "Show Camera"))
 
-        # self.class_btn.clicked.connect(self.select_class)
+        self.showcam_btn.clicked.connect(self.showcam)
+        
+    def showcam(self):
+        print(1)
         
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    StudentManagement = QtWidgets.QMainWindow()
-    ui = Ui_StudentManagement()
-    ui.setupUi(StudentManagement)
-    StudentManagement.show()
+    CheckCamera = QtWidgets.QMainWindow()
+    ui = Ui_CheckCamera()
+    ui.setupUi(CheckCamera)
+    CheckCamera.show()
     sys.exit(app.exec())
