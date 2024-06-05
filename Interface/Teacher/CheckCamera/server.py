@@ -8,59 +8,145 @@ import sys
 import pyshine as ps
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.setFixedSize(1111, 460)
-        
-        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+class Ui_CheckCamera(object):
+    def setupUi(self, CheckCamera):
+        CheckCamera.setObjectName("CheckCamera")
+        CheckCamera.resize(1272, 680)
+        CheckCamera.setStyleSheet("""
+            #CheckCamera {
+                background-color: rgb(255, 255, 255);
+            }
+            #Header {
+                background-color: rgb(165, 213, 255);
+            }
+            #Header #Logo {
+                image: url(:/Pic/logo.png);
+                border: none;
+            }
+            #Header #NameSW {
+                font-family: "Roboto", sans-serif;
+                font-size: 25px;
+                font-weight: bold;
+            }
+            #result_frame {
+                border-radius: 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            QHeaderView::section {
+                border: none;
+                border-bottom: 1px solid black;
+                padding: 3px 5px;
+            }
+            #btn_frame {
+                border: 1px solid black;
+                border-radius: 10px;
+                background-color: rgb(255, 255, 255);
+            }
+            #btn_frame QPushButton {
+                background-color: #a5d5ff;
+                border-radius: 10px;
+            }
+            #btn_frame QPushButton:hover {
+                background-color: rgb(3, 105, 161);
+                border-color: rgb(65, 173, 255);
+                color: rgb(255, 255, 255);
+            }
+            #scroll_area {
+                background-color: rgb(255, 255, 255);
+            }
+            #scroll_area_widget {
+                background-color: rgb(255, 255, 255);
+            }
+            #scroll_area_layout {
+                background-color: white;
+            }
+        """)
+
+        self.centralwidget = QtWidgets.QWidget(CheckCamera)
         self.centralwidget.setObjectName("centralwidget")
-        
-        # Create a scroll area to hold multiple client video widgets
-        self.scroll_area = QtWidgets.QScrollArea(parent=self.centralwidget)
-        self.scroll_area.setGeometry(QtCore.QRect(0, 0, 1111, 460))
+
+        self.Header = QtWidgets.QFrame(self.centralwidget)
+        self.Header.setGeometry(QtCore.QRect(0, 0, 1281, 71))
+        self.Header.setObjectName("Header")
+
+        self.NameSW = QtWidgets.QLabel(self.Header)
+        self.NameSW.setGeometry(QtCore.QRect(30, 20, 501, 31))
+        font = QtGui.QFont()
+        font.setFamily("Roboto")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setWeight(75)
+        self.NameSW.setFont(font)
+        self.NameSW.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.NameSW.setObjectName("NameSW")
+
+        self.label_class = QtWidgets.QLabel(self.Header)
+        self.label_class.setGeometry(QtCore.QRect(680, 20, 311, 31))
+        font = QtGui.QFont()
+        font.setFamily("Roboto")
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_class.setFont(font)
+        self.label_class.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.label_class.setObjectName("label_class")
+
+        self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget.setGeometry(QtCore.QRect(0, 70, 1281, 631))
+        self.widget.setObjectName("widget")
+
+        self.scroll_area = QtWidgets.QScrollArea(self.centralwidget)
+        self.scroll_area.setGeometry(QtCore.QRect(30, 80, 1211, 600))
         self.scroll_area.setWidgetResizable(True)
-        
+        self.scroll_area.setStyleSheet("background-color: white; border: 1px solid black;")
         self.scroll_area_widget = QtWidgets.QWidget()
         self.scroll_area_layout = QtWidgets.QGridLayout(self.scroll_area_widget)
         self.scroll_area.setWidget(self.scroll_area_widget)
-        
-        # Divide the window into a 3x3 grid
-        for i in range(2):
-            for j in range(3):
+
+        for i in range(3):
+            for j in range(4):
                 frame = QtWidgets.QFrame()
                 frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
                 self.scroll_area_layout.addWidget(frame, i, j)
-                
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
-    def retranslateUi(self, MainWindow):
+
+        CheckCamera.setCentralWidget(self.centralwidget)
+        self.retranslateUi(CheckCamera)
+        QtCore.QMetaObject.connectSlotsByName(CheckCamera)
+        CheckCamera.resizeEvent = self.on_window_resized
+
+    def retranslateUi(self, CheckCamera):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        CheckCamera.setWindowTitle(_translate("CheckCamera", "CheckCamera"))
+        self.NameSW.setText(_translate("CheckCamera", "STUDENT CAMERA"))
+
+    def on_window_resized(self, event):
+        window_size = event.size()
+        self.centralwidget.setGeometry(0, 0, window_size.width(), window_size.height())
+        self.Header.setGeometry(0, 0, window_size.width(), 71)
+        self.widget.setGeometry(0, 71, window_size.width(), window_size.height() - 71)
+        self.scroll_area.setGeometry(30, 100, window_size.width() - 60, window_size.height() - 120)
 
 
 class ClientVideoWidget(QtWidgets.QWidget):
     def __init__(self, client_id):
         super().__init__()
         self.client_id = client_id
-        self.setFixedSize(310, 210)
-        self.layout = QtWidgets.QVBoxLayout(self)  # Vertical layout to stack elements vertically
+        self.setFixedSize(350, 230)
+        self.layout = QtWidgets.QVBoxLayout(self)
         self.video_label = QtWidgets.QLabel(self)
-        self.video_label.setFixedSize(300, 200)
+        self.video_label.setFixedSize(340, 220)
         self.video_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.layout.addWidget(self.video_label)
         self.setLayout(self.layout)
 
-    def update_image(self, q_img, text):
+    def update_image(self, q_img):
         resized_q_img = q_img.scaled(self.video_label.size(), QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         self.video_label.setPixmap(QtGui.QPixmap.fromImage(resized_q_img))
 
 
 class VideoServer(QtCore.QObject):
     update_frame = QtCore.pyqtSignal(str, QtGui.QImage)
-    client_disconnected = QtCore.pyqtSignal(str)  # New signal for client disconnection
+    client_disconnected = QtCore.pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -109,20 +195,19 @@ class VideoServer(QtCore.QObject):
                     q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
                     self.update_frame.emit(student_id, q_img)
             print(f"CLIENT {addr} DISCONNECTED")
-            self.client_disconnected.emit(student_id)  # Emit signal when client disconnects
+            self.client_disconnected.emit(student_id)
             client_socket.close()
 
         except Exception as e:
             print(f"CLIENT {addr} DISCONNECTED:", e)
-            self.client_disconnected.emit(student_id)  # Emit signal in case of exception
+            self.client_disconnected.emit(student_id)
             client_socket.close()
 
 
-
-class MainWindow(QtWidgets.QMainWindow):
+class MyMainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_CheckCamera()
         self.ui.setupUi(self)
 
         self.video_server = VideoServer()
@@ -134,9 +219,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.server_thread.start()
 
         self.client_widgets = {}
-        self.grid_positions = {}  # Store positions of client widgets
-        self.max_rows = 2
-        self.max_cols = 3
+        self.grid_positions = {}
+        self.max_rows = 3
+        self.max_cols = 4
         self.next_position = (0, 0)
 
     def get_next_position(self):
@@ -168,7 +253,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.client_widgets[client_id] = client_widget
                 self.grid_positions[position] = client_widget
 
-            self.client_widgets[client_id].update_image(q_img, f"CLIENT: {client_id}")
+            self.client_widgets[client_id].update_image(q_img)
 
     @QtCore.pyqtSlot(str)
     def remove_client_widget(self, client_id):
@@ -183,9 +268,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.shift_widgets()
             self.next_position = self.get_next_position()
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    main_window = MainWindow()
+    main_window = MyMainWindow()
     main_window.show()
     sys.exit(app.exec())
-
