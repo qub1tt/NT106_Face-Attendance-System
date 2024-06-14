@@ -11,14 +11,13 @@ from PIL import Image
 from numpy import asarray
 import cv2
 from datetime import datetime
-from face_matching import *
 import sys
 import socket, pickle,struct
 import requests, json
 # caution: path[0] is reserved for script path (or '' in REPL)
-sys.path.insert(1, 'Interface\Students\Home\Silent-Face-Anti-Spoofing-master')
-from test import test
 
+
+import numpy as np
 
 import firebase_admin
 from firebase_admin import credentials
@@ -40,14 +39,14 @@ def match_with_database(img, database):
     img_bytes = img_encoded.tobytes()
     
     # Send image to detect faces
-    response = requests.post('http://127.0.0.1:5000/detect_faces', files={'image':img_bytes})
+    response = requests.post('https://face-attendance.azurewebsites.net/detect_faces', files={'image':img_bytes})
     faces = response.json()
     if faces:
-        
+        try:
             for face in faces:        
                 # Align the face
                 align_response = requests.post(
-                        'http://127.0.0.1:5000/align_face', 
+                        'https://face-attendance.azurewebsites.net/align_face', 
                         files={'image': img_bytes}, 
                         data={'face': json.dumps(face)}, # Ensure the JSON data is sent correctly
                 )
@@ -59,11 +58,11 @@ def match_with_database(img, database):
                 aligned_face_bytes = buffer.tobytes()
 
                 # Extract features from the aligned face
-                features_response = requests.post('http://127.0.0.1:5000/extract_features', files={'image': aligned_face_bytes})
+                features_response = requests.post('https://face-attendance.azurewebsites.net/extract_features', files={'image': aligned_face_bytes})
                 embedding = features_response.json()
 
                 # Match the face to a face in the database
-                match_response = requests.post('http://127.0.0.1:5000/match_face', json={'embedding': embedding, 'database': database})
+                match_response = requests.post('https://face-attendance.azurewebsites.net/match_face', json={'embedding': embedding, 'database': database})
                 match = match_response.json()['match']
 
                 if match is not None:
@@ -77,7 +76,8 @@ def match_with_database(img, database):
                     return 1
                 else:
                     print("No match found")
-        
+        except:
+             print("DeepFace can't extract features")
     else:
         print("Can't detect face")
 
@@ -401,7 +401,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '192.168.1.9'  # Change this to your server IP
+        self.host_ip = '192.168.1.7'  # Change this to your server IP
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
@@ -494,10 +494,16 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # Check if the Enter key is pressed
         if event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter: 
-                label = test(image = frame
-                        ,model_dir =r"Interface\Students\Home\Silent-Face-Anti-Spoofing-master\resources\anti_spoof_models"
-                        ,device_id = 0)
 
+                ## Check if spoofed
+                _, img_encoded = cv2.imencode('.jpg', frame)
+                img_bytes = img_encoded.tobytes()
+
+                response = requests.post('https://face-attendance.azurewebsites.net/anti_spoofing', files={'image':img_bytes})
+                response_data = response.json()
+                print(response_data)
+                label = response_data.get('label')
+                
                 if label == 1:             
                         checked = False
                         ref = db.reference("Students").get()

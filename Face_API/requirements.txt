@@ -1,0 +1,11 @@
+easydict
+tqdm
+torchvision
+torch
+tf-keras
+opencv_python
+Pillow
+tensorboardX
+deepface
+scipy
+flask

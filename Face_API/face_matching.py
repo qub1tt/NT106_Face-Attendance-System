@@ -7,9 +7,13 @@ import json
 # import tensorflow as tf
 from scipy.spatial.distance import cosine
 
+import sys
+sys.path.insert(0, 'Silent-Face-Anti-Spoofing-master')
+from test import test
+
 app = Flask(__name__)
 # Path to the shape predictor file
-datFile = "Face_API\shape_predictor_68_face_landmarks.dat"
+datFile = "shape_predictor_68_face_landmarks.dat"
 
 # Load the cascade
 face_cascade = cv2.CascadeClassifier(
@@ -196,6 +200,11 @@ def match_face(embedding, database):
         return None
 
 
+@app.route('/')
+def hello():
+    return "Hello this is Face Attendance app"
+
+
 @app.route('/detect_faces', methods=['POST'])
 def detect_faces_route():
     data = request.files['image'].read()
@@ -244,6 +253,28 @@ def match_face_route():
     match = match_face(embedding, database)
     return jsonify({"match": match})
 
+@app.route('/anti_spoofing', methods=['POST'])
+def anti_spoofing():
+    try:
+        # Read the image file from the request
+        image_file = request.files['image'].read()
+        
+        # Convert the image bytes to a NumPy array
+        nparr = np.frombuffer(image_file, np.uint8)
+        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        
+        # Call the test function with the required parameters
+        model_dir = "Silent-Face-Anti-Spoofing-master/resources/anti_spoof_models"
+        label = test(image=frame, model_dir=model_dir, device_id=0)
+        label = int(label)
+        # Check the label and return the appropriate response
+        if label == 1:
+            return jsonify({"label": label, "message": "Real face detected"}), 200
+        else:
+            return jsonify({"label": label, "message": "Spoof face detected"}), 200
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
