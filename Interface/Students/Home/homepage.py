@@ -401,7 +401,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '192.168.1.7'  # Change this to your server IP
+        self.host_ip = '192.168.1.10'  # Change this to your server IP
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
@@ -501,7 +501,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 response = requests.post('https://face-attendance.azurewebsites.net/anti_spoofing', files={'image':img_bytes})
                 response_data = response.json()
-                print(response_data)
                 label = response_data.get('label')
                 
                 if label == 1:             
@@ -536,7 +535,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                                         ## Ghi chú điểm danh
                                                         res = db.reference(f"Students/{key}/Classes/{selected_class}")
                                                         count = res.child("AttendanceCount").get()
-                                                        res.update({"AttendanceCount": count + 1,
+                                                        res.update({"AttendanceCount": int(count) + 1,
                                                                 "Datetime": date})
                                         checked = True
                                         break
