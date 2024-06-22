@@ -27,28 +27,24 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.btnCamera.setFont(font)
-        self.btnCamera.setStyleSheet("QPushButton#btnCamera{\n"
-"        background-color: rgb(0, 119, 182);\n"
-"border-radius: 20px;\n"
-"font-size:22px;\n"
-"color:rgb(255, 255, 255);\n"
-"font-family: \"Tahoma\", sans-serif;\n"
-"font-size: 22px;\n"
-"font-weight:bold;\n"
-"}    \n"
-"QPushButton#btnCamera:hover{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));\n"
-"  \n"
-"}    \n"
-"\n"
-"QPushButton#btnCamera:pressed{\n"
-"    padding-left:5px;\n"
-"padding-top:5px;\n"
-"background-color:rgba(150,123,111,255);\n"
-"\n"
-"}    \n"
-"\n"
-"")
+        self.btnCamera.setStyleSheet("""
+    QPushButton {
+        background-color: rgb(0, 119, 182);
+        border-radius: 20px;
+        font-size: 20px;
+        color: rgb(255, 255, 255);
+        font-family: "Tahoma", sans-serif;
+        font-weight: bold;
+    }
+    QPushButton:hover {
+        background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(150, 123, 111, 219), stop:1 rgba(85, 81, 84, 226));
+    }
+    QPushButton:pressed {
+        padding-left: 5px;
+        padding-top: 5px;
+        background-color: rgba(150, 123, 111, 255);
+    }
+""")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Interface/Png/Icon/camera.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnCamera.setIcon(icon)
@@ -61,28 +57,24 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.btnFile.setFont(font)
-        self.btnFile.setStyleSheet("QPushButton#btnFile{\n"
-"        background-color: rgb(0, 119, 182);\n"
-"border-radius: 20px;\n"
-"font-size:22px;\n"
-"color:rgb(255, 255, 255);\n"
-"font-family: \"Tahoma\", sans-serif;\n"
-"font-size: 22px;\n"
-"font-weight:bold;\n"
-"}    \n"
-"QPushButton#btnFile:hover{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));\n"
-"  \n"
-"}    \n"
-"\n"
-"QPushButton#btnFile:pressed{\n"
-"    padding-left:5px;\n"
-"padding-top:5px;\n"
-"background-color:rgba(150,123,111,255);\n"
-"\n"
-"}    \n"
-"\n"
-"")
+        self.btnFile.setStyleSheet("""
+    QPushButton {
+        background-color: rgb(0, 119, 182);
+        border-radius: 20px;
+        font-size: 20px;
+        color: rgb(255, 255, 255);
+        font-family: "Tahoma", sans-serif;
+        font-weight: bold;
+    }
+    QPushButton:hover {
+        background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(150, 123, 111, 219), stop:1 rgba(85, 81, 84, 226));
+    }
+    QPushButton:pressed {
+        padding-left: 5px;
+        padding-top: 5px;
+        background-color: rgba(150, 123, 111, 255);
+    }
+""")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("Interface/Png/Icon/folder.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.btnFile.setIcon(icon1)
@@ -108,7 +100,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Upload Option"))
         self.btnCamera.setText(_translate("MainWindow", "Load from Camera"))
         self.btnFile.setText(_translate("MainWindow", "Load form Local File"))
 

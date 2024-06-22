@@ -597,6 +597,17 @@ background-color: transparent;</string>
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>btnUpAvatar</tabstop>
+  <tabstop>txtStuID</tabstop>
+  <tabstop>txtName</tabstop>
+  <tabstop>txtEmail</tabstop>
+  <tabstop>txtClass</tabstop>
+  <tabstop>txtFaculty</tabstop>
+  <tabstop>txtMajor</tabstop>
+  <tabstop>txtYear</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
