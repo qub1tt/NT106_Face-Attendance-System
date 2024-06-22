@@ -15,6 +15,7 @@ import sys
 import socket, pickle,struct
 import requests, json
 # caution: path[0] is reserved for script path (or '' in REPL)
+import base64
 
 
 import numpy as np
@@ -392,6 +393,8 @@ class Ui_FaceRecognition(object):
         self.New.setText(_translate("FaceRecognition", "New"))
 
 
+BUFF_SIZE = 65536
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
@@ -399,22 +402,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.start_camera()
 
-        # Khởi tạo socket và kết nối tới server
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '192.168.1.10'  # Change this to your server IP
+        # Initialize UDP socket and connect to server
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
+        self.host_ip = '10.20.7.190'  # Change this to your server IP
         self.port = 9999
-        self.client_socket.connect((self.host_ip, self.port))
+        self.socket_address = (self.host_ip, self.port)
+        self.additional_string = ""
 
-        # Kết nối sự kiện click của nút "New" với hàm open_register_file
+        # Connect the "New" button click event to open_register_file function
         self.ui.NewButton.clicked.connect(self.open_register_file)
 
-        
     def open_register_file(self):
         try:
-                # Chạy file register.py bằng subprocess
-                subprocess.Popen(["python", r"Interface\Students\Register\registerpage.py"])
+            # Run register.py file using subprocess
+            subprocess.Popen(["python", r"Interface\Students\Register\registerpage.py"])
         except Exception as e:
-                print("Error opening register file:", e)
+            print("Error opening register file:", e)
 
     def start_camera(self):
         # Start the camera
@@ -422,43 +426,52 @@ class MainWindow(QtWidgets.QMainWindow):
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(10)  # Update frame every 10 milliseconds
-        
+
     def update_frame(self):
         # Capture frame-by-frame
         global frame
         ret, frame = self.vid.read()
 
-        # Convert frame to RGB format
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if ret:
+            # Resize frame for consistent transmission
+            frame = cv2.resize(frame, (400, 300))
+            encoded, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+            message = base64.b64encode(buffer)
 
-        # Convert frame to QImage
-        height, width, channel = frame_rgb.shape
-        bytes_per_line = 3 * width
-        q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
-
-
-        # Set the QImage to the QLabel for display
-        self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
-
-        global found
-        if found:
-                # Send frame over socket
+            global found
+            if found:
                 if self.client_socket.fileno() != -1:
-                        try:
-                                a = pickle.dumps((found,frame))
-                                message = struct.pack("Q", len(a)) + a
-                                self.client_socket.sendall(message)
+                    # Send frame over socket
+                    try:
+                        combined_message = base64.b64encode((self.additional_string+found).encode()) + b'||' + message
+                        self.client_socket.sendto(combined_message, self.socket_address)
+                    except Exception as e:
+                        print("Error sending frame:", e)
+                        QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
+                        self.client_socket.close()
+                        QtCore.QCoreApplication.instance().quit()
 
-                        except Exception as e:
-                                print("Error sending frame:", e)
-                                QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
-                                self.client_socket.close()
-                                QtCore.QCoreApplication.instance().quit()
+            # Convert frame to RGB format for display
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            # Convert frame to QImage
+            height, width, channel = frame_rgb.shape
+            bytes_per_line = 3 * width
+            q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
+
+            # Set the QImage to the QLabel for display
+            self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
 
     def closeEvent(self, event):
-        # Close the socket when closing the application
-        self.client_socket.close()
-        event.accept()
+        # Send a final message to server before closing
+        try:
+            self.client_socket.sendto(b'DISCONNECT', self.socket_address)
+        except Exception as e:
+            print("Error sending disconnect message:", e)
+        finally:
+            # Close the socket when closing the application
+            self.client_socket.close()
+            event.accept()
         
 
     def update_student_card_image(self, student_id):
