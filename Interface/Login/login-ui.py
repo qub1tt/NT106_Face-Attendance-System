@@ -7,97 +7,115 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import bcrypt
-
 import subprocess
-import firebase_admin
-from firebase_admin import credentials
+from PyQt6 import QtCore, QtGui, QtWidgets
+import bcrypt
+import os
+
+
+
+
 from firebase_admin import db
-from firebase_admin import storage
 
-
-cred = credentials.Certificate("ServiceAccountKey.json")
-
-firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
-                                     
-                                     "storageBucket":"faceregconition-80c55.appspot.com"})
+import firebase_init
 
 
 
-ref = db.reference("Admin")
-passw = ref.child("Password").get().encode("utf-8")
 
-class Ui_MainWindow(object):
+ref_admin = db.reference("Admin")
+admin_password_hash = ref_admin.child("Password").get().encode("utf-8")
+
+ref_students = db.reference("Students")
+
+
+class Ui_Login(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(853, 600)
+        MainWindow.resize(785, 498)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(30, 49, 800, 500))
+        self.widget.setGeometry(QtCore.QRect(-3, 0, 800, 500))
         self.widget.setObjectName("widget")
         self.label = QtWidgets.QLabel(parent=self.widget)
-        self.label.setGeometry(QtCore.QRect(0, -80, 400, 581))
-        self.label.setStyleSheet("background-color:rgb(165,213,255);")
+        self.label.setGeometry(QtCore.QRect(-40, 0, 421, 501))
+        self.label.setStyleSheet("background-color:rgb(248, 248, 248);\n"
+"border-radius: 20px;")
         self.label.setText("")
         self.label.setObjectName("label")
         self.lbl_backimg = QtWidgets.QLabel(parent=self.widget)
-        self.lbl_backimg.setGeometry(QtCore.QRect(400, 0, 400, 500))
-        self.lbl_backimg.setStyleSheet("background-color:rgba(255,255,255,255);")
+        self.lbl_backimg.setGeometry(QtCore.QRect(-1, 0, 791, 500))
+        self.lbl_backimg.setStyleSheet("background-color:rgb(165,213,255);")
         self.lbl_backimg.setText("")
         self.lbl_backimg.setObjectName("lbl_backimg")
         self.lbl_image = QtWidgets.QLabel(parent=self.widget)
-        self.lbl_image.setGeometry(QtCore.QRect(400, 75, 400, 350))
+        self.lbl_image.setGeometry(QtCore.QRect(310, 70, 531, 371))
         self.lbl_image.setStyleSheet("")
         self.lbl_image.setText("")
-        self.lbl_image.setPixmap(QtGui.QPixmap("Interface/Png/Icon/login-ui.png"))
+        self.lbl_image.setPixmap(QtGui.QPixmap("Anh/login.png"))
         self.lbl_image.setScaledContents(True)
         self.lbl_image.setObjectName("lbl_image")
         self.label_2 = QtWidgets.QLabel(parent=self.widget)
-        self.label_2.setGeometry(QtCore.QRect(105, 20, 190, 41))
+        self.label_2.setGeometry(QtCore.QRect(60, 50, 250, 41))
         font = QtGui.QFont()
-        font.setFamily("Imprint MT Shadow")
-        font.setPointSize(20)
-        font.setBold(False)
-        font.setWeight(50)
+        font.setFamily("Roboto,sans-serif")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color:black;\n"
-"")
+        self.label_2.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 25px;\n"
+"font-weight: bold;\n"
+"background-color: transparent;")
         self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(parent=self.widget)
-        self.label_3.setGeometry(QtCore.QRect(75, 70, 250, 41))
+        self.label_3.setGeometry(QtCore.QRect(20, 110, 341, 41))
         font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
+        font.setFamily("Roboto,sans-serif")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_3.setFont(font)
+        self.label_3.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 15px;\n"
+"font-weight: bold;\n"
+"background-color: transparent;")
         self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.leUser = QtWidgets.QLineEdit(parent=self.widget)
-        self.leUser.setGeometry(QtCore.QRect(70, 130, 310, 50))
+        self.leUser.setGeometry(QtCore.QRect(80, 180, 261, 50))
         font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
+        font.setFamily("Tahoma,sans-serif")
+        font.setPointSize(-1)
         self.leUser.setFont(font)
-        self.leUser.setStyleSheet("background-color:rgba(255,255,255,255);\n"
+        self.leUser.setStyleSheet("background-color:rgba(0,0,0,0);\n"
 "border:none;\n"
-"border-bottom:2px solid rgba(46,82,101,200);\n"
+"border-radius: 10px;\n"
+"background-color: transparent;\n"
 "color:rgba(0,0,0,240);\n"
-"padding-bottom:7px;")
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 18px;\n"
+"padding: 10px; ")
+        self.leUser.setText("")
         self.leUser.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.leUser.setObjectName("leUser")
         self.btnLogin = QtWidgets.QPushButton(parent=self.widget)
-        self.btnLogin.setGeometry(QtCore.QRect(20, 350, 360, 60))
+        self.btnLogin.setGeometry(QtCore.QRect(40, 410, 301, 51))
         font = QtGui.QFont()
-        font.setFamily("MS Serif")
-        font.setPointSize(14)
+        font.setFamily("Tahoma,sans-serif")
+        font.setPointSize(-1)
         font.setBold(True)
         font.setWeight(75)
         self.btnLogin.setFont(font)
         self.btnLogin.setStyleSheet("QPushButton#btnLogin{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(11,131,120,219), stop:1 rgba(85,98,112,226));\n"
-"   color:rgba(255,255,255,210);\n"
-"border-radius:10px;\n"
+"        background-color: rgb(0, 119, 182);\n"
+"border-radius: 20px;\n"
+"font-size:22px;\n"
+"color:rgb(255, 255, 255);\n"
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 22px;\n"
+"font-weight:bold;\n"
 "}    \n"
 "QPushButton#btnLogin:hover{\n"
 "    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));\n"
@@ -110,144 +128,98 @@ class Ui_MainWindow(object):
 "background-color:rgba(150,123,111,255);\n"
 "\n"
 "}    \n"
-"\n"
 "")
         self.btnLogin.setObjectName("btnLogin")
         self.label_4 = QtWidgets.QLabel(parent=self.widget)
-        self.label_4.setGeometry(QtCore.QRect(20, 130, 50, 50))
-        self.label_4.setStyleSheet("background-color:rgb(76,198,198)")
+        self.label_4.setGeometry(QtCore.QRect(50, 190, 31, 31))
         self.label_4.setLineWidth(1)
         self.label_4.setText("")
         self.label_4.setTextFormat(QtCore.Qt.TextFormat.PlainText)
-        self.label_4.setPixmap(QtGui.QPixmap("Interface/Png/Icon/user.png"))
+        self.label_4.setPixmap(QtGui.QPixmap("Anh/user_icon.png"))
         self.label_4.setScaledContents(True)
         self.label_4.setObjectName("label_4")
         self.label_6 = QtWidgets.QLabel(parent=self.widget)
-        self.label_6.setGeometry(QtCore.QRect(20, 130, 360, 50))
-        self.label_6.setStyleSheet("background-color:white;\n"
-"")
+        self.label_6.setGeometry(QtCore.QRect(40, 180, 311, 51))
+        self.label_6.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+"border:none;\n"
+"border: 2px solid rgb(122, 122, 122);\n"
+"border-radius: 10px;\n"
+"color:rgba(0,0,0,240);\n"
+"background-color: rgb(255, 255, 255);\n"
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 18px;\n"
+"padding: 10px; ")
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
         self.lePassword = QtWidgets.QLineEdit(parent=self.widget)
-        self.lePassword.setGeometry(QtCore.QRect(70, 230, 310, 50))
+        self.lePassword.setGeometry(QtCore.QRect(80, 260, 261, 50))
         font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
+        font.setFamily("Tahoma,sans-serif")
+        font.setPointSize(-1)
         self.lePassword.setFont(font)
-        self.lePassword.setStyleSheet("background-color:rgba(255,255,255,255);\n"
+        self.lePassword.setStyleSheet("background-color:rgba(0,0,0,0);\n"
 "border:none;\n"
-"border-bottom:2px solid rgba(46,82,101,200);\n"
+"border-radius: 10px;\n"
 "color:rgba(0,0,0,240);\n"
-"padding-bottom:7px;")
+"background-color: transparent;\n"
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 18px;\n"
+"padding: 10px; ")
         self.lePassword.setFrame(True)
         self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         self.lePassword.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.lePassword.setObjectName("lePassword")
-
-
-        self.btnShowPassword = QtWidgets.QPushButton(parent=self.widget)
-        self.btnShowPassword.setGeometry(QtCore.QRect(390, 230, 30, 30))
-        self.btnShowPassword.setAutoFillBackground(False)
-        self.btnShowPassword.setStyleSheet("border: none;")
-        self.btnShowPassword.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("Interface\Png\Icon\eye.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.btnShowPassword.setIcon(icon1)
-        self.btnShowPassword.setIconSize(QtCore.QSize(50, 50))
-        self.btnShowPassword.setObjectName("ShowPassword")
-        self.btnShowPassword.clicked.connect(self.togglePasswordVisibility)
-
-
         self.label_7 = QtWidgets.QLabel(parent=self.widget)
-        self.label_7.setGeometry(QtCore.QRect(20, 230, 360, 50))
-        self.label_7.setStyleSheet("background-color:white;\n"
+        self.label_7.setGeometry(QtCore.QRect(40, 260, 311, 51))
+        self.label_7.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+"border:none;\n"
+"border: 2px solid rgb(122, 122, 122);\n"
+"border-radius: 10px;\n"
+"color:rgba(0,0,0,240);\n"
+"background-color: rgb(255, 255, 255);\n"
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 18px;\n"
+"padding: 10px; \n"
+"background-color:white;\n"
+"\n"
 "")
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
         self.label_5 = QtWidgets.QLabel(parent=self.widget)
-        self.label_5.setGeometry(QtCore.QRect(20, 230, 50, 50))
-        self.label_5.setStyleSheet("background-color:rgb(76,198,198)")
+        self.label_5.setGeometry(QtCore.QRect(50, 270, 31, 31))
+        self.label_5.setStyleSheet("")
         self.label_5.setLineWidth(1)
         self.label_5.setText("")
         self.label_5.setTextFormat(QtCore.Qt.TextFormat.PlainText)
-        self.label_5.setPixmap(QtGui.QPixmap("Interface/Png/Icon/password.png"))
+        self.label_5.setPixmap(QtGui.QPixmap("Anh/password_icon.png"))
         self.label_5.setScaledContents(True)
         self.label_5.setObjectName("label_5")
-        self.label_8 = QtWidgets.QLabel(parent=self.widget)
-        self.label_8.setGeometry(QtCore.QRect(20, 270, 360, 50))
-        self.label_8.setStyleSheet("background-color:white;")
-        self.label_8.setText("")
-        self.label_8.setObjectName("label_8")
         self.btnForgotPassword = QtWidgets.QPushButton(parent=self.widget)
-        self.btnForgotPassword.setGeometry(QtCore.QRect(20, 320, 121, 22))
-        font = QtGui.QFont()
-        font.setFamily("Segoe Print")
-        font.setPointSize(8)
-        font.setBold(True)
-        font.setItalic(False)
-        font.setWeight(75)
-        self.btnForgotPassword.setFont(font)
-        self.btnForgotPassword.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
-        self.btnForgotPassword.setAutoFillBackground(False)
-        self.btnForgotPassword.setStyleSheet("background-color:rgb(165,213,255);\n"
-"color: black;\n"
-"\n"
-"\n"
-"\n"
-"")
-        self.btnForgotPassword.setFlat(True)
+        self.btnForgotPassword.setGeometry(QtCore.QRect(220, 370, 131, 23))
+        self.btnForgotPassword.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 12px;\n"
+"background-color: transparent;\n"
+"font-weight: bold;\n"
+"font-style: italic;")
         self.btnForgotPassword.setObjectName("btnForgotPassword")
         self.pushButton = QtWidgets.QPushButton(parent=self.widget)
-        self.pushButton.setGeometry(QtCore.QRect(269, 420, 111, 28))
-        font = QtGui.QFont()
-        font.setFamily("Segoe Print")
-        font.setPointSize(7)
-        font.setBold(True)
-        font.setWeight(75)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("QPushButton#pushButton{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(11,131,120,219), stop:1 rgba(85,98,112,226));\n"
-"   color:rgba(255,255,255,210);\n"
-"border-radius:10px;\n"
-"}    \n"
-"QPushButton#pushButton:hover{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));\n"
-"  \n"
-"}    \n"
-"\n"
-"QPushButton#pushButton:pressed{\n"
-"    padding-left:5px;\n"
-"padding-top:5px;\n"
-"background-color:rgba(150,123,111,255);\n"
-"\n"
-"}    ")
+        self.pushButton.setGeometry(QtCore.QRect(40, 370, 131, 23))
+        self.pushButton.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 12px;\n"
+"background-color: transparent;\n"
+"font-weight: bold;\n"
+"font-style: italic;")
         self.pushButton.setObjectName("pushButton")
-        self.label_9 = QtWidgets.QLabel(parent=self.widget)
-        self.label_9.setGeometry(QtCore.QRect(20, 425, 241, 16))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(9)
-        font.setBold(False)
-        font.setWeight(50)
-        self.label_9.setFont(font)
-        self.label_9.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_9.setObjectName("label_9")
         self.lbleror = QtWidgets.QLabel(parent=self.widget)
-        self.lbleror.setGeometry(QtCore.QRect(20, 299, 360, 21))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(50)
-        self.lbleror.setFont(font)
-        self.lbleror.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
-        self.lbleror.setAutoFillBackground(False)
-        self.lbleror.setStyleSheet("color:red;")
-        
+        self.lbleror.setGeometry(QtCore.QRect(50, 336, 291, 20))
+        self.lbleror.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 12px;\n"
+"background-color: transparent;\n"
+"font-weight: bold;")
+        self.lbleror.setText("")
         self.lbleror.setObjectName("lbleror")
-        self.label_8.raise_()
-        self.label.raise_()
         self.lbl_backimg.raise_()
+        self.label.raise_()
         self.lbl_image.raise_()
         self.label_2.raise_()
         self.label_3.raise_()
@@ -260,90 +232,107 @@ class Ui_MainWindow(object):
         self.label_5.raise_()
         self.btnForgotPassword.raise_()
         self.pushButton.raise_()
-        self.label_9.raise_()
         self.lbleror.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+# dấu mật khẩu
     def togglePasswordVisibility(self):
         if self.lePassword.echoMode() == QtWidgets.QLineEdit.EchoMode.Normal:
-            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+                self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         else:
-            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
+                self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "Please log in"))
-        self.label_3.setText(_translate("MainWindow", "Welcome to our Application"))
-        self.leUser.setPlaceholderText(_translate("MainWindow", "Username or Email"))
-        self.btnLogin.setText(_translate("MainWindow", "Log in"))
+        self.label_2.setText(_translate("MainWindow", "WELCOME"))
+        self.label_3.setText(_translate("MainWindow", "Welcome to Face Attendance System"))
+        self.leUser.setPlaceholderText(_translate("MainWindow", "Enter your Username"))
+        self.btnLogin.setText(_translate("MainWindow", "Sign in"))
         self.lePassword.setPlaceholderText(_translate("MainWindow", "Enter your Password"))
-        self.btnForgotPassword.setText(_translate("MainWindow", "Forgot password?"))
-        self.pushButton.setText(_translate("MainWindow", "Change Password"))
-        self.label_9.setText(_translate("MainWindow", "Do you want to change your password?"))
-
-        # kết nối tới hàm loginFuntion
-        self.pushButton.clicked.connect(self.open_changepass_file)
+        self.btnForgotPassword.setText(_translate("MainWindow", "Forgot password ?"))
+        self.pushButton.setText(_translate("MainWindow", "Change password ?"))
+       
         self.btnLogin.clicked.connect(self.loginFunction)
-        self.btnForgotPassword.clicked.connect(self.open_forgotpass_file)
-
-    def open_changepass_file(self):
-        try:
-                # Chạy file register.py bằng subprocess
-                subprocess.Popen(["python", r"Interface\Login\changePass.py"])
-        except Exception as e:
-                print("Error opening register file:", e)    
-
-    def open_forgotpass_file(self):
-        try:
-                # Chạy file forgotpass.py bằng subprocess
-                subprocess.Popen(["python", r"Interface\Login\forgotPass.py"])
-        except Exception as e:
-                print("Error opening forgot password file:", e)
-
 
     def loginFunction(self):
-        
         user = self.leUser.text()
         password = self.lePassword.text()
 
         hashed_password = password.encode("utf-8")
-        if len(user) == 0 or len(password) == 0: 
-                self.lbleror.setText("Please input all fields")
-        else :
-                self.lbleror.setText("")
-                try:
-                        if user == ref.child("Email").get():
-                                # So sánh mật khẩu đã băm với mật khẩu được lưu trong Firebase 
-                                
-                                result = bcrypt.checkpw(hashed_password, passw) 
-                                if result:
-                                        # Đăng nhập thành công
-                                        print("Login successful!")
-                                # Thực hiện các hành động sau khi đăng nhập thành công
-                                else:
-                                        # Mật khẩu không đúng
-                                        print("Incorrect password!")
-                                        
-                except Exception as e:
-                        # Người dùng không tồn tại
-                        print(e)
-                        self.lbleror.setText("User not found!")
+        if len(user) == 0 or len(password) == 0:
+            self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                                        "font-size: 18px;\n"
+                                                        "font-weight: bold;")
+            self.lbleror.setText("Please input all fields")
+            return
         
-        
+        self.lbleror.setText("")
 
+        # Kiểm tra tài khoản Admin
+        try:
+            if user == ref_admin.child("Username").get():
+                result = bcrypt.checkpw(hashed_password, admin_password_hash)
+                if result:
+                    print("Admin login successful!")
+                    self.lbleror.setStyleSheet("color:rgb(0, 255, 0);\n"
+                                                        "font-size: 18px;\n"
+                                                        "font-weight: bold;")
+                    self.lbleror.setText("Admin login successful!")
+                    os.environ['USER_ID'] = user
+                    # Thực hiện các hành động sau khi đăng nhập thành công (Admin)
+                    subprocess.Popen(["python", r"main.py"])
+                    return
+                else:
+                    self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                                        "font-size: 18px;\n"
+                                                        "font-weight: bold;")
+                    self.lbleror.setText("Incorrect password!")
+                    return
+        except Exception as e:
+            print(e)
+
+        # Kiểm tra tài khoản Student
+        try:
+            student_ref = ref_students.child(user)
+            student_data = student_ref.get()
+            if student_data:
+                student_password_hash = student_data["Password"].encode("utf-8")
+                result = bcrypt.checkpw(hashed_password, student_password_hash)
+                if result:
+                    self.lbleror.setStyleSheet("color:rgb(0, 255, 0);\n"
+                                                        "font-size: 18px;\n"
+                                                        "font-weight: bold;")
+                    print("Student login successful!")
+                    os.environ['USER_ID'] = user
+                    # Thực hiện các hành động sau khi đăng nhập thành công (Student)
+                    subprocess.Popen(["python", r"main.py"])
+                    return
+                else:
+                    self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                                        "font-size: 18px;\n"
+                                                        "font-weight: bold;")
+                    self.lbleror.setText("Incorrect password!")
+                    return
+            else:
+                self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                                        "font-size: 18px;\n"
+                                                        "font-weight: bold;")
+                self.lbleror.setText("User not found!")
+        except Exception as e:
+            print(e)
+            self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                                        "font-size: 18px;\n"
+                                                        "font-weight: bold;")
+            self.lbleror.setText("User not found!")
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = Ui_Login()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec())
