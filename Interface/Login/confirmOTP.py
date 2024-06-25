@@ -12,52 +12,77 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_OTP(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(435, 547)
+        MainWindow.resize(785, 498)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(20, 10, 401, 500))
+        self.widget.setGeometry(QtCore.QRect(-3, 0, 800, 500))
         self.widget.setObjectName("widget")
         self.label = QtWidgets.QLabel(parent=self.widget)
-        self.label.setGeometry(QtCore.QRect(0, -80, 400, 581))
-        self.label.setStyleSheet("background-color:rgb(165,213,255);")
+        self.label.setGeometry(QtCore.QRect(370, 0, 421, 501))
+        self.label.setStyleSheet("background-color:rgb(248, 248, 248);\n"
+"border-radius: 20px;")
         self.label.setText("")
         self.label.setObjectName("label")
+        self.lbl_backimg = QtWidgets.QLabel(parent=self.widget)
+        self.lbl_backimg.setGeometry(QtCore.QRect(-1, 0, 791, 500))
+        self.lbl_backimg.setStyleSheet("background-color:rgb(165,213,255);")
+        self.lbl_backimg.setText("")
+        self.lbl_backimg.setObjectName("lbl_backimg")
+        self.lbl_image = QtWidgets.QLabel(parent=self.widget)
+        self.lbl_image.setGeometry(QtCore.QRect(-40, 100, 431, 321))
+        self.lbl_image.setStyleSheet("")
+        self.lbl_image.setText("")
+        self.lbl_image.setPixmap(QtGui.QPixmap("Interface/Png/Image/confirmotp.png"))
+        self.lbl_image.setScaledContents(True)
+        self.lbl_image.setObjectName("lbl_image")
         self.label_2 = QtWidgets.QLabel(parent=self.widget)
-        self.label_2.setGeometry(QtCore.QRect(30, 40, 340, 39))
+        self.label_2.setGeometry(QtCore.QRect(440, 30, 301, 41))
         font = QtGui.QFont()
-        font.setFamily("Imprint MT Shadow")
-        font.setPointSize(20)
-        font.setBold(False)
+        font.setFamily("Roboto")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color:black;\n"
-"")
+        self.label_2.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 22px;\n"
+"font-weight: bold;\n"
+"background-color: transparent;")
         self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.leUser = QtWidgets.QLineEdit(parent=self.widget)
-        self.leUser.setGeometry(QtCore.QRect(50, 160, 301, 50))
+        self.leUser.setGeometry(QtCore.QRect(480, 310, 261, 50))
         font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
+        font.setFamily("Tahoma")
+        font.setPointSize(-1)
         self.leUser.setFont(font)
-        self.leUser.setStyleSheet("background-color:rgba(255,255,255,255);\n"
+        self.leUser.setStyleSheet("background-color:rgba(0,0,0,0);\n"
 "border:none;\n"
-"border-bottom:2px solid rgba(46,82,101,200);\n"
+"border-radius: 10px;\n"
+"background-color: transparent;\n"
 "color:rgba(0,0,0,240);\n"
-"padding-bottom:7px;")
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 18px;\n"
+"padding: 10px; ")
+        self.leUser.setText("")
         self.leUser.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.leUser.setObjectName("leUser")
         self.btnLogin = QtWidgets.QPushButton(parent=self.widget)
-        self.btnLogin.setGeometry(QtCore.QRect(20, 280, 360, 60))
+        self.btnLogin.setGeometry(QtCore.QRect(440, 390, 301, 51))
         font = QtGui.QFont()
-        font.setFamily("MS Serif")
-        font.setPointSize(14)
+        font.setFamily("Tahoma")
+        font.setPointSize(-1)
         font.setBold(True)
+        font.setWeight(75)
         self.btnLogin.setFont(font)
         self.btnLogin.setStyleSheet("QPushButton#btnLogin{\n"
-"    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(11,131,120,219), stop:1 rgba(85,98,112,226));\n"
-"   color:rgba(255,255,255,210);\n"
-"border-radius:10px;\n"
+"        background-color: rgb(0, 119, 182);\n"
+"border-radius: 20px;\n"
+"font-size:22px;\n"
+"color:rgb(255, 255, 255);\n"
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 22px;\n"
+"font-weight:bold;\n"
 "}    \n"
 "QPushButton#btnLogin:hover{\n"
 "    background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));\n"
@@ -70,54 +95,86 @@ class Ui_OTP(object):
 "background-color:rgba(150,123,111,255);\n"
 "\n"
 "}    \n"
-"\n"
 "")
         self.btnLogin.setObjectName("btnLogin")
+        self.label_4 = QtWidgets.QLabel(parent=self.widget)
+        self.label_4.setGeometry(QtCore.QRect(450, 320, 31, 31))
+        self.label_4.setLineWidth(1)
+        self.label_4.setText("")
+        self.label_4.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        self.label_4.setPixmap(QtGui.QPixmap("Interface/Png/Icon/emailotp_icon.png"))
+        self.label_4.setScaledContents(True)
+        self.label_4.setObjectName("label_4")
         self.label_6 = QtWidgets.QLabel(parent=self.widget)
-        self.label_6.setGeometry(QtCore.QRect(50, 160, 301, 50))
-        self.label_6.setStyleSheet("background-color:white;\n"
-"")
+        self.label_6.setGeometry(QtCore.QRect(440, 310, 311, 51))
+        self.label_6.setStyleSheet("background-color:rgba(0,0,0,0);\n"
+"border:none;\n"
+"border: 2px solid rgb(122, 122, 122);\n"
+"border-radius: 10px;\n"
+"color:rgba(0,0,0,240);\n"
+"background-color: rgb(255, 255, 255);\n"
+"font-family: \"Tahoma\", sans-serif;\n"
+"font-size: 18px;\n"
+"padding: 10px; ")
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
-        self.label_8 = QtWidgets.QLabel(parent=self.widget)
-        self.label_8.setGeometry(QtCore.QRect(20, 270, 360, 50))
-        self.label_8.setStyleSheet("background-color:white;")
-        self.label_8.setText("")
-        self.label_8.setObjectName("label_8")
-        self.label_9 = QtWidgets.QLabel(parent=self.widget)
-        self.label_9.setGeometry(QtCore.QRect(20, 280, 360, 50))
-        self.label_9.setStyleSheet("background-color:white;\n"
-"")
-        self.label_9.setText("")
-        self.label_9.setObjectName("label_9")
         self.label_5 = QtWidgets.QLabel(parent=self.widget)
-        self.label_5.setGeometry(QtCore.QRect(170, 90, 50, 50))
-        self.label_5.setStyleSheet("background-color:rgb(76,198,198)")
+        self.label_5.setGeometry(QtCore.QRect(540, 90, 91, 91))
+        self.label_5.setStyleSheet("")
         self.label_5.setLineWidth(1)
         self.label_5.setText("")
         self.label_5.setTextFormat(QtCore.Qt.TextFormat.PlainText)
-        self.label_5.setPixmap(QtGui.QPixmap("Interface\Png\Icon\password.png"))
+        self.label_5.setPixmap(QtGui.QPixmap("Interface/Png/Icon/email_icon.png"))
         self.label_5.setScaledContents(True)
         self.label_5.setObjectName("label_5")
-        self.label_9.raise_()
-        self.label_8.raise_()
+        self.label_3 = QtWidgets.QLabel(parent=self.widget)
+        self.label_3.setGeometry(QtCore.QRect(430, 190, 311, 51))
+        self.label_3.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 14px;\n"
+"font-weight: bold;\n"
+"background-color: transparent;")
+        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_3.setObjectName("label_3")
+        self.label_7 = QtWidgets.QLabel(parent=self.widget)
+        self.label_7.setGeometry(QtCore.QRect(430, 220, 311, 51))
+        self.label_7.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+"font-size: 14px;\n"
+"font-weight: bold;\n"
+"background-color: transparent;")
+        self.label_7.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_7.setObjectName("label_7")
+        self.label_Error = QtWidgets.QLabel(parent=self.widget)
+        self.label_Error.setGeometry(QtCore.QRect(430, 260, 340, 41))
+        self.label_Error.setStyleSheet("color:rgb(255, 0, 0);\n"
+"font-size: 18px;\n"
+"font-weight: bold;")
+        self.label_Error.setText("")
+        self.label_Error.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_Error.setObjectName("label_Error")
+        self.lbl_backimg.raise_()
         self.label.raise_()
+        self.lbl_image.raise_()
         self.label_2.raise_()
         self.btnLogin.raise_()
         self.label_6.raise_()
+        self.label_4.raise_()
         self.leUser.raise_()
         self.label_5.raise_()
+        self.label_3.raise_()
+        self.label_7.raise_()
+        self.label_Error.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-
+        self.label_Error.setStyleSheet("color:rgb(255, 0, 0);\n"
+        "font-size: 18px;\n"
+        "font-weight: bold;")
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "OTP Verification"))
-        self.leUser.setPlaceholderText(_translate("MainWindow", "Confirm OTP"))
-        self.btnLogin.setText(_translate("MainWindow", "Confirm"))
+        self.label_2.setText(_translate("MainWindow", "OTP VERIFICATION"))
+        self.leUser.setPlaceholderText(_translate("MainWindow", "Enter OTP"))
+        self.btnLogin.setText(_translate("MainWindow", "Confirm OTP"))
+        self.label_3.setText(_translate("MainWindow", "A 4-digit verification code "))
+        self.label_7.setText(_translate("MainWindow", "has been sent to your email"))
