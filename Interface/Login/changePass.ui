@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
-    <height>547</height>
+    <width>785</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,19 +17,36 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>401</width>
+      <x>-3</x>
+      <y>0</y>
+      <width>800</width>
       <height>500</height>
      </rect>
     </property>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>-80</y>
-       <width>400</width>
-       <height>581</height>
+       <x>380</x>
+       <y>0</y>
+       <width>421</width>
+       <height>501</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgb(248, 248, 248);
+border-radius: 20px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_backimg">
+     <property name="geometry">
+      <rect>
+       <x>-1</x>
+       <y>0</y>
+       <width>791</width>
+       <height>500</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -39,28 +56,56 @@
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="lbl_image">
+     <property name="geometry">
+      <rect>
+       <x>-50</x>
+       <y>0</y>
+       <width>491</width>
+       <height>491</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>Anh/changepassword.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+    </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>40</y>
-       <width>340</width>
-       <height>39</height>
+       <x>450</x>
+       <y>30</y>
+       <width>281</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Imprint MT Shadow</family>
-       <pointsize>20</pointsize>
-       <bold>false</bold>
+       <family>Roboto,sans-serif</family>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color:black;
-</string>
+      <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 25px;
+font-weight: bold;
+background-color: transparent;</string>
      </property>
      <property name="text">
-      <string>OTP Verification</string>
+      <string>CHANGE PASSWORD</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -69,53 +114,64 @@
     <widget class="QLineEdit" name="leUser">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>160</y>
-       <width>301</width>
+       <x>480</x>
+       <y>170</y>
+       <width>261</width>
        <height>50</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Times New Roman</family>
-       <pointsize>12</pointsize>
+       <family>Tahoma,sans-serif</family>
+       <pointsize>-1</pointsize>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color:rgba(255,255,255,255);
+      <string notr="true">background-color:rgba(0,0,0,0);
 border:none;
-border-bottom:2px solid rgba(46,82,101,200);
+border-radius: 10px;
+background-color: transparent;
 color:rgba(0,0,0,240);
-padding-bottom:7px;</string>
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+padding: 10px; </string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
      </property>
      <property name="placeholderText">
-      <string>Username or Email</string>
+      <string>Enter your Username</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btnLogin">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>280</y>
-       <width>360</width>
-       <height>60</height>
+       <x>440</x>
+       <y>416</y>
+       <width>301</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>MS Serif</family>
-       <pointsize>14</pointsize>
+       <family>Tahoma,sans-serif</family>
+       <pointsize>-1</pointsize>
+       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton#btnLogin{
-	background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(11,131,120,219), stop:1 rgba(85,98,112,226));
-   color:rgba(255,255,255,210);
-border-radius:10px;
+		background-color: rgb(0, 119, 182);
+border-radius: 20px;
+font-size:22px;
+color:rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 22px;
+font-weight:bold;
 }	
 QPushButton#btnLogin:hover{
 	background-color:qlineargradient(spread:pad,x1:0, y1:0.505682, x2:1,y2:0.477, stop:0 rgba(150,123,111,219), stop:1 rgba(85,81,84,226));
@@ -128,74 +184,20 @@ padding-top:5px;
 background-color:rgba(150,123,111,255);
 
 }	
-
 </string>
      </property>
      <property name="text">
-      <string>Confirm</string>
+      <string>Change</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>160</y>
-       <width>301</width>
-       <height>50</height>
+       <x>450</x>
+       <y>180</y>
+       <width>31</width>
+       <height>31</height>
       </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;
-</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>270</y>
-       <width>360</width>
-       <height>50</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_9">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>280</y>
-       <width>360</width>
-       <height>50</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:white;
-</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>90</y>
-       <width>50</width>
-       <height>50</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(76,198,198)</string>
      </property>
      <property name="lineWidth">
       <number>1</number>
@@ -207,23 +209,301 @@ background-color:rgba(150,123,111,255);
       <enum>Qt::PlainText</enum>
      </property>
      <property name="pixmap">
-      <pixmap>../Png/Icon/password.png</pixmap>
+      <pixmap>Anh/user_icon.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
      </property>
     </widget>
-    <zorder>label_9</zorder>
-    <zorder>label_8</zorder>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>170</y>
+       <width>311</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+padding: 10px; </string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lePassword">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>240</y>
+       <width>261</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Tahoma,sans-serif</family>
+       <pointsize>-1</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: transparent;
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+padding: 10px; </string>
+     </property>
+     <property name="frame">
+      <bool>true</bool>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+     </property>
+     <property name="placeholderText">
+      <string>Enter your Old Password</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>240</y>
+       <width>311</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+padding: 10px; 
+background-color:white;
+
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>250</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="pixmap">
+      <pixmap>Anh/password_icon.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbleror">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>336</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font-family: &quot;Roboto&quot;, sans-serif;
+font-size: 12px;
+background-color: transparent;
+font-weight: bold;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>310</y>
+       <width>311</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border: 2px solid rgb(122, 122, 122);
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: rgb(255, 255, 255);
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+padding: 10px; 
+background-color:white;
+
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lePassword_2">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>310</y>
+       <width>261</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Tahoma,sans-serif</family>
+       <pointsize>-1</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:rgba(0,0,0,0);
+border:none;
+border-radius: 10px;
+color:rgba(0,0,0,240);
+background-color: transparent;
+font-family: &quot;Tahoma&quot;, sans-serif;
+font-size: 18px;
+padding: 10px; </string>
+     </property>
+     <property name="frame">
+      <bool>true</bool>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+     </property>
+     <property name="placeholderText">
+      <string>Enter your New Password</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>320</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="pixmap">
+      <pixmap>Anh/reset-password-icon.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>550</x>
+       <y>80</y>
+       <width>81</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="pixmap">
+      <pixmap>Anh/lock_icon.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_error">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>370</y>
+       <width>291</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <zorder>lbl_backimg</zorder>
     <zorder>label</zorder>
+    <zorder>lbl_image</zorder>
     <zorder>label_2</zorder>
     <zorder>btnLogin</zorder>
     <zorder>label_6</zorder>
+    <zorder>label_4</zorder>
     <zorder>leUser</zorder>
+    <zorder>label_7</zorder>
+    <zorder>lePassword</zorder>
     <zorder>label_5</zorder>
+    <zorder>lbleror</zorder>
+    <zorder>label_8</zorder>
+    <zorder>lePassword_2</zorder>
+    <zorder>label_9</zorder>
+    <zorder>label_10</zorder>
+    <zorder>lbl_error</zorder>
    </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
