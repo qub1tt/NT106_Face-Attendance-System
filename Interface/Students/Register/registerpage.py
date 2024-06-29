@@ -16,6 +16,10 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
+        qr = MainWindow.frameGeometry()
+        cp = QtGui.QGuiApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+        MainWindow.move(qr.topLeft())
         self.widget.setGeometry(QtCore.QRect(0, 0, 930, 761))
         self.widget.setStyleSheet("background-color: rgb(165,213,255);")
         self.widget.setObjectName("widget")
@@ -284,7 +288,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Register"))
         self.btnRegister.setText(_translate("MainWindow", "Register"))
         self.labelStuID.setText(_translate("MainWindow", "Student ID:"))
         self.labelName.setText(_translate("MainWindow", "Name:"))
