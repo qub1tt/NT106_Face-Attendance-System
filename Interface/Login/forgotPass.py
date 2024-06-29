@@ -15,11 +15,7 @@ from firebase_admin import db
 from firebase_admin import storage
 
 
-cred = credentials.Certificate("ServiceAccountKey.json")
-
-firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
-                                     
-                                     "storageBucket":"faceregconition-80c55.appspot.com"})
+import firebase_init
 
 class OTPSender:
     def __init__(self):
