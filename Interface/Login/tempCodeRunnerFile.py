@@ -1,0 +1,1 @@
+self.login_ui.btnForgotPassword.clicked.connect(self.show_forgot_pass)

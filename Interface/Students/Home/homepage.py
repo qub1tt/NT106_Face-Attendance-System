@@ -15,7 +15,8 @@ import sys
 import socket, pickle,struct
 import requests, json
 # caution: path[0] is reserved for script path (or '' in REPL)
-
+import base64
+import os
 
 import numpy as np
 
@@ -31,7 +32,7 @@ cred = credentials.Certificate("ServiceAccountKey.json")
 firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c55-default-rtdb.firebaseio.com/",
                                      "storageBucket":"faceregconition-80c55.appspot.com"})
 
-
+user_id = None
 def match_with_database(img, database):
     # Detect faces in the frames
     # Convert the image to bytes
@@ -326,31 +327,32 @@ class Ui_FaceRecognition(object):
         self.OtherButton.setGeometry(QtCore.QRect(949, 599, 331, 121))
         self.OtherButton.setObjectName("OtherButton")
         self.HelpButton = QtWidgets.QPushButton(parent=self.OtherButton)
-        self.HelpButton.setGeometry(QtCore.QRect(230, 20, 71, 71))
+        self.HelpButton.setGeometry(QtCore.QRect(140, 20, 70, 70))
         self.HelpButton.setAutoFillBackground(False)
         self.HelpButton.setStyleSheet("border: none;")
         self.HelpButton.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("Interface\Png\Icon\Help.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon1.addPixmap(QtGui.QPixmap("Interface/Png/Icon/Help.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.HelpButton.setIcon(icon1)
         self.HelpButton.setIconSize(QtCore.QSize(50, 50))
         self.HelpButton.setObjectName("HelpButton")
         self.NewButton = QtWidgets.QPushButton(parent=self.OtherButton)
-        self.NewButton.setGeometry(QtCore.QRect(70, 30, 51, 51))
+        self.NewButton.setGeometry(QtCore.QRect(60, 30, 50, 50))
         self.NewButton.setAutoFillBackground(False)
         self.NewButton.setStyleSheet("border: none;")
         self.NewButton.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(r"Interface\Png\Icon\New.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon2.addPixmap(QtGui.QPixmap("Interface/Png/Icon/New.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.NewButton.setIcon(icon2)
         self.NewButton.setIconSize(QtCore.QSize(50, 50))
         self.NewButton.setObjectName("NewButton")
         self.Help = QtWidgets.QLabel(parent=self.OtherButton)
-        self.Help.setGeometry(QtCore.QRect(240, 80, 55, 31))
+        self.Help.setGeometry(QtCore.QRect(150, 80, 55, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(-1)
         font.setBold(True)
+        font.setWeight(75)
         self.Help.setFont(font)
         self.Help.setStyleSheet("font-family: \"Arial\", sans-serif;\n"
 "font-size: 18px;\n"
@@ -359,11 +361,12 @@ class Ui_FaceRecognition(object):
 "background-color: transparent;")
         self.Help.setObjectName("Help")
         self.New = QtWidgets.QLabel(parent=self.OtherButton)
-        self.New.setGeometry(QtCore.QRect(70, 80, 55, 31))
+        self.New.setGeometry(QtCore.QRect(60, 80, 55, 31))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(-1)
         font.setBold(True)
+        font.setWeight(75)
         self.New.setFont(font)
         self.New.setStyleSheet("font-family: \"Arial\", sans-serif;\n"
 "font-size: 18px;\n"
@@ -371,6 +374,30 @@ class Ui_FaceRecognition(object):
 "font-weight: bold;\n"
 "background-color: transparent;")
         self.New.setObjectName("New")
+        self.ExitButton = QtWidgets.QPushButton(parent=self.OtherButton)
+        self.ExitButton.setGeometry(QtCore.QRect(230, 20, 70, 70))
+        self.ExitButton.setAutoFillBackground(False)
+        self.ExitButton.setStyleSheet("border: none;")
+        self.ExitButton.setText("")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("Interface/Png/Icon/logout.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.ExitButton.setIcon(icon3)
+        self.ExitButton.setIconSize(QtCore.QSize(50, 50))
+        self.ExitButton.setObjectName("ExitButton")
+        self.Exit = QtWidgets.QLabel(parent=self.OtherButton)
+        self.Exit.setGeometry(QtCore.QRect(230, 80, 55, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setWeight(75)
+        self.Exit.setFont(font)
+        self.Exit.setStyleSheet("font-family: \"Arial\", sans-serif;\n"
+"font-size: 18px;\n"
+"qproperty-alignment: \'AlignVCenter | AlignHCenter\';\n"
+"font-weight: bold;\n"
+"background-color: transparent;")
+        self.Exit.setObjectName("Exit")
         FaceRecognition.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(FaceRecognition)
@@ -389,7 +416,9 @@ class Ui_FaceRecognition(object):
         self.NameSW.setText(_translate("FaceRecognition", "Face Recognition"))
         self.Help.setText(_translate("FaceRecognition", "Help"))
         self.New.setText(_translate("FaceRecognition", "New"))
+        self.Exit.setText(_translate("FaceRecognition", "Exit"))
 
+BUFF_SIZE = 65536
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -397,23 +426,46 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_FaceRecognition()
         self.ui.setupUi(self)
         self.start_camera()
-
-        # Khởi tạo socket và kết nối tới server
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '192.168.1.11'  # Change this to your server IP
-        self.port = 9999
-        self.client_socket.connect((self.host_ip, self.port))
-
-        # Kết nối sự kiện click của nút "New" với hàm open_register_file
-        self.ui.NewButton.clicked.connect(self.open_register_file)
-
+        self.load_user_id()
         
+        # Initialize UDP socket and connect to server
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
+        self.host_ip = '10.20.7.190'  # Change this to your server IP
+        self.port = 9999
+        self.socket_address = (self.host_ip, self.port)
+        self.additional_string = ""
+
+        # Connect the "New" button click event to open_register_file function
+        self.ui.NewButton.clicked.connect(self.open_register_file)
+        self.ui.ExitButton.clicked.connect(self.open_login_file)
+        self.ui.HelpButton.clicked.connect(self.open_help_file)
+
     def open_register_file(self):
         try:
-                # Chạy file register.py bằng subprocess
-                subprocess.Popen(["python", r"Interface\Students\Register\registerpage.py"])
+            # Run register.py file using subprocess
+            subprocess.Popen(["python", r"Interface\Students\Register\main.py"])
         except Exception as e:
-                print("Error opening register file:", e)
+            print("Error opening register file:", e)
+            
+    def open_login_file(self):
+        try:
+                # Xóa biến môi trường USER_ID nếu nó tồn tại
+                if 'USER_ID' in os.environ:
+                        del os.environ['USER_ID']
+                
+                # Chạy file login_ui.py bằng subprocess
+                subprocess.Popen(["python", r"Interface\Login\login_main.py"])
+                self.close()
+        except Exception as e:
+                print("Error opening login file:", e)
+                
+    def open_help_file(self):
+        try:
+            # Run register.py file using subprocess
+            subprocess.Popen(["python", r"Interface\Students\Home\helppage.py"])
+        except Exception as e:
+            print("Error opening help file:", e)
 
     def start_camera(self):
         # Start the camera
@@ -421,43 +473,52 @@ class MainWindow(QtWidgets.QMainWindow):
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(10)  # Update frame every 10 milliseconds
-        
+
     def update_frame(self):
         # Capture frame-by-frame
         global frame
         ret, frame = self.vid.read()
 
-        # Convert frame to RGB format
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if ret:
+            # Resize frame for consistent transmission
+            frame = cv2.resize(frame, (400, 300))
+            encoded, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+            message = base64.b64encode(buffer)
 
-        # Convert frame to QImage
-        height, width, channel = frame_rgb.shape
-        bytes_per_line = 3 * width
-        q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
-
-
-        # Set the QImage to the QLabel for display
-        self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
-
-        global found
-        if found:
-                # Send frame over socket
+            global found
+            if found:
                 if self.client_socket.fileno() != -1:
-                        try:
-                                a = pickle.dumps((found,frame))
-                                message = struct.pack("Q", len(a)) + a
-                                self.client_socket.sendall(message)
+                    # Send frame over socket
+                    try:
+                        combined_message = base64.b64encode((self.additional_string+found).encode()) + b'||' + message
+                        self.client_socket.sendto(combined_message, self.socket_address)
+                    except Exception as e:
+                        print("Error sending frame:", e)
+                        QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
+                        self.client_socket.close()
+                        QtCore.QCoreApplication.instance().quit()
 
-                        except Exception as e:
-                                print("Error sending frame:", e)
-                                QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
-                                self.client_socket.close()
-                                QtCore.QCoreApplication.instance().quit()
+            # Convert frame to RGB format for display
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            # Convert frame to QImage
+            height, width, channel = frame_rgb.shape
+            bytes_per_line = 3 * width
+            q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
+
+            # Set the QImage to the QLabel for display
+            self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
 
     def closeEvent(self, event):
-        # Close the socket when closing the application
-        self.client_socket.close()
-        event.accept()
+        # Send a final message to server before closing
+        try:
+            self.client_socket.sendto(b'DISCONNECT', self.socket_address)
+        except Exception as e:
+            print("Error sending disconnect message:", e)
+        finally:
+            # Close the socket when closing the application
+            self.client_socket.close()
+            event.accept()
         
 
     def update_student_card_image(self, student_id):
@@ -490,75 +551,88 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     def keyPressEvent(self, event):
-        
         # Check if the Enter key is pressed
         if event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter: 
 
-                ## Check if spoofed
-                _, img_encoded = cv2.imencode('.jpg', frame)
-                img_bytes = img_encoded.tobytes()
+            ## Check if spoofed
+            _, img_encoded = cv2.imencode('.jpg', frame)
+            img_bytes = img_encoded.tobytes()
 
-                response = requests.post('https://face-attendance.azurewebsites.net/anti_spoofing', files={'image':img_bytes})
-                response_data = response.json()
-                label = response_data.get('label')
-                
-                if label == 1:             
-                        checked = False
-                        ref = db.reference("Students").get()
-                        for key, value in ref.items():
-                                database = {}
-                                studentInfo = db.reference(f"Students/{key}").get()
-                                studentName = studentInfo["Name"]
-                                studentEmbedding = studentInfo["embeddings"]
-                                database[studentName] = studentEmbedding
-                                faces = match_with_database(frame, database)
-                                if faces == 1:
-                                        global found
-                                        found = key
+            response = requests.post('https://face-attendance.azurewebsites.net/anti_spoofing', files={'image':img_bytes})
+            response_data = response.json()
+            label = response_data.get('label')
+            
+            if label == 1:
+                global user_id
+                if user_id:
+                    database = {}
+                    studentInfo = db.reference(f"Students/{user_id}").get()
+                    studentName = studentInfo["Name"]
+                    studentEmbedding = studentInfo["embeddings"]
+                    database[studentName] = studentEmbedding
+                    faces = match_with_database(frame, database)
+                    if faces == 1:
+                        global found
+                        found = user_id
 
-                                        date = str(datetime.now().replace(microsecond=0))
-                                        # Lấy dữ liệu từ Firebase
-                                        class_data = studentInfo["Classes"]
+                        date = str(datetime.now().replace(microsecond=0))
+                        # Lấy dữ liệu từ Firebase
+                        class_data = studentInfo["Classes"]
 
-                                        dialog = ClassSelectionDialog(class_data)
-                                        date_check = DateCheckDialog()
-                                        if dialog.exec() == QDialog.DialogCode.Accepted:
-                                                selected_class = dialog.selected_class()
-                                                if not date_check.check_attendance_today(key, selected_class):
-                                                        self.ui.ID2.setText(_translate("FaceRecognition", key))
-                                                        self.ui.Name.setText(_translate("FaceRecognition", studentName))
-                                                        self.ui.Role.setText(_translate("FaceRecognition", studentInfo["Faculty"]))
-                                                        self.ui.Class.setText(_translate("FaceRecognition", selected_class))   
-                                                        self.update_student_card_image(key)
+                        dialog = ClassSelectionDialog(class_data)
+                        date_check = DateCheckDialog()
+                        if dialog.exec() == QDialog.DialogCode.Accepted:
+                            selected_class = dialog.selected_class()
+                            if not date_check.check_attendance_today(user_id, selected_class):
+                                self.ui.ID2.setText(_translate("FaceRecognition", user_id))
+                                self.ui.Name.setText(_translate("FaceRecognition", studentName))
+                                self.ui.Role.setText(_translate("FaceRecognition", studentInfo["Faculty"]))
+                                self.ui.Class.setText(_translate("FaceRecognition", selected_class))   
+                                self.update_student_card_image(user_id)
 
-                                                        ## Ghi chú điểm danh
-                                                        res = db.reference(f"Students/{key}/Classes/{selected_class}")
-                                                        count = res.child("AttendanceCount").get()
-                                                        res.update({"AttendanceCount": int(count) + 1,
-                                                                "Datetime": date})
-                                        checked = True
-                                        break
-
-                        if not checked:
-                                msg = QMessageBox()
-                                msg.setIcon(QMessageBox.Icon.Critical)
-                                msg.setText("Điểm danh không thành công. Vui lòng thử lại.")
-                                msg.setWindowTitle("Thông báo")
-                                msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-                                
-                                # Hiển thị dialog box cảnh báo
-                                msg.exec()
-
-                else:
-                        # Tạo một QMessageBox cảnh báo
+                                ## Ghi chú điểm danh
+                                res = db.reference(f"Students/{user_id}/Classes/{selected_class}")
+                                count = res.child("AttendanceCount").get()
+                                res.update({"AttendanceCount": int(count) + 1,
+                                            "Datetime": date})
+                    else:
                         msg = QMessageBox()
-                        msg.setIcon(QMessageBox.Icon.Warning)
-                        msg.setText("Vui lòng không sử dụng hình ảnh để gian lận trong việc điểm danh!!")
-                        msg.setWindowTitle("Cảnh báo")
+                        msg.setIcon(QMessageBox.Icon.Critical)
+                        msg.setText("Điểm danh không thành công. Vui lòng thử lại.")
+                        msg.setWindowTitle("Thông báo")
                         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
                         
                         # Hiển thị dialog box cảnh báo
                         msg.exec()
+                else:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Icon.Critical)
+                    msg.setText("Không tìm thấy user_id. Vui lòng đăng nhập trước.")
+                    msg.setWindowTitle("Thông báo")
+                    msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                    
+                    # Hiển thị dialog box cảnh báo
+                    msg.exec()
+            else:
+                # Tạo một QMessageBox cảnh báo
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Icon.Warning)
+                msg.setText("Vui lòng không sử dụng hình ảnh để gian lận trong việc điểm danh!!")
+                msg.setWindowTitle("Cảnh báo")
+                msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                
+                # Hiển thị dialog box cảnh báo
+                msg.exec()
+
+                        
+    def load_user_id(self):
+        global user_id
+        user_id = os.getenv('USER_ID')
+        if not user_id:
+            print("No user_id found. Please log in first.")
+            return
+        else:
+            print("Logged in user:", user_id)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
