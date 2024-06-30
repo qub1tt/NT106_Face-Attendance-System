@@ -9,8 +9,8 @@ import random
 import os
 import bcrypt
 import re
-import firebase_admin
-from firebase_admin import credentials
+
+
 from firebase_admin import db
 from firebase_admin import storage
 
@@ -54,6 +54,7 @@ class OTPSender:
 
 class Ui_ForgotPass(object):
     def setupUi(self, MainWindow):
+        
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(785, 498)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
@@ -242,8 +243,9 @@ class Ui_ForgotPass(object):
 
         # Chỉ khởi tạo và hiển thị cửa sổ OTP nếu email tồn tại
         self.otp_window = Ui_OTP()
-        self.otp_window.setupUi(MainWindow)
-        MainWindow.show()
+        self.otp_window.setupUi(self.MainWindow)
+        self.MainWindow.show()
+        
 
         otp_sender = OTPSender()
         otp = otp_sender.generate_otp()
@@ -253,7 +255,7 @@ class Ui_ForgotPass(object):
                                         "font-size: 18px;\n"
                                         "font-weight: bold;")
         self.label_Error.setText("OTP email sent successfully!")
-        self.otp_window.btnLogin.clicked.connect(lambda: self.confirmOTP(MainWindow, otp, user_type, user_id))
+        self.otp_window.btnLogin.clicked.connect(lambda: self.confirmOTP(self.MainWindow, otp, user_type, user_id))
 
     def confirmOTP(self, MainWindow, generated_otp, user_type, user_id):
         # Lấy mã OTP từ QLineEdit
@@ -277,8 +279,8 @@ class Ui_ForgotPass(object):
     def show_newpass_window(self, user_type, user_id):
         # Hiển thị cửa sổ newpass
         self.newpass_window = Ui_ChangePass()
-        self.newpass_window.setupUi(MainWindow)
-        MainWindow.show()
+        self.newpass_window.setupUi(self.MainWindow)
+        self.MainWindow.show()
         self.newpass_window.btnLogin.clicked.connect(lambda: self.change_password_function(user_type, user_id))
 
     def change_password_function(self, user_type, user_id):
