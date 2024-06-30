@@ -2,11 +2,11 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import storage
-
+import requests,json
 import cv2
 import sys
 sys.path.insert(1, 'Interface\Students\Home')
-from face_matching import *
+
 import os
 import io
 import datetime
@@ -59,6 +59,7 @@ class ChooseUpload(QMainWindow, ChooseUploadWindow):
             elif k == 13 or k == 32:
                 _, buffer = cv2.imencode(global_image_extension, frame)
                 global_image_data = io.BytesIO(buffer)
+
                 print("Chụp màn hình thành công")
                 cv2.destroyAllWindows()
                 break
@@ -144,17 +145,31 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                 # Chuyển đổi dữ liệu ảnh từ io.BytesIO sang định dạng có thể xử lý bởi OpenCV
                 global_image_data.seek(0)
                 file_bytes = np.asarray(bytearray(global_image_data.read()), dtype=np.uint8)
-                data = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+                embedding = None
+                
+                img_bytes = file_bytes.tobytes()
+                response = requests.post('https://face-attendance.azurewebsites.net/detect_faces', files={'image':img_bytes})
+                faces = response.json()
 
                 # Phát hiện khuôn mặt trong ảnh
-                faces = detect_faces(data)
-
                 for face in faces:
-                    # Căn chỉnh khuôn mặt
-                    aligned_face = align_face(data, face)
+                    # Align the face
+                    align_response = requests.post(
+                            'https://face-attendance.azurewebsites.net/align_face', 
+                            files={'image': img_bytes}, 
+                            data={'face': json.dumps(face)}, # Ensure the JSON data is sent correctly
+                    )
+                    aligned_face = align_response.json()
 
-                    # Trích xuất đặc trưng từ khuôn mặt
-                    embedding = extract_features(aligned_face)
+                    # Convert the aligned face back to an image format
+                    aligned_face_img = np.array(aligned_face, dtype=np.uint8)
+                    _, buffer = cv2.imencode('.jpg', aligned_face_img)
+                    aligned_face_bytes = buffer.tobytes()
+
+                    # Extract features from the aligned face
+                    features_response = requests.post('https://face-attendance.azurewebsites.net/extract_features', files={'image': aligned_face_bytes})
+                    embedding = features_response.json()
+ 
                     break
 
                 # Cập nhật Firebase Realtime Database
@@ -166,7 +181,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                     'Major': self.txtMajor.text(),
                     'Name': self.txtName.text(),
                     'Year': self.txtYear.text(),
-                    'embeddings': embedding[0]['embedding'],  # Giả định trích xuất đặc trưng thành công
+                    'embeddings': embedding,  # Giả định trích xuất đặc trưng thành công
                     'Classes': {}
                 })
                 Classes_ref = user_ref.child('Classes/')

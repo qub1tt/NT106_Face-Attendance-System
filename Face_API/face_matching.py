@@ -194,7 +194,7 @@ def match_face(embedding, database):
             match = name
 
     # If the min_distance is less than a threshold, return the match
-    if min_distance < 0.30:
+    if min_distance < 0.20:
         return match
     else:   
         return None

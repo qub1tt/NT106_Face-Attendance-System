@@ -37,7 +37,6 @@ def match_with_database(img, database):
     # Convert the image to bytes
     _, img_encoded = cv2.imencode('.jpg', img)
     img_bytes = img_encoded.tobytes()
-    
     # Send image to detect faces
     response = requests.post('https://face-attendance.azurewebsites.net/detect_faces', files={'image':img_bytes})
     faces = response.json()
@@ -401,7 +400,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '192.168.1.10'  # Change this to your server IP
+        self.host_ip = '192.168.1.11'  # Change this to your server IP
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
