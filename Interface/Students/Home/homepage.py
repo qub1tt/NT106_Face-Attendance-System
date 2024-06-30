@@ -440,7 +440,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Connect the "New" button click event to open_register_file function
         self.ui.NewButton.clicked.connect(self.open_register_file)
         self.ui.ExitButton.clicked.connect(self.open_login_file)
-        # self.ui.HelpButton.clicked.connect(self.open_help_file)
+        self.ui.HelpButton.clicked.connect(self.open_help_file)
 
     def open_register_file(self):
         try:
@@ -456,10 +456,17 @@ class MainWindow(QtWidgets.QMainWindow):
                         del os.environ['USER_ID']
                 
                 # Chạy file login_ui.py bằng subprocess
-                subprocess.Popen(["python", r"Interface\Login\login_ui.py"])
+                subprocess.Popen(["python", r"Interface\Login\login_main.py"])
                 self.close()
         except Exception as e:
                 print("Error opening login file:", e)
+                
+    def open_help_file(self):
+        try:
+            # Run register.py file using subprocess
+            subprocess.Popen(["python", r"Interface\Students\Home\helppage.py"])
+        except Exception as e:
+            print("Error opening help file:", e)
 
     def start_camera(self):
         # Start the camera
