@@ -43,7 +43,7 @@ class MainApp(QtWidgets.QMainWindow):
         
         self.btnLogin = QtWidgets.QPushButton(self)
         self.btnLogin.setFixedSize(60, 40)
-        self.btnLogin.setIcon(QtGui.QIcon("Anh/back.png"))
+        self.btnLogin.setIcon(QtGui.QIcon("Interface/Png/Icon/back.png"))
         self.btnLogin.setIconSize(QtCore.QSize(30, 30))
         self.btnLogin.move(10, 10)
         self.btnLogin.clicked.connect(self.show_login)
