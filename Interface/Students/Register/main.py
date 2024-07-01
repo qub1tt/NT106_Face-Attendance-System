@@ -1,20 +1,9 @@
 import firebase_admin
-<<<<<<< HEAD
-from firebase_admin import credentials
-from firebase_admin import db
-from firebase_admin import storage
-import requests,json
-import cv2
-import sys
-sys.path.insert(1, 'Interface\Students\Home')
-
-=======
 from firebase_admin import credentials, db, storage
 import cv2
 import sys
 import requests
 import json
->>>>>>> 50e0b062f2336995ef3016fc5201b3b92342cf6e
 import os
 import io
 import datetime
