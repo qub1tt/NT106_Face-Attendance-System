@@ -15,6 +15,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QMessageBox, QApplication, QWidget, QLabel, QFileDialog, QMainWindow, QListWidget, QLabel, QListWidgetItem, QDialog, QDialogButtonBox
 from PyQt6.QtGui import QIcon, QPixmap
 import re
+import subprocess
 
 # Khởi tạo kết nối tới Firebase
 cred = credentials.Certificate(r"ServiceAccountKey.json")
@@ -122,11 +123,20 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
         self.btnUpAvatar.clicked.connect(self.show_choose_upload_window)
         self.btnRegister.clicked.connect(self.add_student)
         self.btnSelectClasses.clicked.connect(self.open_class_selection_dialog)
+        self.btnBack.clicked.connect(self.open_login_file)
         self.load_user_id()
         self.txtStuID.setText(user_id)
         self.txtStuID.setReadOnly(True)
         self.check_update_or_register(user_id)
 
+    def open_login_file(self):
+        try:
+            # Run register.py file using subprocess
+            subprocess.Popen(["python", r"Interface\Students\Home\homepage.py"])
+            self.close()
+        except Exception as e:
+            print("Error opening homepage file:", e)
+            
     def load_user_id(self):
         global user_id
         user_id = os.getenv('USER_ID')
@@ -188,7 +198,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
             print("Image does not exist in Firebase Storage")
 
     def add_student(self):
-        global global_image_data, global_image_extension
+        global global_image_data, global_image_extension, global_update_information
         missing_fields = []
 
         if self.txtStuID.text() == '':
@@ -273,18 +283,18 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                     'Major': self.txtMajor.text(),
                     'Name': self.txtName.text(),
                     'Year': self.txtYear.text(),
-                    'embeddings': embedding,
-                    'Classes': {}
+                    'embeddings': embedding
                 })
-                classes_ref = user_ref.child('Classes/')
-                for c in classes:
-                    now = datetime.datetime.now()
-                    date = now.strftime("%Y-%m-%d %H:%M:%S")
-                    class_ref = classes_ref.child(c)
-                    class_ref.update({
-                        'AttendanceCount': 0,
-                        'Datetime': date
-                    })
+                if not global_update_information:
+                    classes_ref = user_ref.child('Classes/')
+                    for c in classes:
+                        now = datetime.datetime.now()
+                        date = now.strftime("%Y-%m-%d %H:%M:%S")
+                        class_ref = classes_ref.child(c)
+                        class_ref.update({
+                            'AttendanceCount': 0,
+                            'Datetime': date
+                        })
 
                 bucket = storage.bucket()
                 blob = bucket.blob(f'images/{self.txtStuID.text()}{global_image_extension}')

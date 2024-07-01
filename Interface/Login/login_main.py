@@ -29,6 +29,7 @@ class MainApp(QtWidgets.QMainWindow):
 
         self.login_ui = Ui_Login()
         self.login_ui.setupUi(self.login_page)
+        self.login_ui.MainWindow = self
         
         self.change_pass_ui = Ui_ChangePass()
         self.change_pass_ui.setupUi(self.change_pass_page)
@@ -56,15 +57,19 @@ class MainApp(QtWidgets.QMainWindow):
 
     def show_login(self, event=None):
         self.stacked_widget.setCurrentWidget(self.login_page)
+        self.btnLogin.hide()
     
     def show_change_pass(self, event=None):
         self.stacked_widget.setCurrentWidget(self.change_pass_page)
+        self.btnLogin.show()
 
     def show_forgot_pass(self, event=None):
         self.stacked_widget.setCurrentWidget(self.forgot_pass_page)
+        self.btnLogin.show()
 
     def show_confirm_OTP(self, event=None):
         self.stacked_widget.setCurrentWidget(self.confirmOTP_page)
+        self.btnLogin.show()
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

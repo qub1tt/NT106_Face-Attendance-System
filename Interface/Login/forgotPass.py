@@ -9,7 +9,7 @@ import random
 import os
 import bcrypt
 import re
-
+import subprocess
 
 from firebase_admin import db
 from firebase_admin import storage
@@ -244,6 +244,7 @@ class Ui_ForgotPass(object):
         # Chỉ khởi tạo và hiển thị cửa sổ OTP nếu email tồn tại
         self.otp_window = Ui_OTP()
         self.otp_window.setupUi(self.MainWindow)
+        self.otp_window.btnBack.clicked.connect(self.open_login_file)
         self.MainWindow.show()
         
 
@@ -280,9 +281,18 @@ class Ui_ForgotPass(object):
         # Hiển thị cửa sổ newpass
         self.newpass_window = Ui_ChangePass()
         self.newpass_window.setupUi(self.MainWindow)
+        self.newpass_window.btnBack.clicked.connect(self.open_login_file)
         self.MainWindow.show()
         self.newpass_window.btnLogin.clicked.connect(lambda: self.change_password_function(user_type, user_id))
 
+    def open_login_file(self):
+        try:
+                # Chạy file login_ui.py bằng subprocess
+                subprocess.Popen(["python", r"Interface\Login\login_main.py"])
+                self.MainWindow.close()
+        except Exception as e:
+                print("Error opening login file:", e)
+                
     def change_password_function(self, user_type, user_id):
         new_password = self.newpass_window.lePassword.text()
         confirm_password = self.newpass_window.lePassword_2.text()

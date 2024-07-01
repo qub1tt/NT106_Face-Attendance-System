@@ -38,6 +38,7 @@ def match_with_database(img, database):
     # Convert the image to bytes
     _, img_encoded = cv2.imencode('.jpg', img)
     img_bytes = img_encoded.tobytes()
+    
     # Send image to detect faces
     response = requests.post('https://face-attendance.azurewebsites.net/detect_faces', files={'image':img_bytes})
     faces = response.json()
@@ -406,7 +407,7 @@ class Ui_FaceRecognition(object):
     def retranslateUi(self, FaceRecognition):
         global _translate 
         _translate = QtCore.QCoreApplication.translate
-        FaceRecognition.setWindowTitle(_translate("FaceRecognition", "MainWindow"))
+        FaceRecognition.setWindowTitle(_translate("FaceRecognition", "Homepage"))
         self.School.setText(_translate("FaceRecognition", "UIT"))
         self.Name.setText(_translate("FaceRecognition", "NAME"))
         self.Role.setText(_translate("FaceRecognition", "FACULTY"))
@@ -445,6 +446,7 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             # Run register.py file using subprocess
             subprocess.Popen(["python", r"Interface\Students\Register\main.py"])
+            self.close()
         except Exception as e:
             print("Error opening register file:", e)
             

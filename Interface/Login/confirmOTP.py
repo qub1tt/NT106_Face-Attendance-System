@@ -11,6 +11,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Ui_OTP(object):
     def setupUi(self, MainWindow):
+        self.MainWindow = MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(785, 498)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
@@ -167,12 +168,21 @@ class Ui_OTP(object):
         self.label_Error.setStyleSheet("color:rgb(255, 0, 0);\n"
         "font-size: 18px;\n"
         "font-weight: bold;")
+        self.btnBack = QtWidgets.QPushButton(parent=self.widget)
+        self.btnBack.setGeometry(QtCore.QRect(40, 600, 391, 51))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        self.btnBack.setFont(font)
+        self.btnBack.setFixedSize(60, 40)
+        self.btnBack.setIcon(QtGui.QIcon("Interface/Png/Icon/back.png"))
+        self.btnBack.setIconSize(QtCore.QSize(30, 30))
+        self.btnBack.move(10, 10)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Main Application"))
         self.label_2.setText(_translate("MainWindow", "OTP VERIFICATION"))
         self.leUser.setPlaceholderText(_translate("MainWindow", "Enter OTP"))
         self.btnLogin.setText(_translate("MainWindow", "Confirm OTP"))
