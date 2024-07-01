@@ -11,6 +11,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Ui_ChangePass(object):
     def setupUi(self, MainWindow):
+        self.MainWindow = MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(785, 498)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
@@ -193,6 +194,16 @@ class Ui_ChangePass(object):
         self.label_Error.setText("")
         self.label_Error.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_Error.setObjectName("label_Error")
+        self.btnBack = QtWidgets.QPushButton(parent=self.widget)
+        self.btnBack.setGeometry(QtCore.QRect(40, 600, 391, 51))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        self.btnBack.setFont(font)
+        self.btnBack.setFixedSize(60, 40)
+        self.btnBack.setIcon(QtGui.QIcon("Interface/Png/Icon/back.png"))
+        self.btnBack.setIconSize(QtCore.QSize(30, 30))
+        self.btnBack.move(10, 10)
+        
         self.lbl_backimg.raise_()
         self.label.raise_()
         self.lbl_image.raise_()
@@ -207,6 +218,7 @@ class Ui_ChangePass(object):
         self.label_9.raise_()
         self.label_10.raise_()
         self.label_Error.raise_()
+        self.btnBack.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -214,8 +226,9 @@ class Ui_ChangePass(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Main Application"))
         self.label_2.setText(_translate("MainWindow", "CHANGE NEW PASSWORD"))
         self.btnLogin.setText(_translate("MainWindow", "Change"))
         self.lePassword.setPlaceholderText(_translate("MainWindow", "Enter your New Password"))
         self.lePassword_2.setPlaceholderText(_translate("MainWindow", "Confirm New Password"))
+        
