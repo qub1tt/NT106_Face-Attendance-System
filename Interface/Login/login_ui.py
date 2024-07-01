@@ -284,6 +284,7 @@ class Ui_Login(object):
                     os.environ['USER_ID'] = user
                     # Thực hiện các hành động sau khi đăng nhập thành công (Admin)
                     subprocess.Popen(["python", r"Interface/Teacher/Dashboard/Dashboard_main.py"])
+                    self.MainWindow.close()
                     return
                 else:
                     self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
@@ -309,6 +310,7 @@ class Ui_Login(object):
                     os.environ['USER_ID'] = user
                     # Thực hiện các hành động sau khi đăng nhập thành công (Student)
                     subprocess.Popen(["python", r"Interface/Students/Home/homepage.py"])
+                    self.MainWindow.close()
                     return
                 else:
                     self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
