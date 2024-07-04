@@ -712,14 +712,9 @@ class Ui_StudentManagement(object):
                         points = attendance_count / total_sessions * 10
                     else:
                         points = 0
-                    
                     points_item = QtWidgets.QTableWidgetItem(str(round(points, 2)))  # làm tròn điểm đến 2 chữ số thập phân
                     self.tableWidget.setItem(row, 6, points_item)
                     set_read_only_flags(self.tableWidget)
-
-            # Hiển thị thông báo khi tính toán hoàn thành
-            qmb_custom('Calculate', 'Calculation completed successfully.')
-
         else:
             qmb_custom("Warning", "Please select a class.")
 
