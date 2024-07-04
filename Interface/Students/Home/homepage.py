@@ -569,45 +569,56 @@ class MainWindow(QtWidgets.QMainWindow):
             if label == 1:
                 global user_id
                 if user_id:
-                    database = {}
-                    studentInfo = db.reference(f"Students/{user_id}").get()
-                    studentName = studentInfo["Name"]
-                    studentEmbedding = studentInfo["embeddings"]
-                    database[studentName] = studentEmbedding
-                    faces = match_with_database(frame, database)
-                    if faces == 1:
-                        global found
-                        found = user_id
+                    try:
+                        database = {}
+                        studentInfo = db.reference(f"Students/{user_id}").get()
+                        studentName = studentInfo["Name"]
+                        studentEmbedding = studentInfo["embeddings"]
+                        database[studentName] = studentEmbedding
+                        faces = match_with_database(frame, database)
+                        if faces == 1:
+                            global found
+                            found = user_id
 
-                        date = str(datetime.now().replace(microsecond=0))
-                        # Lấy dữ liệu từ Firebase
-                        class_data = studentInfo["Classes"]
+                            date = str(datetime.now().replace(microsecond=0))
+                            # Lấy dữ liệu từ Firebase
+                            class_data = studentInfo["Classes"]
 
-                        dialog = ClassSelectionDialog(class_data)
-                        date_check = DateCheckDialog()
-                        if dialog.exec() == QDialog.DialogCode.Accepted:
-                            selected_class = dialog.selected_class()
-                            if not date_check.check_attendance_today(user_id, selected_class):
-                                self.ui.ID2.setText(_translate("FaceRecognition", user_id))
-                                self.ui.Name.setText(_translate("FaceRecognition", studentName))
-                                self.ui.Role.setText(_translate("FaceRecognition", studentInfo["Faculty"]))
-                                self.ui.Class.setText(_translate("FaceRecognition", selected_class))   
-                                self.update_student_card_image(user_id)
+                            dialog = ClassSelectionDialog(class_data)
+                            date_check = DateCheckDialog()
+                            if dialog.exec() == QDialog.DialogCode.Accepted:
+                                selected_class = dialog.selected_class()
+                                if not date_check.check_attendance_today(user_id, selected_class):
+                                    self.ui.ID2.setText(_translate("FaceRecognition", user_id))
+                                    self.ui.Name.setText(_translate("FaceRecognition", studentName))
+                                    self.ui.Role.setText(_translate("FaceRecognition", studentInfo["Faculty"]))
+                                    self.ui.Class.setText(_translate("FaceRecognition", selected_class))   
+                                    self.update_student_card_image(user_id)
 
-                                ## Ghi chú điểm danh
-                                res = db.reference(f"Students/{user_id}/Classes/{selected_class}")
-                                count = res.child("AttendanceCount").get()
-                                res.update({"AttendanceCount": int(count) + 1,
-                                            "Datetime": date})
-                    else:
+                                    ## Ghi chú điểm danh
+                                    res = db.reference(f"Students/{user_id}/Classes/{selected_class}")
+                                    count = res.child("AttendanceCount").get()
+                                    res.update({"AttendanceCount": int(count) + 1,
+                                                "Datetime": date})
+                        else:
+                            msg = QMessageBox()
+                            msg.setIcon(QMessageBox.Icon.Critical)
+                            msg.setText("Điểm danh không thành công. Vui lòng thử lại.")
+                            msg.setWindowTitle("Thông báo")
+                            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                            
+                            # Hiển thị dialog box cảnh báo
+                            msg.exec()
+                    except:
                         msg = QMessageBox()
                         msg.setIcon(QMessageBox.Icon.Critical)
-                        msg.setText("Điểm danh không thành công. Vui lòng thử lại.")
+                        msg.setText("Vui lòng đăng kí khuôn mặt để điểm danh")
                         msg.setWindowTitle("Thông báo")
                         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
                         
                         # Hiển thị dialog box cảnh báo
                         msg.exec()
+
                 else:
                     msg = QMessageBox()
                     msg.setIcon(QMessageBox.Icon.Critical)
