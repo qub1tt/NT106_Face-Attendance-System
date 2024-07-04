@@ -30,6 +30,7 @@ ref_students = db.reference("Students")
 
 class Ui_Login(object):
     def setupUi(self, MainWindow):
+        self.MainWindow = MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(785, 498)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
@@ -282,6 +283,7 @@ class Ui_Login(object):
                                                         "font-weight: bold;")
                     self.lbleror.setText("Admin login successful!")
                     os.environ['USER_ID'] = user
+                    self.MainWindow.close()  # Close the login window
                     # Thực hiện các hành động sau khi đăng nhập thành công (Admin)
                     subprocess.Popen(["python", r"Interface/Teacher/Dashboard/Dashboard_main.py"])
                     self.MainWindow.close()
@@ -308,6 +310,7 @@ class Ui_Login(object):
                                                         "font-weight: bold;")
                     print("Student login successful!")
                     os.environ['USER_ID'] = user
+                    self.MainWindow.close()  # Close the login window
                     # Thực hiện các hành động sau khi đăng nhập thành công (Student)
                     subprocess.Popen(["python", r"Interface/Students/Home/homepage.py"])
                     self.MainWindow.close()

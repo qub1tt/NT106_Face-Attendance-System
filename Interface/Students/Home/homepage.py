@@ -432,7 +432,9 @@ class MainWindow(QtWidgets.QMainWindow):
         # Initialize UDP socket and connect to server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
-        self.host_ip = '10.20.7.190'  # Change this to your server IP
+        self.hostname = socket.gethostname()
+        self.IPAddr = socket.gethostbyname(self.hostname)
+        self.host_ip = self.IPAddr  # Change this to your server IP
         self.port = 9999
         self.socket_address = (self.host_ip, self.port)
         self.additional_string = ""
@@ -632,7 +634,7 @@ class MainWindow(QtWidgets.QMainWindow):
         user_id = os.getenv('USER_ID')
         if not user_id:
             print("No user_id found. Please log in first.")
-            return
+            sys.exit()
         else:
             print("Logged in user:", user_id)
 

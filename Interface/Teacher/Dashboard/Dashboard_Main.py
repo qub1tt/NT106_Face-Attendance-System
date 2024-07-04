@@ -174,7 +174,7 @@ class VideoStreamServer(QtCore.QObject):
                 continue  # Continue accepting clients even if no data is received
 
     def handle_client(self, client_addr):
-        fps, st, frames_to_count, cnt = (0, 0, 20, 0)
+
         while self.clients.get(client_addr):
             try:
                 packet, addr = self.server_socket.recvfrom(BUFF_SIZE)
@@ -183,31 +183,26 @@ class VideoStreamServer(QtCore.QObject):
                     continue  # Ignore packets from other clients
 
                 additional_string_encoded, data = packet.split(b'||')
-                additional_string = base64.b64decode(additional_string_encoded).decode()
+                student_id = base64.b64decode(additional_string_encoded).decode()
                 npdata = np.frombuffer(base64.b64decode(data), dtype=np.uint8)
                 frame = cv2.imdecode(npdata, 1)
 
-                txt = f"client: {additional_string}"
-                frame = cv2.putText(frame, 'FPS: ' + str(fps), (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                frame = cv2.putText(frame, txt, (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
+                text = f"CLIENT: {student_id}"
+                frame = ps.putBText(frame, text, 10, 10, vspace=10, hspace=1, font_scale=0.7,
+                                    background_RGB=(255, 0, 0), text_RGB=(255, 250, 250))
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+
                 height, width, channel = frame_rgb.shape
                 bytes_per_line = 3 * width
                 q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
-                self.update_frame.emit(txt, q_img)
+                self.update_frame.emit(text, q_img)
 
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord('q'):
                     self.clients[client_addr] = False
                     break
-                if cnt == frames_to_count:
-                    try:
-                        fps = round(frames_to_count / (time.time() - st))
-                        st = time.time()
-                        cnt = 0
-                    except ZeroDivisionError:
-                        pass
-                cnt += 1
+
 
             except socket.timeout:
                 self.clients[client_addr] = False
@@ -226,7 +221,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_CheckCamera()
         self.ui.setupUi(self)
 
-        self.video_server = VideoStreamServer("10.20.7.190", 9999)
+        self.video_server = VideoStreamServer("0.0.0.0", 9999)
         self.video_server.update_frame.connect(self.update_image)
         self.video_server.client_disconnected.connect(self.remove_client_widget)
 
