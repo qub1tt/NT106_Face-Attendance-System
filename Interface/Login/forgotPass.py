@@ -55,7 +55,7 @@ class OTPSender:
 
 class Ui_ForgotPass(object):
     def setupUi(self, MainWindow):
-        
+        self.MainWindow = MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(785, 498)
         MainWindow.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
@@ -302,10 +302,10 @@ class Ui_ForgotPass(object):
         # Kiểm tra mật khẩu mạnh
         if not self.is_strong_password(new_password):
             print("Password is not strong enough!")
-            self.newpass_window.label_Error.setStyleSheet("color:rgb(255, 0, 0);"
-                                                        "font-size: 18px;\n"
-                                                        "font-weight: bold;")
-            self.newpass_window.label_Error.setText("Password is not strong enough!")
+            self.newpass_window.label_Error.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                            "font-size: 10px;\n"
+                                            "font-weight: bold;")
+            self.newpass_window.label_Error.setText("Password must be at least 8 characters long, contain \nuppercase and lowercase letters, digits, and special characters.")
             return
 
         if new_password != confirm_password:

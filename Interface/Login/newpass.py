@@ -203,6 +203,32 @@ class Ui_ChangePass(object):
         self.btnBack.setIcon(QtGui.QIcon("Interface/Png/Icon/back.png"))
         self.btnBack.setIconSize(QtCore.QSize(30, 30))
         self.btnBack.move(10, 10)
+        self.btnShowPassword = QtWidgets.QPushButton(parent=self.widget)
+        self.btnShowPassword.setGeometry(QtCore.QRect(710, 220, 31, 31))
+        self.btnShowPassword.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+                                           "font-size: 12px;\n"
+                                           "background-color: transparent;\n"
+                                           "font-weight: bold;\n"
+                                           "font-style: italic;")
+        self.btnShowPassword.setText("")
+
+        self.iconEyeOff = QtGui.QIcon("Interface/Png/Icon/eye.png")
+        self.iconEyeOn = QtGui.QIcon("Interface/Png/Icon/hideeye.png")
+        
+        self.btnShowPassword.setIcon(self.iconEyeOff)
+        self.btnShowPassword.setIconSize(QtCore.QSize(50, 50))
+        self.btnShowPassword.setObjectName("btnShowPassword")
+        self.btnShowPassword2 = QtWidgets.QPushButton(parent=self.widget)
+        self.btnShowPassword2.setGeometry(QtCore.QRect(710, 290, 31, 31))
+        self.btnShowPassword2.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+                                           "font-size: 12px;\n"
+                                           "background-color: transparent;\n"
+                                           "font-weight: bold;\n"
+                                           "font-style: italic;")
+        self.btnShowPassword2.setText("")
+        self.btnShowPassword2.setIcon(self.iconEyeOff)
+        self.btnShowPassword2.setIconSize(QtCore.QSize(50, 50))
+        self.btnShowPassword2.setObjectName("btnShowPassword2")
         
         self.lbl_backimg.raise_()
         self.label.raise_()
@@ -219,6 +245,8 @@ class Ui_ChangePass(object):
         self.label_10.raise_()
         self.label_Error.raise_()
         self.btnBack.raise_()
+        self.btnShowPassword.raise_()
+        self.btnShowPassword2.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -231,4 +259,36 @@ class Ui_ChangePass(object):
         self.btnLogin.setText(_translate("MainWindow", "Change"))
         self.lePassword.setPlaceholderText(_translate("MainWindow", "Enter your New Password"))
         self.lePassword_2.setPlaceholderText(_translate("MainWindow", "Confirm New Password"))
+
+        self.passwordVisible = False  # Initialize the password visibility state
+        self.passwordVisible2 = False
+        self.btnShowPassword.clicked.connect(self.togglePasswordVisibility)
+        self.btnShowPassword2.clicked.connect(self.togglePasswordVisibility2)
         
+    def togglePasswordVisibility(self):
+        if self.passwordVisible:
+            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+            self.btnShowPassword.setIcon(self.iconEyeOff)
+        else:
+            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
+            self.btnShowPassword.setIcon(self.iconEyeOn)
+
+        self.passwordVisible = not self.passwordVisible  # Toggle the visibility state
+        
+    def togglePasswordVisibility2(self):
+        if self.passwordVisible2:
+            self.lePassword_2.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+            self.btnShowPassword2.setIcon(self.iconEyeOff)
+        else:
+            self.lePassword_2.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
+            self.btnShowPassword2.setIcon(self.iconEyeOn)
+
+        self.passwordVisible2 = not self.passwordVisible2  # Toggle the visibility state
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_ChangePass()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec())

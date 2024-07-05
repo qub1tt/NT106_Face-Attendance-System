@@ -277,57 +277,62 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                     features_response = requests.post('https://face-attendance.azurewebsites.net/extract_features', files={'image': aligned_face_bytes})
                     embedding = features_response.json()
                     break
-
-                ref = db.reference('Students/')
-                user_ref = ref.child(self.txtStuID.text())
-                user_ref.update({
-                    'Email': self.txtEmail.text(),
-                    'Faculty': self.txtFaculty.text(),
-                    'Major': self.txtMajor.text(),
-                    'Name': self.txtName.text(),
-                    'Year': self.txtYear.text(),
-                    'embeddings': embedding
-                })
-                if not global_update_information:
-                    classes_ref = user_ref.child('Classes/')
-                    for c in classes:
-                        class_ref = classes_ref.child(c)
-                        class_ref.update({
-                            'AttendanceCount': 0,
-                            'Datetime': ""
-                        })
-
-                else:
-                    classes_ref = user_ref.child('Classes/')
-                    existing_classes = classes_ref.get().keys()
-                    
-                    # Xóa các lớp không còn trong danh sách classes
-                    for existing_class in existing_classes:
-                        if existing_class not in classes:
-                            class_ref = classes_ref.child(existing_class)
-                            class_ref.delete()
-                            
-                    # Thêm các lớp mới không tồn tại trong existing_classes
-                    for c in classes:
-                        if c not in existing_classes:
+                if embedding:
+                    ref = db.reference('Students/')
+                    user_ref = ref.child(self.txtStuID.text())
+                    user_ref.update({
+                        'Email': self.txtEmail.text(),
+                        'Faculty': self.txtFaculty.text(),
+                        'Major': self.txtMajor.text(),
+                        'Name': self.txtName.text(),
+                        'Year': self.txtYear.text(),
+                        'embeddings': embedding
+                    })
+                    if not global_update_information:
+                        classes_ref = user_ref.child('Classes/')
+                        for c in classes:
                             class_ref = classes_ref.child(c)
                             class_ref.update({
                                 'AttendanceCount': 0,
                                 'Datetime': ""
                             })
 
-                bucket = storage.bucket()
-                blob = bucket.blob(f'images/{self.txtStuID.text()}{global_image_extension}')
+                    else:
+                        classes_ref = user_ref.child('Classes/')
+                        existing_classes = classes_ref.get().keys()
+                        
+                        # Xóa các lớp không còn trong danh sách classes
+                        for existing_class in existing_classes:
+                            if existing_class not in classes:
+                                class_ref = classes_ref.child(existing_class)
+                                class_ref.delete()
+                                
+                        # Thêm các lớp mới không tồn tại trong existing_classes
+                        for c in classes:
+                            if c not in existing_classes:
+                                class_ref = classes_ref.child(c)
+                                class_ref.update({
+                                    'AttendanceCount': 0,
+                                    'Datetime': ""
+                                })
 
-                global_image_data.seek(0)
-                blob.upload_from_file(global_image_data, content_type=f'image/{global_image_extension.strip(".")}')
-                self.register_success()
+                    bucket = storage.bucket()
+                    blob = bucket.blob(f'images/{self.txtStuID.text()}{global_image_extension}')
+
+                    global_image_data.seek(0)
+                    blob.upload_from_file(global_image_data, content_type=f'image/{global_image_extension.strip(".")}')
+                    self.register_success()
+                else:
+                    self.labelError.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                              "font-weight: bold;\n"
+                                              "font-size: 16px;\n")
+                    self.labelError.setText("Unable to extract face from the image")
 
             except Exception as e:
                 self.labelError.setStyleSheet("color:rgb(255, 0, 0);\n"
                                               "font-weight: bold;\n"
                                               "font-size: 16px;\n")
-                self.labelError.setText("Please select an image with a face.")
+                self.labelError.setText("Unable to extract face from the image")
 
     def update_avatar(self):
         global global_image_data
