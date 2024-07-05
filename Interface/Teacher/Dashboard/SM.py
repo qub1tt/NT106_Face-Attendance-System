@@ -1,9 +1,6 @@
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
 from PyQt6 import QtCore, QtGui, QtWidgets
 from openpyxl import Workbook
-import requests
+import re
 
 from firebaseconfig import class_ref, students_ref
 
@@ -405,16 +402,12 @@ class Ui_StudentManagement(object):
         self.btn_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.btn_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.btn_frame.setObjectName("btn_frame")
-        self.update_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.update_btn.setGeometry(QtCore.QRect(550, 20, 111, 41))
-        self.update_btn.setStyleSheet("")
-        self.update_btn.setObjectName("update_btn")
         self.search_btn = QtWidgets.QPushButton(parent=self.btn_frame)
         self.search_btn.setGeometry(QtCore.QRect(380, 20, 111, 41))
         self.search_btn.setStyleSheet("")
         self.search_btn.setObjectName("search_btn")
         self.delete_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.delete_btn.setGeometry(QtCore.QRect(890, 20, 111, 41))
+        self.delete_btn.setGeometry(QtCore.QRect(720, 20, 111, 41))
         self.delete_btn.setStyleSheet("")
         self.delete_btn.setObjectName("delete_btn")
         self.read_btn = QtWidgets.QPushButton(parent=self.btn_frame)
@@ -422,11 +415,11 @@ class Ui_StudentManagement(object):
         self.read_btn.setStyleSheet("")
         self.read_btn.setObjectName("read_btn")
         self.Diem_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.Diem_btn.setGeometry(QtCore.QRect(720, 20, 111, 41))
+        self.Diem_btn.setGeometry(QtCore.QRect(550, 20, 111, 41))
         self.Diem_btn.setStyleSheet("")
         self.Diem_btn.setObjectName("Diem_btn")
         self.export_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.export_btn.setGeometry(QtCore.QRect(1060, 20, 111, 41))
+        self.export_btn.setGeometry(QtCore.QRect(890, 20, 111, 41))
         self.export_btn.setStyleSheet("")
         self.export_btn.setObjectName("export_btn")
         self.class_btn = QtWidgets.QPushButton(parent=self.btn_frame)
@@ -457,7 +450,6 @@ class Ui_StudentManagement(object):
         item.setText(_translate("StudentManagement", "Year"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("StudentManagement", "Mark"))
-        self.update_btn.setText(_translate("StudentManagement", "Update"))
         self.search_btn.setText(_translate("StudentManagement", "Search"))
         self.delete_btn.setText(_translate("StudentManagement", "Delete"))
         self.read_btn.setText(_translate("StudentManagement", "Read"))
@@ -468,7 +460,6 @@ class Ui_StudentManagement(object):
         self.class_btn.clicked.connect(self.select_class)
         self.read_btn.clicked.connect(self.load_data)
         self.search_btn.clicked.connect(self.search_data)
-        self.update_btn.clicked.connect(self.update_data)
         self.delete_btn.clicked.connect(self.delete_data)
         self.Diem_btn.clicked.connect(self.calculate_data)
         self.export_btn.clicked.connect(self.export_data)
@@ -569,41 +560,7 @@ class Ui_StudentManagement(object):
         year_str = str(student_info.get("Year", ""))
         self.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem(year_str))
         set_read_only_flags(self.tableWidget)
-    
 
-    def update_data(self):
-        if student_data:
-            # Lấy danh sách các sinh viên
-            students = list(student_data.keys())
-
-            # Hiển thị cửa sổ tìm kiếm nâng cao và lấy ID của sinh viên được chọn
-            search_dialog = AdvancedSearchDialog(students)
-            if search_dialog.exec():
-                selected_student = search_dialog.get_selected_student()
-                if selected_student in student_data:
-                    student_info = student_data[selected_student]
-                    self.display_search_result(selected_student, student_info)
-                    # Hiển thị cửa sổ chọn trường để cập nhật bằng lớp UpdateDialog
-                    update_dialog = UpdateDialog(["StudentID", "Name", "Email", "Faculty", "Major", "Year"])
-                    if update_dialog.exec():
-                        selected_field, new_value = update_dialog.get_selected_field_and_value()
-
-                        if selected_field != "Select Field":
-                            # Cập nhật giá trị mới vào dữ liệu và cơ sở dữ liệu
-                            student_info[selected_field] = new_value
-                            students_ref.child(selected_student).set(student_info)
-                            qmb_custom('Update Student', 'Student updated successfully.')
-                            self.display_search_result(selected_student, student_info)
-                        else:
-                            qmb_custom('Update Student', 'Please select a valid field to update.')
-                elif selected_student == "":
-                    qmb_custom('Update Student', 'Please enter a Student ID.')
-                    self.update_data()
-                else:
-                    qmb_custom('Update Student', 'Student ID not found.')
-                    self.update_data()
-        else:
-            qmb_custom("Warning", "Please select a class.")
                 
     def delete_data(self):
         if student_data:
