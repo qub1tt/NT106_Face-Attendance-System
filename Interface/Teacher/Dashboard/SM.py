@@ -549,10 +549,12 @@ class Ui_StudentManagement(object):
                 if selected_student in student_data:
                     student_info = student_data[selected_student]
                     self.display_search_result(selected_student, student_info)
+                elif selected_student == "":
+                    qmb_custom('Search Student', 'Please enter a Student ID.')
+                    self.search_data()
                 else:
                     qmb_custom('Search Student', 'Student ID not found.')
-            else:
-                qmb_custom('Search Student', 'Please enter a Student ID.')
+                    self.search_data()
         else:
             qmb_custom("Warning", "Please select a class.")
 
@@ -594,8 +596,12 @@ class Ui_StudentManagement(object):
                             self.display_search_result(selected_student, student_info)
                         else:
                             qmb_custom('Update Student', 'Please select a valid field to update.')
+                elif selected_student == "":
+                    qmb_custom('Update Student', 'Please enter a Student ID.')
+                    self.update_data()
                 else:
                     qmb_custom('Update Student', 'Student ID not found.')
+                    self.update_data()
         else:
             qmb_custom("Warning", "Please select a class.")
                 
