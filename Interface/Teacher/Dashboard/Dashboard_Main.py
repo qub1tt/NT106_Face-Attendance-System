@@ -1,6 +1,6 @@
 import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QMainWindow, QApplication, QLabel, QListWidgetItem, QWidget, QGridLayout, QVBoxLayout, QFrame
+from PyQt6.QtWidgets import QMainWindow, QApplication, QLabel, QListWidgetItem, QWidget, QGridLayout, QVBoxLayout, QFrame, QMessageBox
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon, QPixmap, QFont
 import socket
@@ -19,6 +19,9 @@ import pyshine as ps
 from Dashboard_UI import Ui_MainWindow
 from SM import Ui_StudentManagement
 from AM import Ui_Attendance
+
+# Add imports for the subprocess and QMessageBox
+import subprocess
 
 class Ui_CheckCamera(object):
     def setupUi(self, CheckCamera):
@@ -326,13 +329,17 @@ class MainWindow(QMainWindow):
         self.side_menu_icon_only.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.side_menu_icon_only.hide()
         self.main_content = self.ui.stackedWidget
+        
+        self.menu_btn = self.ui.menu_btn
+        self.menu_btn.setText("")
+        self.menu_btn.setIcon(QIcon("Interface/Png/DashboardIcon/close.svg"))
+        self.menu_btn.setIconSize(QSize(30, 30))
+        self.menu_btn.setCheckable(True)
+        self.menu_btn.setChecked(False)
+        self.menu_btn.clicked.connect(self.logout)
 
         # Define a list of menu items with names and icons
         self.menu_list = [
-            {
-                "name": "Menu",
-                "icon": "Interface/Png/DashboardIcon/dashboard.svg"
-            },
             {
                 "name": "Student Management",
                 "icon": "Interface/Png/DashboardIcon/customers.svg"
@@ -351,9 +358,29 @@ class MainWindow(QMainWindow):
         self.init_list_widget()
         self.init_stackwidget()
         self.init_single_slot()
+        
+        # Set initial page
+        self.main_content.setCurrentIndex(0)
+        self.side_menu.setCurrentRow(0)
+        self.side_menu_icon_only.setCurrentRow(0)
+
+    def logout(self):
+        msg_box = QtWidgets.QMessageBox(self)
+        msg_box.setWindowTitle("Log Out")
+        msg_box.setText("Do you want to log out?")
+        yes_button = msg_box.addButton(QMessageBox.StandardButton.Yes)
+        yes_button.setStyleSheet("width: 100px; height: 30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);")
+        msg_box.setStyleSheet(
+            "QMessageBox QLabel {font-size: 20px; min-height: 150px; min-width: 400px;}"
+            "QMessageBox QPushButton:hover {background-color: rgb(3, 105, 161); color: rgb(255, 255, 255);}"
+        )
+        reply = msg_box.exec()
+        if reply == QMessageBox.StandardButton.Yes:
+            subprocess.Popen([sys.executable, 'Interface/Login/login_main.py'])
+            self.close()
 
     def init_single_slot(self):
-
+        
         # Connect signals and slots for switching between menu items
         self.side_menu.currentRowChanged['int'].connect(self.main_content.setCurrentIndex)
         self.side_menu_icon_only.currentRowChanged['int'].connect(self.main_content.setCurrentIndex)
@@ -381,7 +408,6 @@ class MainWindow(QMainWindow):
             self.side_menu.addItem(item_new)
             self.side_menu.setCurrentRow(0)
             
-    
 
     def init_stackwidget(self):
         main_window = MyMainWindow()
@@ -395,12 +421,12 @@ class MainWindow(QMainWindow):
         test_ui.setupUi(test_window)
         test_ui2.setupUi(test_window2)
         # Add the QMainWindow to the QStackWidget
-        self.main_content.insertWidget(1, test_window)
-        self.main_content.insertWidget(2, test_window2)
-        self.main_content.insertWidget(3, main_window)                 
+        self.main_content.insertWidget(0, test_window)
+        self.main_content.insertWidget(1, test_window2)
+        self.main_content.insertWidget(2, main_window)        
+        
+         
     
-
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

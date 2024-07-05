@@ -69,3 +69,4 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.title_icon.setText(_translate("MainWindow", "TextLabel"))
         self.title_label.setText(_translate("MainWindow", "TextLabel"))
+        self.menu_btn.setText(_translate("MainWindow", "PushButton"))
