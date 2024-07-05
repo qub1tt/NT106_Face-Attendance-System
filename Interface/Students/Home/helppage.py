@@ -82,6 +82,7 @@ class HelpWindow(QMainWindow):
             <li>Take the photo at a moderate distance so that the face occupies most of the frame.</li>
             <li>Ensure the face is not obstructed by hair or accessories.</li>
             <li>The face must exhibit a natural expression, not squinting or too stiff.</li>
+            <li><strong>Photos are only supported in jpg format</strong>
         </ul>
         <h3 style="color: #007bff;">Using Camera:</h3>
         <ul>

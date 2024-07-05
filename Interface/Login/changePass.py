@@ -234,6 +234,33 @@ class Ui_ChangePass(object):
         self.lbl_error.setGeometry(QtCore.QRect(450, 370, 291, 31))
         self.lbl_error.setText("")
         self.lbl_error.setObjectName("lbl_error")
+        self.lbl_error.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.btnShowPassword = QtWidgets.QPushButton(parent=self.widget)
+        self.btnShowPassword.setGeometry(QtCore.QRect(710, 250, 31, 31))
+        self.btnShowPassword.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+                                           "font-size: 12px;\n"
+                                           "background-color: transparent;\n"
+                                           "font-weight: bold;\n"
+                                           "font-style: italic;")
+        self.btnShowPassword.setText("")
+
+        self.iconEyeOff = QtGui.QIcon("Interface/Png/Icon/eye.png")
+        self.iconEyeOn = QtGui.QIcon("Interface/Png/Icon/hideeye.png")
+        
+        self.btnShowPassword.setIcon(self.iconEyeOff)
+        self.btnShowPassword.setIconSize(QtCore.QSize(50, 50))
+        self.btnShowPassword.setObjectName("btnShowPassword")
+        self.btnShowPassword2 = QtWidgets.QPushButton(parent=self.widget)
+        self.btnShowPassword2.setGeometry(QtCore.QRect(710, 320, 31, 31))
+        self.btnShowPassword2.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+                                           "font-size: 12px;\n"
+                                           "background-color: transparent;\n"
+                                           "font-weight: bold;\n"
+                                           "font-style: italic;")
+        self.btnShowPassword2.setText("")
+        self.btnShowPassword2.setIcon(self.iconEyeOff)
+        self.btnShowPassword2.setIconSize(QtCore.QSize(50, 50))
+        self.btnShowPassword2.setObjectName("btnShowPassword2")
         self.lbl_backimg.raise_()
         self.label.raise_()
         self.lbl_image.raise_()
@@ -251,11 +278,13 @@ class Ui_ChangePass(object):
         self.label_9.raise_()
         self.label_10.raise_()
         self.lbl_error.raise_()
+        self.btnShowPassword.raise_()
+        self.btnShowPassword2.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+        
 
 
     def retranslateUi(self, MainWindow):
@@ -268,6 +297,31 @@ class Ui_ChangePass(object):
         self.lePassword_2.setPlaceholderText(_translate("MainWindow", "Enter your New Password"))
 
         self.btnLogin.clicked.connect(self.change_password_function)
+        self.passwordVisible = False  # Initialize the password visibility state
+        self.passwordVisible2 = False
+        self.btnShowPassword.clicked.connect(self.togglePasswordVisibility)
+        self.btnShowPassword2.clicked.connect(self.togglePasswordVisibility2)
+        
+    def togglePasswordVisibility(self):
+        if self.passwordVisible:
+            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+            self.btnShowPassword.setIcon(self.iconEyeOff)
+        else:
+            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
+            self.btnShowPassword.setIcon(self.iconEyeOn)
+
+        self.passwordVisible = not self.passwordVisible  # Toggle the visibility state
+        
+    def togglePasswordVisibility2(self):
+        if self.passwordVisible2:
+            self.lePassword_2.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+            self.btnShowPassword2.setIcon(self.iconEyeOff)
+        else:
+            self.lePassword_2.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
+            self.btnShowPassword2.setIcon(self.iconEyeOn)
+
+        self.passwordVisible2 = not self.passwordVisible2  # Toggle the visibility state
+        
     def change_password_function(self):
         # Lấy dữ liệu từ giao diện người dùng
         username = self.leUser.text()
@@ -328,9 +382,9 @@ class Ui_ChangePass(object):
                 if not self.is_strong_password(new_password):
                         print("Password is not strong enough!")
                         self.lbl_error.setStyleSheet("color:rgb(255, 0, 0);\n"
-                                                        "font-size: 18px;\n"
+                                                        "font-size: 10px;\n"
                                                         "font-weight: bold;")
-                        self.lbl_error.setText("Password is not strong enough!")
+                        self.lbl_error.setText("Password must be at least 8 characters long, contain \nuppercase and lowercase letters, digits, and special characters.")
                         return
 
                 hashed_new = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())

@@ -209,6 +209,7 @@ class Ui_Login(object):
 "font-weight: bold;\n"
 "font-style: italic;")
         self.pushButton.setObjectName("pushButton")
+        
         self.lbleror = QtWidgets.QLabel(parent=self.widget)
         self.lbleror.setGeometry(QtCore.QRect(50, 336, 291, 20))
         self.lbleror.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
@@ -217,6 +218,21 @@ class Ui_Login(object):
 "font-weight: bold;")
         self.lbleror.setText("")
         self.lbleror.setObjectName("lbleror")
+        self.btnShowPassword = QtWidgets.QPushButton(parent=self.widget)
+        self.btnShowPassword.setGeometry(QtCore.QRect(310, 270, 31, 31))
+        self.btnShowPassword.setStyleSheet("font-family: \"Roboto\", sans-serif;\n"
+                                           "font-size: 12px;\n"
+                                           "background-color: transparent;\n"
+                                           "font-weight: bold;\n"
+                                           "font-style: italic;")
+        self.btnShowPassword.setText("")
+
+        self.iconEyeOff = QtGui.QIcon("Interface/Png/Icon/eye.png")
+        self.iconEyeOn = QtGui.QIcon("Interface/Png/Icon/hideeye.png")
+        
+        self.btnShowPassword.setIcon(self.iconEyeOff)
+        self.btnShowPassword.setIconSize(QtCore.QSize(50, 50))
+        self.btnShowPassword.setObjectName("btnShowPassword")
         self.lbl_backimg.raise_()
         self.label.raise_()
         self.lbl_image.raise_()
@@ -232,16 +248,24 @@ class Ui_Login(object):
         self.btnForgotPassword.raise_()
         self.pushButton.raise_()
         self.lbleror.raise_()
+        self.btnShowPassword.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.passwordVisible = False  # Initialize the password visibility state
+        self.btnShowPassword.clicked.connect(self.togglePasswordVisibility)
 # dấu mật khẩu
     def togglePasswordVisibility(self):
-        if self.lePassword.echoMode() == QtWidgets.QLineEdit.EchoMode.Normal:
-                self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+        if self.passwordVisible:
+            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
+            self.btnShowPassword.setIcon(self.iconEyeOff)
         else:
-                self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
+            self.lePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
+            self.btnShowPassword.setIcon(self.iconEyeOn)
+
+        self.passwordVisible = not self.passwordVisible  # Toggle the visibility state
+    
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
