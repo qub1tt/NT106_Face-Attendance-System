@@ -150,7 +150,7 @@ class VideoStreamServer(QtCore.QObject):
     def __init__(self):
         super().__init__()
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = "172.20.10.14"
+        self.host_ip = "10.10.3.239"
         self.port = 9999
         self.server_socket.bind((self.host_ip, self.port))
         self.server_socket.listen()
