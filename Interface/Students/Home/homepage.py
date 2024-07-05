@@ -33,6 +33,14 @@ firebase_admin.initialize_app(cred, {"databaseURL":"https://faceregconition-80c5
                                      "storageBucket":"faceregconition-80c55.appspot.com"})
 
 user_id = None
+
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
 def match_with_database(img, database):
     # Detect faces in the frames
     # Convert the image to bytes
@@ -432,12 +440,11 @@ class MainWindow(QtWidgets.QMainWindow):
         # Initialize UDP socket and connect to server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
-        self.hostname = socket.gethostname()
-        self.IPAddr = socket.gethostbyname(self.hostname)
-        self.host_ip = self.IPAddr  # Change this to your server IP
+        self.host_ip = get_ip()
         self.port = 9999
         self.socket_address = (self.host_ip, self.port)
         self.additional_string = ""
+
 
         # Connect the "New" button click event to open_register_file function
         self.ui.NewButton.clicked.connect(self.open_register_file)
