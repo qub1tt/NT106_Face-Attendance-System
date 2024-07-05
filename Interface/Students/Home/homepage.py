@@ -490,7 +490,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = "192.168.100.93"
+        self.host_ip = "192.168.139.1"
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
@@ -632,7 +632,7 @@ class MainWindow(QtWidgets.QMainWindow):
                             date_check = DateCheckDialog()
                             if dialog.exec() == QDialog.DialogCode.Accepted:
                                 selected_class = dialog.get_selected_class()
-                                print(selected_class)
+
                                 if selected_class:  # Đảm bảo rằng đã chọn lớp học
                                     if not date_check.check_attendance_today(user_id, selected_class):
                                         self.ui.ID2.setText(_translate("FaceRecognition", user_id))
