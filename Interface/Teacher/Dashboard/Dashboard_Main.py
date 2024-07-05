@@ -206,11 +206,11 @@ class VideoStreamServer(QtCore.QObject):
 
             except socket.timeout:
                 self.clients[client_addr] = False
-                self.client_disconnected.emit(additional_string)
+                self.client_disconnected.emit(student_id)
                 break
 
         del self.clients[client_addr]
-        self.client_disconnected.emit(additional_string)
+        self.client_disconnected.emit(student_id)
         print(f"Connection with {client_addr} closed.")
 
 

@@ -19,9 +19,6 @@ from firebase_admin import db
 
 import firebase_init
 
-
-
-
 ref_admin = db.reference("Admin")
 admin_password_hash = ref_admin.child("Password").get().encode("utf-8")
 

@@ -1,1 +1,2 @@
-        self.show_login()
+
+class MainApp(QtWidgets.QMainWindow):

@@ -1,6 +1,6 @@
 import bcrypt
 
-password = "duyhoang1711"
+password = "hoangduy2003"
 
 hashed_password = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
 

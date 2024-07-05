@@ -5,6 +5,7 @@ from changePass import Ui_ChangePass
 from forgotPass import Ui_ForgotPass
 from confirmOTP import Ui_OTP
 
+
 class MainApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()

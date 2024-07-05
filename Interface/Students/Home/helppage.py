@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QWidget, QTextEdit, QHBoxLayout, QPushButton
 from PyQt6.QtCore import Qt
-import subprocess
+
 
 class HelpWindow(QMainWindow):
     def __init__(self):
