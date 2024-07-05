@@ -368,6 +368,9 @@ class MainWindow(QMainWindow):
         msg_box = QtWidgets.QMessageBox(self)
         msg_box.setWindowTitle("Log Out")
         msg_box.setText("Do you want to log out?")
+        no_button = msg_box.addButton(QMessageBox.StandardButton.No)
+        no_button.setStyleSheet("width: 100px; height: 30px; border-radius: 5px; font-size: 15px; background-color: rgb(255, 165, 165);")
+
         yes_button = msg_box.addButton(QMessageBox.StandardButton.Yes)
         yes_button.setStyleSheet("width: 100px; height: 30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);")
         msg_box.setStyleSheet(
@@ -378,6 +381,7 @@ class MainWindow(QMainWindow):
         if reply == QMessageBox.StandardButton.Yes:
             subprocess.Popen([sys.executable, 'Interface/Login/login_main.py'])
             self.close()
+       
 
     def init_single_slot(self):
         
