@@ -46,6 +46,12 @@ class SearchDialog(QtWidgets.QDialog):
         self.class_combo.setFixedSize(100, 35)
         self.class_combo.addItem("Select Class")
         self.class_combo.addItems(class_names)  # Thêm các tên lớp vào combo box
+
+        # Set the view to QListView and limit the height
+        list_view = QtWidgets.QListView(self.class_combo)
+        list_view.setMaximumHeight(150)  # Adjust this value as needed to limit to 5 items
+        self.class_combo.setView(list_view)
+
         search_layout.addWidget(self.class_combo)
 
         # Thêm các layout vào layout chính
@@ -79,7 +85,6 @@ class SearchDialog(QtWidgets.QDialog):
             self.search_input.setText(self.class_combo.currentText())
         else:
             self.search_input.setText(None)
-
 
     # Hàm trả về lớp được chọn
     def get_selected_class(self):
@@ -365,7 +370,8 @@ class Ui_Attendance(object):
                 row += 1
             set_read_only_flags(self.tableWidget)
         else:
-            qmb_custom("Warning", "Please select a class.")
+            qmb_custom("Warning", "No student in this class \nPlease select another class")
+            self.select_class()
 
     def checked_data(self):
         student_data_copy = dict(student_data)
