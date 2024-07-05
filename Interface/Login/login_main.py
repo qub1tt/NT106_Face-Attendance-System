@@ -1,5 +1,6 @@
 import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtGui import QIcon
 from login_ui import Ui_Login
 from changePass import Ui_ChangePass
 from forgotPass import Ui_ForgotPass
@@ -11,6 +12,7 @@ class MainApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Main Application')
+        self.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         self.setGeometry(100, 100, 800, 500)
 
         central_widget = QtWidgets.QWidget(self)

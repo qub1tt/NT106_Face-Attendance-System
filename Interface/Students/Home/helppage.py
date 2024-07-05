@@ -1,13 +1,14 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QWidget, QTextEdit, QHBoxLayout, QPushButton
 from PyQt6.QtCore import Qt
-
+from PyQt6.QtGui import QIcon
 
 class HelpWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Face Attendance System Help")
+        self.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         self.setGeometry(100, 100, 800, 600)
         self.center_window()
         layout = QVBoxLayout()

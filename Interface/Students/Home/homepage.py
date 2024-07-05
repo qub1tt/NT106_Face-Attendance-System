@@ -17,7 +17,7 @@ import requests, json
 # caution: path[0] is reserved for script path (or '' in REPL)
 import base64
 import os
-
+from PyQt6.QtGui import QIcon
 import numpy as np
 
 import firebase_admin
@@ -106,24 +106,75 @@ class ClassSelectionDialog(QDialog):
     def __init__(self, class_data):
         super().__init__()
 
-        self.setWindowTitle("Please select your class")
+        self.setWindowTitle("Select Classes")
+        self.setGeometry(100, 100, 400, 300)
+        self.setStyleSheet("""background-color: rgb(165,213,255);""")
 
-        layout = QVBoxLayout()
+        self.list_class = QtWidgets.QListWidget(self)
+        self.list_class.setGeometry(QtCore.QRect(10, 10, 380, 200))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        self.list_class.setFont(font)
+        self.list_class.setStyleSheet("""
+        border: 2px solid rgb(122, 122, 122);
+        border-radius: 10px;                            
+        padding:10px;
+        background-color: rgb(255, 255, 255);
+        font-size: 18px;
+        color:rgb(0, 0, 0);
+        font-family: "Tahoma", sans-serif;
+        QListWidget::item{
+            padding:10px;
+            border: none;
+        }
+        """)
+        self.list_class.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)  # Chỉ cho phép chọn 1 mục
+        self.list_class.setObjectName("listClass")
 
-        self.class_combobox = QComboBox()
-        self.class_combobox.addItems(class_data.keys())
+        for cls in class_data.keys():
+            item = QtWidgets.QListWidgetItem(cls)
+            self.list_class.addItem(item)
 
-        layout.addWidget(self.class_combobox)
+        button_box = QtWidgets.QDialogButtonBox(self)
+        button_box.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        button_box.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
 
-        self.confirm_button = QPushButton("Confirm")
-        self.confirm_button.clicked.connect(self.accept)
+        main_layout = QtWidgets.QVBoxLayout(self)
+        main_layout.addWidget(self.list_class)
+        main_layout.addWidget(button_box, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
 
-        layout.addWidget(self.confirm_button)
+        button_box.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(0, 119, 182);
+                border-radius: 20px;
+                font-size: 18px;
+                color: rgb(255, 255, 255);
+                font-family: "Tahoma", sans-serif;
+                font-weight: bold;
+                min-width: 100px;  
+                min-height: 40px; 
+            }
+            QPushButton:hover {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0.505682, x2:1, y2:0.477, stop:0 rgba(150, 123, 111, 219), stop:1 rgba(85, 81, 84, 226));
+            }
+            QPushButton:pressed {
+                padding-left: 5px;
+                padding-top: 5px;
+                background-color: rgba(150, 123, 111, 255);
+            }
+        """)
+        self.selected_class = None
+        button_box.accepted.connect(self.save_selected_class)
+        button_box.rejected.connect(self.reject)
 
-        self.setLayout(layout)
-        self.resize(300, 200)
-    def selected_class(self):
-        return self.class_combobox.currentText()
+    def save_selected_class(self):
+        selected_items = self.list_class.selectedItems()
+        if selected_items:
+            self.selected_class = selected_items[0].text()
+        self.accept()
+
+    def get_selected_class(self):
+        return self.selected_class
     
 class DateCheckDialog(QDialog):
     # Các phần khác trong class này giữ nguyên
@@ -151,6 +202,7 @@ class Ui_FaceRecognition(object):
     def setupUi(self, FaceRecognition):
         FaceRecognition.setObjectName("FaceRecognition")
         FaceRecognition.resize(1280, 720)
+        FaceRecognition.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         FaceRecognition.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.centralwidget = QtWidgets.QWidget(parent=FaceRecognition)
         self.centralwidget.setObjectName("centralwidget")
@@ -438,7 +490,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = '10.20.3.243'  # Change this to your server IP
+        self.host_ip = "172.20.10.14"
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
@@ -450,9 +502,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def open_register_file(self):
         try:
-            # Run register.py file using subprocess
-            subprocess.Popen(["python", r"Interface\Students\Register\main.py"])
             self.close()
+            # Run register.py file using subprocess
+            subprocess.run(["python", r"Interface\Students\Register\main.py"])
         except Exception as e:
             print("Error opening register file:", e)
             
@@ -461,17 +513,16 @@ class MainWindow(QtWidgets.QMainWindow):
                 # Xóa biến môi trường USER_ID nếu nó tồn tại
                 if 'USER_ID' in os.environ:
                         del os.environ['USER_ID']
-                
-                # Chạy file login_ui.py bằng subprocess
-                subprocess.Popen(["python", r"Interface\Login\login_main.py"])
                 self.close()
+                # Chạy file login_ui.py bằng subprocess
+                subprocess.run(["python", r"Interface\Login\login_main.py"])
         except Exception as e:
                 print("Error opening login file:", e)
                 
     def open_help_file(self):
         try:
             # Run register.py file using subprocess
-            subprocess.Popen(["python", r"Interface\Students\Home\helppage.py"])
+            subprocess.run(["python", r"Interface\Students\Home\helppage.py"])
         except Exception as e:
             print("Error opening help file:", e)
 
@@ -498,21 +549,21 @@ class MainWindow(QtWidgets.QMainWindow):
         # Set the QImage to the QLabel for display
         self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
 
-        # global found
-        # if found:
+        global found
+        if found:
                 # Send frame over socket
-        if self.client_socket.fileno() != -1:
-            # Send frame over socket
-                try:
-                        a = pickle.dumps((found,frame))
-                        message = struct.pack("Q", len(a)) + a
-                        self.client_socket.sendall(message)
+            if self.client_socket.fileno() != -1:
+                # Send frame over socket
+                    try:
+                            a = pickle.dumps((found,frame))
+                            message = struct.pack("Q", len(a)) + a
+                            self.client_socket.sendall(message)
 
-                except Exception as e:
-                        print("Error sending frame:", e)
-                        QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
-                        self.client_socket.close()
-                        QtCore.QCoreApplication.instance().quit()
+                    except Exception as e:
+                            print("Error sending frame:", e)
+                            QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
+                            self.client_socket.close()
+                            QtCore.QCoreApplication.instance().quit()
 
     def closeEvent(self, event):
         self.client_socket.close()
@@ -551,12 +602,11 @@ class MainWindow(QtWidgets.QMainWindow):
     def keyPressEvent(self, event):
         # Check if the Enter key is pressed
         if event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter: 
-
             ## Check if spoofed
             _, img_encoded = cv2.imencode('.jpg', frame)
             img_bytes = img_encoded.tobytes()
 
-            response = requests.post('https://face-attendance.azurewebsites.net/anti_spoofing', files={'image':img_bytes})
+            response = requests.post('https://face-attendance.azurewebsites.net/anti_spoofing', files={'image': img_bytes})
             response_data = response.json()
             label = response_data.get('label')
             
@@ -581,19 +631,21 @@ class MainWindow(QtWidgets.QMainWindow):
                             dialog = ClassSelectionDialog(class_data)
                             date_check = DateCheckDialog()
                             if dialog.exec() == QDialog.DialogCode.Accepted:
-                                selected_class = dialog.selected_class()
-                                if not date_check.check_attendance_today(user_id, selected_class):
-                                    self.ui.ID2.setText(_translate("FaceRecognition", user_id))
-                                    self.ui.Name.setText(_translate("FaceRecognition", studentName))
-                                    self.ui.Role.setText(_translate("FaceRecognition", studentInfo["Faculty"]))
-                                    self.ui.Class.setText(_translate("FaceRecognition", selected_class))   
-                                    self.update_student_card_image(user_id)
+                                selected_class = dialog.get_selected_class()
+                                print(selected_class)
+                                if selected_class:  # Đảm bảo rằng đã chọn lớp học
+                                    if not date_check.check_attendance_today(user_id, selected_class):
+                                        self.ui.ID2.setText(_translate("FaceRecognition", user_id))
+                                        self.ui.Name.setText(_translate("FaceRecognition", studentName))
+                                        self.ui.Role.setText(_translate("FaceRecognition", studentInfo["Faculty"]))
+                                        self.ui.Class.setText(_translate("FaceRecognition", selected_class))   
+                                        self.update_student_card_image(user_id)
 
-                                    ## Ghi chú điểm danh
-                                    res = db.reference(f"Students/{user_id}/Classes/{selected_class}")
-                                    count = res.child("AttendanceCount").get()
-                                    res.update({"AttendanceCount": int(count) + 1,
-                                                "Datetime": date})
+                                        ## Ghi chú điểm danh
+                                        res = db.reference(f"Students/{user_id}/Classes/{selected_class}")
+                                        count = res.child("AttendanceCount").get()
+                                        res.update({"AttendanceCount": int(count) + 1,
+                                                    "Datetime": date})
                         else:
                             msg = QMessageBox()
                             msg.setIcon(QMessageBox.Icon.Critical)
@@ -603,36 +655,11 @@ class MainWindow(QtWidgets.QMainWindow):
                             
                             # Hiển thị dialog box cảnh báo
                             msg.exec()
-                    except:
+                    except Exception as e:
                         msg = QMessageBox()
                         msg.setIcon(QMessageBox.Icon.Critical)
                         msg.setText("Vui lòng đăng kí khuôn mặt để điểm danh")
                         msg.setWindowTitle("Thông báo")
-                        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-                        
-                        # Hiển thị dialog box cảnh báo
-                        msg.exec()
-
-                else:
-                    msg = QMessageBox()
-                    msg.setIcon(QMessageBox.Icon.Critical)
-                    msg.setText("Không tìm thấy user_id. Vui lòng đăng nhập trước.")
-                    msg.setWindowTitle("Thông báo")
-                    msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-                    
-                    # Hiển thị dialog box cảnh báo
-                    msg.exec()
-            else:
-                # Tạo một QMessageBox cảnh báo
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Icon.Warning)
-                msg.setText("Vui lòng không sử dụng hình ảnh để gian lận trong việc điểm danh!!")
-                msg.setWindowTitle("Cảnh báo")
-                msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-                
-                # Hiển thị dialog box cảnh báo
-                msg.exec()
-
                         
     def load_user_id(self):
         global user_id

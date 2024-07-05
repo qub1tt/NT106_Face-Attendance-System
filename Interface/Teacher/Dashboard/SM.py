@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtGui import QIcon
 from openpyxl import Workbook
 import re
 
@@ -18,7 +19,7 @@ class SearchDialog(QtWidgets.QDialog):
 
         # Thiết lập tiêu đề của cửa sổ
         self.setWindowTitle("Select Class")
-        
+        self.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         self.setFixedSize(445, 225)
 
         # Tạo layout chính của cửa sổ
@@ -107,7 +108,7 @@ class AdvancedSearchDialog(QtWidgets.QDialog):
 
         self.setWindowTitle("Find Student ID")
         self.setFixedSize(445, 225)
-
+        self.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         main_layout = QtWidgets.QVBoxLayout()
 
         search_layout = QtWidgets.QHBoxLayout()
@@ -163,7 +164,7 @@ class UpdateDialog(QtWidgets.QDialog):
         # Thiết lập tiêu đề của cửa sổ
         self.setWindowTitle("Update Student")
         self.setFixedSize(445, 225)
-
+        self.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         # Tạo layout chính của cửa sổ
         main_layout = QtWidgets.QVBoxLayout()
 

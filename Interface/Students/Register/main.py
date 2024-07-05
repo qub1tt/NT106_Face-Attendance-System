@@ -131,9 +131,9 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
 
     def open_login_file(self):
         try:
+            self.close()
             # Run register.py file using subprocess
             subprocess.Popen(["python", r"Interface\Students\Home\homepage.py"])
-            self.close()
         except Exception as e:
             print("Error opening homepage file:", e)
             

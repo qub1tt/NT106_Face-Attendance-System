@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtGui import QIcon
 from confirmOTP import Ui_OTP
 from newpass import Ui_ChangePass
 
@@ -57,6 +58,7 @@ class Ui_ForgotPass(object):
         
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(785, 498)
+        MainWindow.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
@@ -287,9 +289,9 @@ class Ui_ForgotPass(object):
 
     def open_login_file(self):
         try:
-                # Chạy file login_ui.py bằng subprocess
-                subprocess.Popen(["python", r"Interface\Login\login_main.py"])
                 self.MainWindow.close()
+                # Chạy file login_ui.py bằng subprocess
+                subprocess.run(["python", r"Interface\Login\login_main.py"])
         except Exception as e:
                 print("Error opening login file:", e)
                 

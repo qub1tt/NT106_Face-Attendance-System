@@ -7,8 +7,8 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtGui import QIcon
 import subprocess
-from PyQt6 import QtCore, QtGui, QtWidgets
 import bcrypt
 import os
 
@@ -29,6 +29,7 @@ class Ui_Login(object):
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
         MainWindow.setObjectName("MainWindow")
+        MainWindow.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         MainWindow.resize(785, 498)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -282,8 +283,7 @@ class Ui_Login(object):
                     os.environ['USER_ID'] = user
                     self.MainWindow.close()  # Close the login window
                     # Thực hiện các hành động sau khi đăng nhập thành công (Admin)
-                    subprocess.Popen(["python", r"Interface/Teacher/Dashboard/Dashboard_main.py"])
-                    self.MainWindow.close()
+                    subprocess.run(["python", r"Interface/Teacher/Dashboard/Dashboard_Main.py"])
                     return
                 else:
                     self.lbleror.setStyleSheet("color:rgb(255, 0, 0);\n"
@@ -309,7 +309,7 @@ class Ui_Login(object):
                     os.environ['USER_ID'] = user
                     self.MainWindow.close()  # Close the login window
                     # Thực hiện các hành động sau khi đăng nhập thành công (Student)
-                    subprocess.Popen(["python", r"Interface/Students/Home/homepage.py"])
+                    subprocess.run(["python", r"Interface/Students/Home/homepage.py"])
                     self.MainWindow.close()
                     return
                 else:

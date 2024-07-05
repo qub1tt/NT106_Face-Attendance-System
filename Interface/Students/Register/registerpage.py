@@ -8,11 +8,12 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QListWidget, QPushButton, QVBoxLayout, QMessageBox, QApplication, QWidget, QLabel, QFileDialog, QListWidgetItem, QDialog, QDialogButtonBox
-
+from PyQt6.QtGui import QIcon
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(930, 758)
+        MainWindow.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
