@@ -39,9 +39,7 @@ class Ui_CheckCamera(object):
                 border: none;
             }
             #Header #NameSW {
-                font-family: "Roboto", sans-serif;
-                font-size: 25px;
-                font-weight: bold;
+                font: 75 20pt \"Berlin Sans FB Demi\";
             }
             #result_frame {
                 border-radius: 10px;
@@ -369,13 +367,13 @@ class MainWindow(QMainWindow):
         msg_box.setWindowTitle("Log Out")
         msg_box.setText("Do you want to log out?")
         no_button = msg_box.addButton(QMessageBox.StandardButton.No)
-        no_button.setStyleSheet("width: 100px; height: 30px; border-radius: 5px; font-size: 15px; background-color: rgb(255, 165, 165);")
+        no_button.setStyleSheet("width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);")
 
         yes_button = msg_box.addButton(QMessageBox.StandardButton.Yes)
-        yes_button.setStyleSheet("width: 100px; height: 30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);")
+        yes_button.setStyleSheet("width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);")
         msg_box.setStyleSheet(
-            "QMessageBox QLabel {font-size: 20px; min-height: 150px; min-width: 400px;}"
-            "QMessageBox QPushButton:hover {background-color: rgb(3, 105, 161); color: rgb(255, 255, 255);}"
+            "QMessageBox QLabel {font: 15pt \"Berlin Sans FB\"; min-height:150 px; min-width: 400px;}"
+            "QMessageBox QPushButton:hover {background-color: rgb(3, 105, 161); color: rgb(255,255,255);}"
         )
         reply = msg_box.exec()
         if reply == QMessageBox.StandardButton.Yes:
