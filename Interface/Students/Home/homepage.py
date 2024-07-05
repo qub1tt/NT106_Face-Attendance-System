@@ -468,6 +468,7 @@ class Ui_FaceRecognition(object):
         global _translate 
         _translate = QtCore.QCoreApplication.translate
         FaceRecognition.setWindowTitle(_translate("FaceRecognition", "Homepage"))
+        FaceRecognition.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         self.School.setText(_translate("FaceRecognition", "UIT"))
         self.Name.setText(_translate("FaceRecognition", "NAME"))
         self.Role.setText(_translate("FaceRecognition", "FACULTY"))
@@ -490,7 +491,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = "192.168.139.1"
+        self.host_ip = "192.168.100.93"
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
@@ -502,6 +503,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def open_register_file(self):
         try:
+            # Dừng camera trước khi chuyển sang màn hình đăng nhập
+            self.stop_camera()
             self.close()
             # Run register.py file using subprocess
             subprocess.run(["python", r"Interface\Students\Register\main.py"])
@@ -510,14 +513,20 @@ class MainWindow(QtWidgets.QMainWindow):
             
     def open_login_file(self):
         try:
-                # Xóa biến môi trường USER_ID nếu nó tồn tại
-                if 'USER_ID' in os.environ:
-                        del os.environ['USER_ID']
-                self.close()
-                # Chạy file login_ui.py bằng subprocess
-                subprocess.run(["python", r"Interface\Login\login_main.py"])
+            # Xóa biến môi trường USER_ID nếu nó tồn tại
+            if 'USER_ID' in os.environ:
+                del os.environ['USER_ID']
+            
+            # Dừng camera trước khi chuyển sang màn hình đăng nhập
+            self.stop_camera()
+
+            self.close()
+            
+            # Chạy file login_ui.py bằng subprocess
+            subprocess.run(["python", r"Interface\Login\login_main.py"])
+
         except Exception as e:
-                print("Error opening login file:", e)
+            print("Error opening login file:", e)
                 
     def open_help_file(self):
         try:
@@ -568,6 +577,13 @@ class MainWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         self.client_socket.close()
         event.accept()
+    
+    def stop_camera(self):
+        if hasattr(self, 'timer'):
+            self.timer.stop()
+        if hasattr(self, 'vid') and self.vid.isOpened():
+            self.vid.release()
+        self.ui.BorderCamera_2.clear()
         
 
     def update_student_card_image(self, student_id):
@@ -632,7 +648,7 @@ class MainWindow(QtWidgets.QMainWindow):
                             date_check = DateCheckDialog()
                             if dialog.exec() == QDialog.DialogCode.Accepted:
                                 selected_class = dialog.get_selected_class()
-
+                                print(selected_class)
                                 if selected_class:  # Đảm bảo rằng đã chọn lớp học
                                     if not date_check.check_attendance_today(user_id, selected_class):
                                         self.ui.ID2.setText(_translate("FaceRecognition", user_id))

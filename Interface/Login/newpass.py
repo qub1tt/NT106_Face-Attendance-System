@@ -254,7 +254,7 @@ class Ui_ChangePass(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Main Application"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Login"))
         self.label_2.setText(_translate("MainWindow", "CHANGE NEW PASSWORD"))
         self.btnLogin.setText(_translate("MainWindow", "Change"))
         self.lePassword.setPlaceholderText(_translate("MainWindow", "Enter your New Password"))

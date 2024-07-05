@@ -182,7 +182,7 @@ class Ui_OTP(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Main Application"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Login"))
         self.label_2.setText(_translate("MainWindow", "OTP VERIFICATION"))
         self.leUser.setPlaceholderText(_translate("MainWindow", "Enter OTP"))
         self.btnLogin.setText(_translate("MainWindow", "Confirm OTP"))

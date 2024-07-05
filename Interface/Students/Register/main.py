@@ -133,7 +133,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
         try:
             self.close()
             # Run register.py file using subprocess
-            subprocess.Popen(["python", r"Interface\Students\Home\homepage.py"])
+            subprocess.run(["python", r"Interface\Students\Home\homepage.py"])
         except Exception as e:
             print("Error opening homepage file:", e)
             
@@ -369,6 +369,7 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
     def open_class_selection_dialog(self):
         dialog = QtWidgets.QDialog()
         dialog.setWindowTitle("Select Classes")
+        dialog.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         dialog.setGeometry(100, 100, 400, 300)
         dialog.setStyleSheet("""background-color: rgb(165,213,255);""")
         list_class = QtWidgets.QListWidget(dialog)

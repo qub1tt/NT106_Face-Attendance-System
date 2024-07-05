@@ -11,7 +11,7 @@ from confirmOTP import Ui_OTP
 class MainApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('Main Application')
+        self.setWindowTitle('Login')
         self.setWindowIcon(QIcon("Interface/Png/Icon/face-id.png"))
         self.setGeometry(100, 100, 800, 500)
 
