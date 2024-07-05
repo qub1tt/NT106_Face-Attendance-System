@@ -442,7 +442,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
-        self.client_socket.sendto(self.message,(self.host_ip,self.port))
 
         # Connect the "New" button click event to open_register_file function
         self.ui.NewButton.clicked.connect(self.open_register_file)
