@@ -439,12 +439,15 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # Initialize UDP socket and connect to server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
         self.client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
-        self.host_ip = get_ip()
+        self.host_ip = "192.168.139.1"
         self.port = 9999
         self.socket_address = (self.host_ip, self.port)
         self.additional_string = ""
+        self.message = b'Hello'
 
+        self.client_socket.sendto(self.message,(self.host_ip,self.port))
 
         # Connect the "New" button click event to open_register_file function
         self.ui.NewButton.clicked.connect(self.open_register_file)
