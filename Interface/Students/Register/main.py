@@ -38,7 +38,7 @@ def is_valid_email(email):
     return re.search(regex, email)
 
 def is_valid_text_with_spaces(text):
-    regex = r'^[a-zA-Z\s]+$'
+    regex = r'^[a-zA-Z\s&\-_]+$'
     return re.match(regex, text)
 
 def is_valid_year(year):
@@ -200,7 +200,10 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
     def add_student(self):
         global global_image_data, global_image_extension, global_update_information
         missing_fields = []
-
+        self.labelError.setStyleSheet("color:rgb(255, 0, 0);\n"
+                                              "font-weight: bold;\n"
+                                              "font-size: 16px;\n")
+        self.labelError.setText("")
         if self.txtStuID.text() == '':
             missing_fields.append("Student ID")
         elif not is_valid_student_id(self.txtStuID.text()):
@@ -288,13 +291,30 @@ class RegisterPage(QMainWindow, RegisterPageWindow):
                 if not global_update_information:
                     classes_ref = user_ref.child('Classes/')
                     for c in classes:
-                        now = datetime.datetime.now()
-                        date = now.strftime("%Y-%m-%d %H:%M:%S")
                         class_ref = classes_ref.child(c)
                         class_ref.update({
                             'AttendanceCount': 0,
-                            'Datetime': date
+                            'Datetime': ""
                         })
+
+                else:
+                    classes_ref = user_ref.child('Classes/')
+                    existing_classes = classes_ref.get().keys()
+                    
+                    # Xóa các lớp không còn trong danh sách classes
+                    for existing_class in existing_classes:
+                        if existing_class not in classes:
+                            class_ref = classes_ref.child(existing_class)
+                            class_ref.delete()
+                            
+                    # Thêm các lớp mới không tồn tại trong existing_classes
+                    for c in classes:
+                        if c not in existing_classes:
+                            class_ref = classes_ref.child(c)
+                            class_ref.update({
+                                'AttendanceCount': 0,
+                                'Datetime': ""
+                            })
 
                 bucket = storage.bucket()
                 blob = bucket.blob(f'images/{self.txtStuID.text()}{global_image_extension}')
