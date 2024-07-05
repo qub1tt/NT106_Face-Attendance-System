@@ -427,7 +427,6 @@ class Ui_FaceRecognition(object):
         self.New.setText(_translate("FaceRecognition", "New"))
         self.Exit.setText(_translate("FaceRecognition", "Exit"))
 
-BUFF_SIZE = 65536
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -437,13 +436,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.start_camera()
         self.load_user_id()
         
-        # Initialize UDP socket and connect to server
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
-        self.host_ip = get_ip()
+        # Khởi tạo socket và kết nối tới server
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.host_ip = '10.20.3.243'  # Change this to your server IP
         self.port = 9999
-        self.socket_address = (self.host_ip, self.port)
-        self.additional_string = ""
+        self.client_socket.connect((self.host_ip, self.port))
 
 
         # Connect the "New" button click event to open_register_file function
@@ -490,46 +487,36 @@ class MainWindow(QtWidgets.QMainWindow):
         global frame
         ret, frame = self.vid.read()
 
-        if ret:
-            # Resize frame for consistent transmission
-            frame = cv2.resize(frame, (400, 300))
-            encoded, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
-            message = base64.b64encode(buffer)
+        # Convert frame to RGB format
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            global found
-            if found:
-                if self.client_socket.fileno() != -1:
-                    # Send frame over socket
-                    try:
-                        combined_message = base64.b64encode((self.additional_string+found).encode()) + b'||' + message
-                        self.client_socket.sendto(combined_message, self.socket_address)
-                    except Exception as e:
+        # Convert frame to QImage
+        height, width, channel = frame_rgb.shape
+        bytes_per_line = 3 * width
+        q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
+        
+        # Set the QImage to the QLabel for display
+        self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
+
+        # global found
+        # if found:
+                # Send frame over socket
+        if self.client_socket.fileno() != -1:
+            # Send frame over socket
+                try:
+                        a = pickle.dumps((found,frame))
+                        message = struct.pack("Q", len(a)) + a
+                        self.client_socket.sendall(message)
+
+                except Exception as e:
                         print("Error sending frame:", e)
                         QtWidgets.QMessageBox.critical(self, "Error", "Error sending frame. Application will be closed.")
                         self.client_socket.close()
                         QtCore.QCoreApplication.instance().quit()
 
-            # Convert frame to RGB format for display
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-            # Convert frame to QImage
-            height, width, channel = frame_rgb.shape
-            bytes_per_line = 3 * width
-            q_img = QtGui.QImage(frame_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format.Format_RGB888)
-
-            # Set the QImage to the QLabel for display
-            self.ui.BorderCamera_2.setPixmap(QtGui.QPixmap.fromImage(q_img))
-
     def closeEvent(self, event):
-        # Send a final message to server before closing
-        try:
-            self.client_socket.sendto(b'DISCONNECT', self.socket_address)
-        except Exception as e:
-            print("Error sending disconnect message:", e)
-        finally:
-            # Close the socket when closing the application
-            self.client_socket.close()
-            event.accept()
+        self.client_socket.close()
+        event.accept()
         
 
     def update_student_card_image(self, student_id):
