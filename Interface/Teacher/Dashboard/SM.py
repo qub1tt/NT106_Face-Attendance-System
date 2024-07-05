@@ -1,9 +1,6 @@
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
 from PyQt6 import QtCore, QtGui, QtWidgets
 from openpyxl import Workbook
-import requests
+import re
 
 from firebaseconfig import class_ref, students_ref
 
@@ -69,7 +66,7 @@ class SearchDialog(QtWidgets.QDialog):
         self.search_input.textChanged.connect(self.filter_completion)
         
         self.setStyleSheet(
-            "QPushButton{min-width:100px; height:30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);} QLineEdit{width:250px; height: 35px;font-size: 15px; padding-left: 5px; border: 1px solid black; border-radius: 5px} QCompleter{font-size: 15px} QComboBox{padding-left: 5px;  height: 35px; font-size: 15px;}"
+            "QPushButton{min-width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);} QLineEdit{width:250px; height: 35px;font-size: 15px; padding-left: 5px; border: 1px solid black; border-radius: 5px} QCompleter{font-size: 15px} QComboBox{padding-left: 5px;  height: 35px; font-size: 15px;}"
             )
 
     # Hàm cập nhật ô nhập khi chọn một lớp từ combo box
@@ -134,7 +131,7 @@ class AdvancedSearchDialog(QtWidgets.QDialog):
         button_layout.addWidget(self.ok_button)
 
         self.setStyleSheet(
-        "QPushButton{min-width:100px; height:30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);} QLineEdit{width:250px; height: 35px;font-size: 15px; padding-left: 5px; border: 1px solid black; border-radius: 5px} QCompleter{font-size: 15px} QComboBox{padding-left: 5px;  height: 35px; font-size: 15px;}"
+        "QPushButton{min-width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);} QLineEdit{width:250px; height: 35px;font-size: 15px; padding-left: 5px; border: 1px solid black; border-radius: 5px} QCompleter{font-size: 15px} QComboBox{padding-left: 5px;  height: 35px; font-size: 15px;}"
         )
 
         main_layout.addLayout(button_layout)
@@ -207,7 +204,7 @@ class UpdateDialog(QtWidgets.QDialog):
         self.field_combo.currentIndexChanged.connect(self.update_value_input)
 
         self.setStyleSheet(
-            "QPushButton{min-width:100px; height:30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);} QLineEdit{width:250px; height: 35px;font-size: 15px; padding-left: 5px; border: 1px solid black; border-radius: 5px} QComboBox{padding-left: 5px;  height: 35px; font-size: 15px;}"
+            "QPushButton{min-width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);} QLineEdit{width:250px; height: 35px;font-size: 15px; padding-left: 5px; border: 1px solid black; border-radius: 5px} QComboBox{padding-left: 5px;  height: 35px; font-size: 15px;}"
         )
 
     # Hàm cập nhật ô nhập khi chọn một trường từ combo box
@@ -252,9 +249,7 @@ class Ui_StudentManagement(object):
 "}\n"
 "\n"
 "#Header #NameSW{\n"
-"    font-family: \"Robotol\", sans-serif;\n"
-"    font-size: 25px;\n"
-"    font-weight: bold;\n"
+"    font: 75 20pt \"Berlin Sans FB Demi\";\n"
 "}\n"
 "\n"
 "#result_frame {\n"
@@ -272,12 +267,14 @@ class Ui_StudentManagement(object):
 "    border: none;\n"
 "    border-bottom: 1px solid black;\n"
 "    padding: 3px 5px;\n"
+"    	font: 12pt \"Berlin Sans FB\";"
 "}\n"
 "\n"
 "QTableWidget::Item {\n"
 "    border-bottom: 1px solid rgb(212, 212, 212);\n"
 "    color: #000;\n"
 "    padding-left: 3px;\n"
+"    font: 12pt \"Berlin Sans FB\";"
 "}\n"
 "\n"
 "#btn_frame {\n"
@@ -289,6 +286,7 @@ class Ui_StudentManagement(object):
 "#btn_frame QPushButton{\n"
 "    background-color: #a5d5ff;\n"
 "    border-radius: 10px;\n"
+"    font: 75 14pt \"Berlin Sans FB Demi\";\n"
 "}\n"
 "\n"
 "#btn_frame #delete_btn{\n"
@@ -404,16 +402,12 @@ class Ui_StudentManagement(object):
         self.btn_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.btn_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.btn_frame.setObjectName("btn_frame")
-        self.update_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.update_btn.setGeometry(QtCore.QRect(550, 20, 111, 41))
-        self.update_btn.setStyleSheet("")
-        self.update_btn.setObjectName("update_btn")
         self.search_btn = QtWidgets.QPushButton(parent=self.btn_frame)
         self.search_btn.setGeometry(QtCore.QRect(380, 20, 111, 41))
         self.search_btn.setStyleSheet("")
         self.search_btn.setObjectName("search_btn")
         self.delete_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.delete_btn.setGeometry(QtCore.QRect(890, 20, 111, 41))
+        self.delete_btn.setGeometry(QtCore.QRect(720, 20, 111, 41))
         self.delete_btn.setStyleSheet("")
         self.delete_btn.setObjectName("delete_btn")
         self.read_btn = QtWidgets.QPushButton(parent=self.btn_frame)
@@ -421,11 +415,11 @@ class Ui_StudentManagement(object):
         self.read_btn.setStyleSheet("")
         self.read_btn.setObjectName("read_btn")
         self.Diem_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.Diem_btn.setGeometry(QtCore.QRect(720, 20, 111, 41))
+        self.Diem_btn.setGeometry(QtCore.QRect(550, 20, 111, 41))
         self.Diem_btn.setStyleSheet("")
         self.Diem_btn.setObjectName("Diem_btn")
         self.export_btn = QtWidgets.QPushButton(parent=self.btn_frame)
-        self.export_btn.setGeometry(QtCore.QRect(1060, 20, 111, 41))
+        self.export_btn.setGeometry(QtCore.QRect(890, 20, 111, 41))
         self.export_btn.setStyleSheet("")
         self.export_btn.setObjectName("export_btn")
         self.class_btn = QtWidgets.QPushButton(parent=self.btn_frame)
@@ -456,18 +450,16 @@ class Ui_StudentManagement(object):
         item.setText(_translate("StudentManagement", "Year"))
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("StudentManagement", "Mark"))
-        self.update_btn.setText(_translate("StudentManagement", "Update"))
         self.search_btn.setText(_translate("StudentManagement", "Search"))
         self.delete_btn.setText(_translate("StudentManagement", "Delete"))
         self.read_btn.setText(_translate("StudentManagement", "Read"))
         self.Diem_btn.setText(_translate("StudentManagement", "Mark"))
         self.export_btn.setText(_translate("StudentManagement", "Export"))
-        self.class_btn.setText(_translate("StudentManagement", "Select Class"))
+        self.class_btn.setText(_translate("StudentManagement", "Select"))
 
         self.class_btn.clicked.connect(self.select_class)
         self.read_btn.clicked.connect(self.load_data)
         self.search_btn.clicked.connect(self.search_data)
-        self.update_btn.clicked.connect(self.update_data)
         self.delete_btn.clicked.connect(self.delete_data)
         self.Diem_btn.clicked.connect(self.calculate_data)
         self.export_btn.clicked.connect(self.export_data)
@@ -494,19 +486,18 @@ class Ui_StudentManagement(object):
                 
                 if selected_class:
                     if selected_class in class_names:
-                        self.label_class.setText("Class: " + selected_class)
-                        font = QtGui.QFont()
-                        font.setPointSize(20)
-                        font.setBold(True)
-                        self.label_class.setFont(font)
+                        self.label_class.setText("CLASS: " + selected_class)
+                        self.label_class.setStyleSheet("font: 75 22pt \"Berlin Sans FB Demi\";")
                         # Lọc dữ liệu sinh viên dựa trên lớp đã chọn
                         self.tableWidget.clearContents()
                         self.tableWidget.setRowCount(0)
                         self.filter_student_data(selected_class)
+                    elif selected_class == "":
+                        qmb_custom("No Classes", "Please select a class")
+                        self.select_class()
                     else:
                         qmb_custom("No Classes", "No classes found, please try again later.")
-        else:
-            qmb_custom("No Classes", "No classes found, please try again later.")
+                        self.select_class()
             
 
     def filter_student_data(self, selected_class):
@@ -549,10 +540,12 @@ class Ui_StudentManagement(object):
                 if selected_student in student_data:
                     student_info = student_data[selected_student]
                     self.display_search_result(selected_student, student_info)
+                elif selected_student == "":
+                    qmb_custom('Search Student', 'Please enter a Student ID.')
+                    self.search_data()
                 else:
                     qmb_custom('Search Student', 'Student ID not found.')
-            else:
-                qmb_custom('Search Student', 'Please enter a Student ID.')
+                    self.search_data()
         else:
             qmb_custom("Warning", "Please select a class.")
 
@@ -567,37 +560,7 @@ class Ui_StudentManagement(object):
         year_str = str(student_info.get("Year", ""))
         self.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem(year_str))
         set_read_only_flags(self.tableWidget)
-    
 
-    def update_data(self):
-        if student_data:
-            # Lấy danh sách các sinh viên
-            students = list(student_data.keys())
-
-            # Hiển thị cửa sổ tìm kiếm nâng cao và lấy ID của sinh viên được chọn
-            search_dialog = AdvancedSearchDialog(students)
-            if search_dialog.exec():
-                selected_student = search_dialog.get_selected_student()
-                if selected_student in student_data:
-                    student_info = student_data[selected_student]
-                    self.display_search_result(selected_student, student_info)
-                    # Hiển thị cửa sổ chọn trường để cập nhật bằng lớp UpdateDialog
-                    update_dialog = UpdateDialog(["StudentID", "Name", "Email", "Faculty", "Major", "Year"])
-                    if update_dialog.exec():
-                        selected_field, new_value = update_dialog.get_selected_field_and_value()
-
-                        if selected_field != "Select Field":
-                            # Cập nhật giá trị mới vào dữ liệu và cơ sở dữ liệu
-                            student_info[selected_field] = new_value
-                            students_ref.child(selected_student).set(student_info)
-                            qmb_custom('Update Student', 'Student updated successfully.')
-                            self.display_search_result(selected_student, student_info)
-                        else:
-                            qmb_custom('Update Student', 'Please select a valid field to update.')
-                else:
-                    qmb_custom('Update Student', 'Student ID not found.')
-        else:
-            qmb_custom("Warning", "Please select a class.")
                 
     def delete_data(self):
         if student_data:
@@ -617,7 +580,7 @@ class Ui_StudentManagement(object):
                         msgBox.addButton(QtWidgets.QMessageBox.StandardButton.Yes)
                         msgBox.addButton(QtWidgets.QMessageBox.StandardButton.No)
                         msgBox.setStyleSheet(
-                            "QLabel{font-size: 20px; min-height:150 px; min-width: 400px;} QPushButton{ width:100px; height:30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);}"
+                            "QLabel{font: 15pt \"Berlin Sans FB\"; min-height:150 px; min-width: 400px;} QPushButton{ width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);}"
                         )
                         confirm = msgBox.exec()
 
@@ -631,8 +594,13 @@ class Ui_StudentManagement(object):
 
                             # Cập nhật lại dữ liệu trên Table Widget
                             self.load_data()
+                    
                     else:
                         qmb_custom('Delete Student', 'Student ID not found.')
+                        self.delete_data()
+                elif student_id == "":
+                    qmb_custom('Delete Student', 'Please enter student ID')
+                    self.delete_data()
         else:
             qmb_custom("Warning", "Please select a class.")
 
@@ -671,8 +639,8 @@ class Ui_StudentManagement(object):
             msgBox.addButton(QtWidgets.QMessageBox.StandardButton.No)
 
             msgBox.setStyleSheet(
-                "QLabel{font-size: 20px; min-height:150 px; min-width: 400px;} "
-                "QPushButton{ width:100px; height:30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);} "
+                "QLabel{font: 15pt \"Berlin Sans FB\"; min-height:150 px; min-width: 400px;} "
+                "QPushButton{ width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);} "
                 "QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);}"
             )
 
@@ -688,8 +656,8 @@ class Ui_StudentManagement(object):
                 msgBox1.addButton(QtWidgets.QMessageBox.StandardButton.No)
 
                 msgBox1.setStyleSheet(
-                    "QLabel{font-size: 20px; min-height:150 px; min-width: 400px;} "
-                    "QPushButton{ width:100px; height:30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);} "
+                    "QLabel{font: 15pt \"Berlin Sans FB\"; min-height:150 px; min-width: 400px;} "
+                    "QPushButton{ width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);} "
                     "QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);}"
                 )
                 reply1 = msgBox1.exec()
@@ -760,7 +728,7 @@ def qmb_custom(string1, string2):
     msg_box.setText(string2)
     # Thiết lập StyleSheet để căn giữa văn bản
     msg_box.setStyleSheet(
-        "QLabel{font-size: 20px; min-height:150 px; min-width: 400px;} QPushButton{ width:100px; height:30px; border-radius: 5px; font-size: 15px; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);}"
+        "QLabel{font: 15pt \"Berlin Sans FB\"; min-height:150 px; min-width: 400px;} QPushButton{ width:100px; height:30px; border-radius: 5px; font: 75 14pt \"Berlin Sans FB Demi\"; background-color: rgb(165, 213, 255);} QPushButton:hover{background-color: rgb(3, 105, 161); color: rgb(255,255,255);}"
         )
     msg_box.exec()
 

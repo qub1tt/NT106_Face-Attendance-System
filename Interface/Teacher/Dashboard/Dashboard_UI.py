@@ -49,7 +49,7 @@ class Ui_MainWindow(object):
         self.listWidget_icon_only.setObjectName("listWidget_icon_only")
         self.gridLayout.addWidget(self.listWidget_icon_only, 1, 0, 1, 1)
         self.listWidget = QtWidgets.QListWidget(parent=self.centralwidget)
-        self.listWidget.setMaximumSize(QtCore.QSize(220, 16777215))
+        self.listWidget.setMaximumSize(QtCore.QSize(250, 16777215))
         self.listWidget.setObjectName("listWidget")
         self.gridLayout.addWidget(self.listWidget, 1, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)

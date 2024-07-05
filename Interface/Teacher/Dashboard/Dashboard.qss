@@ -1,7 +1,6 @@
 /* Define styles for the 'title_label' widget */
 #title_label {
-    font-size: 16px;
-    font-family: Amazone BT;
+    font: 16pt \"Berlin Sans FB\";
 }
 
 /* Define styles for the 'title_icon' widget */
@@ -44,8 +43,7 @@ QListWidget,
 
 /* Define font styles for '#listWidget' */
 #listWidget {
-    font-size: 13px;
-    font-family: Segoe UI Semibold;
+    font: 13pt \"Berlin Sans FB\";
 }
 
 /* Styles for list items in '#listWidget' and '#listWidget_icon_only' */
