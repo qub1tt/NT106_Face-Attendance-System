@@ -23,6 +23,13 @@ from AM import Ui_Attendance
 # Add imports for the subprocess and QMessageBox
 import subprocess
 
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
 class Ui_CheckCamera(object):
     def setupUi(self, CheckCamera):
         CheckCamera.setObjectName("CheckCamera")
@@ -103,6 +110,17 @@ class Ui_CheckCamera(object):
         self.label_class.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft)
         self.label_class.setObjectName("label_class")
 
+        self.client_count_label = QtWidgets.QLabel(self.Header)
+        self.client_count_label.setGeometry(QtCore.QRect(800, 20, 200, 31))
+        self.client_count_label.setObjectName("client_count_label")
+        self.client_count_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignRight)
+        font.setFamily("Berlin Sans FB Demi")
+        font.setPointSize(20)
+        font.setBold(True)
+        font.setWeight(75)
+        self.client_count_label.setFont(font)
+        self.client_count_label.setText("Total Students: 0")
+
         self.scroll_area = QtWidgets.QScrollArea(self.centralwidget)
         self.scroll_area.setGeometry(QtCore.QRect(30, 80, 1211, 600))
         self.scroll_area.setWidgetResizable(True)
@@ -150,7 +168,7 @@ class VideoStreamServer(QtCore.QObject):
     def __init__(self):
         super().__init__()
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = "192.168.100.93"
+        self.host_ip = get_ip()
         self.port = 9999
         self.server_socket.bind((self.host_ip, self.port))
         self.server_socket.listen()
@@ -223,6 +241,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.max_rows = 3
         self.max_cols = 3
         self.next_position = (0, 0)
+        self.update_client_count()
 
     def get_next_position(self):
         for row in range(self.max_rows):
@@ -230,6 +249,10 @@ class MyMainWindow(QtWidgets.QMainWindow):
                 if (row, col) not in self.grid_positions:
                     return (row, col)
         return None
+    
+    def update_client_count(self):
+        total_clients = len(self.client_widgets)
+        self.ui.client_count_label.setText(f"Total Students: {total_clients}")
 
     def shift_widgets(self):
         positions = sorted(self.grid_positions.keys())
@@ -250,7 +273,8 @@ class MyMainWindow(QtWidgets.QMainWindow):
                 self.ui.scroll_area_layout.addWidget(client_widget, position[0], position[1], alignment=QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignLeft)
                 self.client_widgets[client_id] = client_widget
                 self.grid_positions[position] = client_widget
-
+                self.update_client_count()
+                
             self.client_widgets[client_id].update_image(q_img)
 
     @QtCore.pyqtSlot(str)
@@ -266,7 +290,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
             client_widget.deleteLater()
             self.shift_widgets()
             self.next_position = self.get_next_position()
-
+            self.update_client_count()
 
 class ClientVideoWidget(QtWidgets.QWidget):
     def __init__(self, client_id):
