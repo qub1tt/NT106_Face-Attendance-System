@@ -491,7 +491,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # Khởi tạo socket và kết nối tới server
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host_ip = "192.168.100.93"
+        self.host_ip = "10.20.1.147"
         self.port = 9999
         self.client_socket.connect((self.host_ip, self.port))
 
@@ -671,12 +671,14 @@ class MainWindow(QtWidgets.QMainWindow):
                             
                             # Hiển thị dialog box cảnh báo
                             msg.exec()
+
                     except Exception as e:
                         msg = QMessageBox()
                         msg.setIcon(QMessageBox.Icon.Critical)
                         msg.setText("Vui lòng đăng kí khuôn mặt để điểm danh")
                         msg.setWindowTitle("Thông báo")
-                        
+                        # Hiển thị dialog box cảnh báo
+                        msg.exec()
     def load_user_id(self):
         global user_id
         user_id = os.getenv('USER_ID')
