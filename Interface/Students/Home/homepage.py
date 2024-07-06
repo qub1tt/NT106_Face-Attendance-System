@@ -679,6 +679,14 @@ class MainWindow(QtWidgets.QMainWindow):
                         msg.setWindowTitle("Thông báo")
                         # Hiển thị dialog box cảnh báo
                         msg.exec()
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Icon.Warning)
+                msg.setText("Vui lòng không sử dụng hình ảnh để gian lận trong việc điểm danh!!")
+                msg.setWindowTitle("Thông báo")
+                # Hiển thị dialog box cảnh báo
+                msg.exec()
+                
     def load_user_id(self):
         global user_id
         user_id = os.getenv('USER_ID')
